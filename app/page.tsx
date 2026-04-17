@@ -1,20 +1,32 @@
-// app/page.tsx — temporary smoke test, we'll replace this soon
+// app/page.tsx — temporary scroll test
 export default function Home() {
   return (
-    <main className="min-h-screen bg-bg flex flex-col items-center justify-center gap-6 p-8">
-      <p className="font-mono text-muted text-sm uppercase tracking-widest">
-        Kova Studio — setup check
-      </p>
-      <h1 className="font-serif text-6xl text-text text-center leading-tight">
-        We forge brands
-        <br />
-        <em>that hold their shape.</em>
-      </h1>
-      <p className="font-sans text-muted max-w-md text-center">
-        Tailwind tokens ✓ · Fonts ✓ · Design system ✓
-      </p>
-      <div className="w-8 h-8 rounded-full bg-accent" />
+    <main className="bg-bg text-text">
+      {/* Tall section to enable scrolling */}
+      <div className="h-screen flex items-center justify-center">
+        <div className="text-center">
+          <p className="font-mono text-muted text-sm uppercase tracking-widest mb-4">
+            Scroll down
+          </p>
+          <h1 className="font-serif text-6xl">
+            We forge brands
+            <br />
+            <em>that hold their shape.</em>
+          </h1>
+        </div>
+      </div>
+
+      {/* Middle section */}
+      <div className="h-screen flex items-center justify-center border-t border-border">
+        <p className="font-sans text-muted text-lg">Lenis is running ✓</p>
+      </div>
+
+      {/* Bottom section */}
+      <div className="h-screen flex items-center justify-center border-t border-border">
+        <p className="font-mono text-accent text-sm uppercase tracking-widest">
+          GSAP ScrollTrigger wired ✓
+        </p>
+      </div>
     </main>
   );
 }
-  
