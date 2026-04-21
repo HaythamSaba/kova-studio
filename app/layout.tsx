@@ -4,6 +4,7 @@ import { Cormorant_Garamond, DM_Sans, DM_Mono } from "next/font/google";
 import "./globals.css";
 import Logo from "@/components/ui/Logo";
 import LenisProvider from "@/components/LenisProvider";
+import CustomCursor from "@/components/cursor/CustomCursor";
 
 // ─── Font definitions ──────────────────────────────
 // next/font downloads fonts at build time, self-hosts them,
@@ -50,6 +51,7 @@ export default function RootLayout({
       className={`${cormorant.variable} ${dmSans.variable} ${dmMono.variable}`}
     >
       <body>
+        <CustomCursor />
         <LenisProvider>
           <header>
             <Logo />
