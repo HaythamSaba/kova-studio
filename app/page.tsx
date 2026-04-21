@@ -1,35 +1,33 @@
-// app/page.tsx — cursor test
+// app/page.tsx
 export default function Home() {
   return (
     <main className="bg-bg text-text">
-      <div className="h-screen flex flex-col items-center justify-center gap-8">
-        <h1 className="font-serif text-6xl">Move your cursor around</h1>
+      {/* Hero section */}
+      <div className="h-screen flex flex-col items-center justify-center bg-[url('/bg.png')] bg-center bg-cover">
+        <p className="font-mono text-muted text-sm uppercase tracking-widest mb-6">
+          Scroll down to see navbar change
+        </p>
+        <h1 className="font-serif text-6xl text-center">
+          We forge brands
+          <br />
+          <em>that hold their shape.</em>
+        </h1>
+      </div>
 
-        {/* Test hover state */}
-        <a
-          href="#"
-          className="font-sans text-accent text-sm uppercase tracking-widest"
-        >
-          Hover me — cursor should expand
-        </a>
+      {/* Sentinel — zero height, marks end of hero */}
+      {/* Navbar watches this element with IntersectionObserver */}
+      <div id="hero-sentinel" />
 
-        {/* Test custom data attribute */}
-        <div
-          data-cursor="hover"
-          className="px-6 py-3 border border-border text-muted font-sans text-sm"
-        >
-          I&apos;m a div — cursor should still expand
-        </div>
-
-        {/* Test click state */}
-        <button className="font-sans text-muted text-sm">
-          Click me — cursor should shrink
-        </button>
+      {/* Content below hero */}
+      <div className="h-screen flex items-center justify-center border-t border-border">
+        <p className="font-sans text-muted text-lg">
+          Navbar should now be frosted ✓
+        </p>
       </div>
 
       <div className="h-screen flex items-center justify-center border-t border-border">
         <p className="font-mono text-accent text-sm uppercase tracking-widest">
-          Custom cursor ✓
+          Scroll back up — should go transparent again ✓
         </p>
       </div>
     </main>
