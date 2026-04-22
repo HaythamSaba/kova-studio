@@ -4,6 +4,7 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { motion, AnimatePresence, useSpring, useScroll } from "framer-motion";
+import { EXPO_OUT } from "@/lib/easings";
 
 // ── Animation variants ────────────────────────────────
 const navVariants = {
@@ -76,7 +77,7 @@ export default function Navbar() {
       <motion.header
         variants={navVariants}
         animate={state}
-        transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
+        transition={{ duration: 0.4, ease: EXPO_OUT }}
         className="fixed top-0 left-0 right-0 z-50 border-b"
       >
         <nav className="max-w-7xl mx-auto flex justify-between items-center px-6 py-4">
@@ -157,7 +158,7 @@ export default function Navbar() {
             initial={{ opacity: 0, y: -20 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -20 }}
-            transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
+            transition={{ duration: 0.4, ease:EXPO_OUT}}
             className="fixed inset-0 z-40 bg-bg flex flex-col items-center justify-center gap-10"
           >
             {links.map((link, i) => (
