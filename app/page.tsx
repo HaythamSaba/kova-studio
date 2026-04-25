@@ -4,6 +4,7 @@ import Hero from "@/components/sections/Hero";
 import WorkGrid from "@/components/sections/WorkGrid";
 import HorizontalScroll from "@/components/sections/HorizontalScroll";
 import About from "@/components/sections/About";
+import Capabilities from "@/components/sections/Capabilities";
 
 export default function Home() {
   return (
@@ -15,11 +16,12 @@ export default function Home() {
         <WorkGrid />
         <HorizontalScroll />
         <About />
+        <Capabilities />
 
         {/* Placeholder */}
         <div className="h-screen flex items-center justify-center border-t border-border">
           <p className="font-mono text-muted text-sm uppercase tracking-widest">
-            Capabilities — coming Day 9
+            Contact — coming Day 10
           </p>
         </div>
       </main>
