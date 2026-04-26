@@ -5,6 +5,8 @@ import WorkGrid from "@/components/sections/WorkGrid";
 import HorizontalScroll from "@/components/sections/HorizontalScroll";
 import About from "@/components/sections/About";
 import Capabilities from "@/components/sections/Capabilities";
+import Contact from "@/components/sections/Contact";
+import Footer from "@/components/ui/Footer";
 
 export default function Home() {
   return (
@@ -17,6 +19,8 @@ export default function Home() {
         <HorizontalScroll />
         <About />
         <Capabilities />
+        <Contact />
+        <Footer />
 
         {/* Placeholder */}
         <div className="h-screen flex items-center justify-center border-t border-border">
