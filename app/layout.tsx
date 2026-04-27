@@ -2,10 +2,10 @@
 import type { Metadata } from "next";
 import { Cormorant_Garamond, DM_Sans, DM_Mono } from "next/font/google";
 import "./globals.css";
-import Logo from "@/components/ui/Logo";
 import LenisProvider from "@/components/LenisProvider";
 import CustomCursor from "@/components/cursor/CustomCursor";
 import Navbar from "@/components/ui/Navbar";
+import PageTransition from "@/components/sections/PageTransition";
 
 // ─── Font definitions ──────────────────────────────
 // next/font downloads fonts at build time, self-hosts them,
@@ -53,12 +53,9 @@ export default function RootLayout({
     >
       <body>
         <CustomCursor />
-        <Navbar /> 
+        <Navbar />
         <LenisProvider>
-          <header>
-            <Logo />
-          </header>
-          <main>{children}</main>
+          <PageTransition>{children}</PageTransition>
         </LenisProvider>
       </body>
     </html>
