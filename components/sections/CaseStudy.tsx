@@ -82,7 +82,7 @@ export default function CaseStudy({ project }: { project: Project }) {
           <motion.div
             initial={{ opacity: 0, x: -12 }}
             animate={{ opacity: 1, x: 0 }}
-            transition={{ delay: 0.2, duration: 0.7, ease: EXPO_OUT }}
+            transition={{ delay: 0.5, duration: 0.7, ease: EXPO_OUT }}
             className="mb-10"
           >
             <Link
@@ -131,10 +131,8 @@ export default function CaseStudy({ project }: { project: Project }) {
             ].map(({ label, value, i }) => (
               <motion.div
                 key={label}
-                className="detail-item relative px-6 py-8 flex flex-col gap-2 border-l-2 min-w-full"
+                className="detail-item relative px-6 py-8 flex flex-col gap-2 border-l-2"
                 style={{
-                  // opacity: 0,
-                  // clipPath: "inset(0 0 100% 0)",
                   borderColor: project.color,
                 }}
                 onMouseEnter={() => setHoveredIndex(i)}
@@ -151,9 +149,9 @@ export default function CaseStudy({ project }: { project: Project }) {
                   transition={{ duration: 1, ease: EXPO_OUT }}
                   className="absolute inset-0 pointer-events-none z-[-1]"
                   style={{ backgroundColor: project.color }}
-                ></motion.div>
+                />
                 <motion.div>
-                  <p className="font-mono text-[11px] uppercase tracking-[0.3em] text-muted">
+                  <p className="font-mono text-[11px] uppercase mb-2 tracking-[0.3em] text-text">
                     {label}
                   </p>
                   <p className="font-sans text-text text-sm">{value}</p>
