@@ -24,6 +24,11 @@
 
 /* ─── Base resets ────────────────────────────────── */
 @layer base {
+  @media (pointer: fine) {
+    * {
+      cursor: none !important;
+    }
+  }
   *,
   *::before,
   *::after {
