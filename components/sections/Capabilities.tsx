@@ -83,7 +83,7 @@ export default function Capabilities() {
               opacity: 1,
               duration: 0.9,
               ease: "power3.out",
-              stagger: 0.7,
+              stagger: 0.3,
               scrollTrigger: {
                 trigger: tilesRef.current,
                 start: "top 80%",
@@ -122,7 +122,7 @@ export default function Capabilities() {
         </div>
 
         {/* Intro headline */}
-        <div className="flex flex-col min-h-screen">
+        <div className="flex flex-col ">
           <div className="mb-20">
             <h2 className="font-serif text-[clamp(36px,4.5vw,72px)] leading-[0.92] text-text relative z-10">
               <div className="w-80 h-30 bg-accent -top-20 absolute -z-10" />
@@ -141,7 +141,7 @@ export default function Capabilities() {
             {services.map((service, i) => (
               <div
                 key={service.index}
-                className="capability-tile relative bg-bg p-10 md:p-14 flex flex-col gap-8 group h-85"
+                className="capability-tile relative bg-bg p-10 flex flex-col gap-8 group min-h-85"
                 style={{ opacity: 0, clipPath: "inset(0 0 100% 0)" }}
                 onMouseEnter={() => setHoveredIndex(i)}
                 onMouseLeave={() => setHoveredIndex(null)}
@@ -176,12 +176,12 @@ export default function Capabilities() {
 
                     {/* Arrow - rotates on hover */}
                     <motion.span
-                      animate={{
-                        rotate: hoveredIndex === i ? -45 : 0,
-                        color: hoveredIndex === i ? "#1a1714" : "#8a8278",
-                      }}
+                      animate={{ rotate: hoveredIndex === i ? -45 : 0 }}
                       transition={{ duration: 0.3, ease: EXPO_OUT }}
-                      className="font-mono text-sm"
+                      className="font-mono text-sm transition-colors duration-300"
+                      style={{
+                        color: hoveredIndex === i ? "#0e0c0a" : "#8a8278",
+                      }}
                     >
                       →
                     </motion.span>

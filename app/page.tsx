@@ -12,7 +12,7 @@ export default function Home() {
   return (
     <>
       {/* <Preloader /> */}
-      <main className="bg-bg text-text">
+      <main id="main-content" className="bg-bg text-text">
         <Hero />
         <div id="hero-sentinel" />
         <WorkGrid />

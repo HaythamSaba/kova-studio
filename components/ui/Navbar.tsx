@@ -20,11 +20,6 @@ const navVariants = {
   },
 };
 
-const linkVariants = {
-  transparent: { color: "rgba(240, 235, 227, 0.7)" },
-  frosted: { color: "rgba(240, 235, 227, 1)" },
-};
-
 // ── Nav links ─────────────────────────────────────────
 const links = [
   { label: "Work", href: "#work" },
@@ -68,7 +63,6 @@ export default function Navbar() {
   const state = scrolled ? "frosted" : "transparent";
   return (
     <>
-      {" "}
       <motion.div
         className="fixed top-0 left-0 right-0 z-60 h-px bg-accent origin-left"
         style={{ scaleX }}
@@ -95,10 +89,12 @@ export default function Navbar() {
               <li key={link.href}>
                 <motion.a
                   href={link.href}
-                  variants={linkVariants}
-                  animate={state}
-                  transition={{ duration: 0.3 }}
-                  className="font-sans text-sm relative group"
+                  className="font-sans text-sm relative group transition-colors duration-300"
+                  style={{
+                    color: scrolled
+                      ? "rgba(240,235,227,1)"
+                      : "rgba(240,235,227,0.7)",
+                  }}
                 >
                   {link.label}
                   {/* Underline on hover */}
@@ -112,7 +108,7 @@ export default function Navbar() {
           <div className="hidden md:block">
             <a
               href="#contact"
-              className="font-mono text-xs uppercase tracking-widest bg-accent text-text border border-accent px-4 py-2 hover:bg-text hover:text-bg transition-colors duration-300"
+              className="font-mono text-xs uppercase tracking-widest bg-accent text-bg border border-accent px-4 py-2 hover:bg-text hover:text-bg transition-colors duration-300"
             >
               Let&apos;s talk
             </a>
@@ -152,13 +148,13 @@ export default function Navbar() {
         </nav>
       </motion.header>
       {/* ── Mobile menu overlay ───────────────────────── */}
-      <AnimatePresence>
+      <AnimatePresence mode="wait">
         {menuOpen && (
           <motion.div
             initial={{ opacity: 0, y: -20 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -20 }}
-            transition={{ duration: 0.4, ease:EXPO_OUT}}
+            transition={{ duration: 0.4, ease: EXPO_OUT }}
             className="fixed inset-0 z-40 bg-bg flex flex-col items-center justify-center gap-10"
           >
             {links.map((link, i) => (
@@ -183,7 +179,7 @@ export default function Navbar() {
               exit={{ opacity: 0 }}
               transition={{ delay: 0.3 }}
               onClick={() => setMenuOpen(false)}
-              className="font-mono text-xs uppercase tracking-widest text-accent mt-4"
+              className="font-mono text-xs uppercase tracking-widest text-bg mt-4"
             >
               Let&apos;s talk
             </motion.a>

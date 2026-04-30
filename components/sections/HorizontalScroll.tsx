@@ -1,7 +1,7 @@
 "use client";
 
 import { projects } from "@/data/projects";
-import gsap from "gsap";
+import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useEffect, useRef } from "react";
 import ProjectCard from "../ui/ProjectCard";

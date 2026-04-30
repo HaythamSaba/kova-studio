@@ -17,6 +17,7 @@ const cormorant = Cormorant_Garamond({
   style: ["normal", "italic"],
   variable: "--font-cormorant", // matches our @theme token
   display: "swap",
+  preload: true,
 });
 
 const dmSans = DM_Sans({
@@ -24,6 +25,7 @@ const dmSans = DM_Sans({
   weight: ["300", "400", "500"],
   variable: "--font-dm-sans",
   display: "swap",
+  preload: true,
 });
 
 const dmMono = DM_Mono({
@@ -31,6 +33,7 @@ const dmMono = DM_Mono({
   weight: ["300", "400", "500"],
   variable: "--font-dm-mono",
   display: "swap",
+  preload: true,
 });
 
 // ─── Metadata ──────────────────────────────────────

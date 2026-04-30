@@ -154,6 +154,7 @@ export default function Contact() {
             <button
               onClick={handleCopy}
               data-cursor="hover"
+              aria-label="Copy email address"
               className="group flex items-center gap-3 text-left"
             >
               <span className="font-sans text-text text-lg hover:text-accent transition-colors duration-300">
