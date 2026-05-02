@@ -25,7 +25,7 @@ export default function Hero() {
   return (
     <section
       ref={containerRef}
-      className="relative min-h-screen flex flex-col justify-end pb-20 px-8 md:px-16 overflow-hidden bg-[url('/bg.png')] bg-cover bg-center"
+      className="relative min-h-screen flex flex-col justify-end pb-20 px-8 md:px-16 overflow-hidden bg-[url('/images/bg.png')] bg-cover bg-center"
     >
       {/* ── Background grain ──────────────────────── */}
       <div

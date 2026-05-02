@@ -4,6 +4,7 @@
 import { useEffect, useRef } from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import Image from "next/image";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -221,26 +222,24 @@ export default function About() {
           {/* taller than its sticky child            */}
           <div className="hidden md:block relative h-full">
             <div className="sticky top-[10vh]">
-              {/* aspect-3/4 = Tailwind v4 token ✓ */}
-              <div
-                className="w-full h-100 overflow-hidden relative mb-4"
-                style={{ backgroundColor: "#1a1714" }}
-              >
-                {/* Grain */}
-                <div
-                  aria-hidden="true"
-                  className="absolute inset-0 pointer-events-none"
-                  style={{
-                    background:
-                      "linear-gradient(135deg, #ff7300 0%, #ffc285 50%, #964b00 100%)",
-                  }}
+              {/* Image */}
+              <div className="w-full h-100 aspect-3/4 relative mb-4 overflow-hidden">
+                <Image
+                  src="/images/studio/studio-photo.png"
+                  alt="Kova Studio workspace in Ljubljana"
+                  fill
+                  className="object-cover"
+                  // This image is below the fold — lazy load is fine
+                  // sizes matches the column width (roughly half viewport
+                  // on desktop, capped at 700px)
+                  // sizes="(max-width: 768px) 100vw, 700px"
                 />
 
                 {/* Amber accent line */}
-                <div className="absolute top-0 left-0 w-px h-20 bg-accent" />
+                <div className="absolute top-0 left-0 w-px h-20 bg-accent z-10" />
 
-                {/* Bottom labels */}
-                <div className="absolute bottom-6 left-6 right-6 flex items-end justify-between">
+                {/* Bottom label */}
+                <div className="absolute bottom-6 left-6 right-6 flex items-end justify-between z-10">
                   <p className="font-mono text-[9px] uppercase tracking-[0.25em] text-white/40">
                     Ljubljana, Slovenia
                   </p>
@@ -251,10 +250,10 @@ export default function About() {
 
                 {/* Vignette */}
                 <div
-                  className="absolute inset-0 pointer-events-none"
+                  className="absolute inset-0 pointer-events-none z-10"
                   style={{
                     background:
-                      "radial-gradient(ellipse at center, transparent 40%, rgba(14,12,10,0.6) 100%)",
+                      "radial-gradient(ellipse at center, transparent 40%, rgba(14,12,10,0.5) 100%)",
                   }}
                 />
               </div>

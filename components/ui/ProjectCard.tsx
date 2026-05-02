@@ -2,6 +2,7 @@ import { motion } from "framer-motion";
 import { projects } from "@/data/projects";
 import Link from "next/link";
 import { EXPO_OUT } from "@/lib/easings";
+import Image from "next/image";
 
 interface ProjectCardProps {
   project: (typeof projects)[0];
@@ -16,10 +17,14 @@ export default function ProjectCard({ project, index }: ProjectCardProps) {
       className="group shrink-0 flex flex-col h-[65vh] w-[38vw] max-w-130 min-w-75"
     >
       {/* Image */}
-      <div
-        className="relative flex-1 overflow-hidden mb-5"
-        style={{ backgroundColor: project.color }}
-      >
+      <div className="relative flex-1 overflow-hidden mb-5">
+        <Image
+          src={project.images.landscape}
+          alt={`${project.title} — ${project.category}`}
+          fill
+          className="object-cover transition-transform duration-700 group-hover:scale-105"
+          sizes="(max-width: 768px) 100vw, 40vw"
+        />
         {/* Hover overlay */}
         <div className="absolute inset-0 bg-bg/0 group-hover:bg-bg/20 transition-colors duration-500" />
         <span className="absolute top-5 right-5 font-mono text-[10px] text-white/40 tracking-widest">

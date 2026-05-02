@@ -12,9 +12,10 @@ const overlayVariants = {
   initial: { y: 0 },
   exit: {
     y: "-100%",
+    background: "rgba(0, 0, 0, 0)",
     transition: {
       duration: 0.9,
-      ease: SHARP,// sharp cubic — feels intentional
+      ease: SHARP, // sharp cubic — feels intentional
       delay: 0.3, // brief pause after count reaches 100
     },
   },
@@ -112,9 +113,9 @@ export default function Preloader() {
               {/* The number itself */}
               <motion.p
                 key={count} // re-mounts on every count change
-                initial={{ y: "100%", opacity: 0 }}
-                animate={{ y: "0%", opacity: 1 }}
-                transition={{ duration: 0.15, ease: "easeOut" }}
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ duration: 0.05, ease: "easeOut" }}
                 className="font-serif text-[clamp(80px,15vw,160px)] leading-none text-text tabular-nums"
               >
                 {count}

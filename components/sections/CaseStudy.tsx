@@ -7,6 +7,7 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useEffect, useRef, useState } from "react";
 import { motion } from "framer-motion";
 import Link from "next/link";
+import Image from "next/image";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -63,11 +64,17 @@ export default function CaseStudy({ project }: { project: Project }) {
   return (
     <article className="bg-bg text-text min-h-screen">
       {/* ── Hero ──────────────────────────────────── */}
-      <div className="relative h-[70vh] flex items-end pb-16 px-8 md:px-16">
-        <div
-          className="absolute inset-0"
-          style={{ backgroundColor: project.color }}
-        >
+      <div className="relative h-screen flex items-end pb-16 px-8 md:px-16">
+        <div className="absolute inset-0">
+          <Image
+            src={project.images.landscape}
+            alt={`${project.title} hero`}
+            fill
+            className="object-cover"
+            // Hero image — above the fold, load immediately
+            priority
+            sizes="100vw"
+          />
           <div
             className="absolute inset-0"
             style={{
@@ -79,11 +86,25 @@ export default function CaseStudy({ project }: { project: Project }) {
 
         <div className="relative max-w-350 mx-auto w-full">
           {/* ── Back link — text outside the line span ── */}
+
+          {/* ── Project title ─────────────────────── */}
+          <motion.div
+            initial={{ opacity: 0, y: 32 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.3, duration: 2, ease: EXPO_OUT }}
+          >
+            <h1 className="font-serif text-[clamp(48px,8vw,128px)] leading-[0.9] text-white">
+              {project.title}
+            </h1>
+            <p className="font-mono text-[10px] uppercase tracking-[0.3em] text-white/40 mb-4">
+              {project.category} — {project.location}
+            </p>
+          </motion.div>
           <motion.div
             initial={{ opacity: 0, x: -12 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ delay: 0.5, duration: 0.7, ease: EXPO_OUT }}
-            className="mb-10"
+            className=""
           >
             <Link
               href="/"
@@ -95,28 +116,11 @@ export default function CaseStudy({ project }: { project: Project }) {
               Back
             </Link>
           </motion.div>
-
-          {/* ── Project title ─────────────────────── */}
-          <motion.div
-            initial={{ opacity: 0, y: 32 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.3, duration: 2, ease: EXPO_OUT }}
-          >
-            <p className="font-mono text-[10px] uppercase tracking-[0.3em] text-white/40 mb-4">
-              {project.category} — {project.location}
-            </p>
-            <h1
-              className="font-serif text-[clamp(48px,8vw,128px)] leading-[0.9]"
-              style={{ color: project.color }}
-            >
-              {project.title}
-            </h1>
-          </motion.div>
         </div>
       </div>
 
       {/* ── Project details ──────────────────────── */}
-      <div className="px-8 md:px-16 py-20">
+      <div className="px-8 md:px-16 py-16">
         <div className="max-w-350 mx-auto">
           {/* Meta row — GSAP stagger */}
           <div
@@ -175,21 +179,70 @@ export default function CaseStudy({ project }: { project: Project }) {
           </motion.div>
 
           {/* Image placeholders */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-20">
-            <div
-              className="aspect-4/3 w-full"
-              style={{ backgroundColor: project.color, opacity: 0.7 }}
-            />
-            <div
-              className="aspect-4/3 w-full"
-              style={{ backgroundColor: project.color, opacity: 0.4 }}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+            <motion.div
+              className="relative aspect-4/3 w-full overflow-hidden group cursor-pointer"
+              whileHover="hover"
+            >
+              {/* Image */}
+              <Image
+                src={project.images.landscape}
+                alt={`${project.title} detail`}
+                fill
+                className="object-cover transition-transform duration-700 group-hover:scale-105"
+                sizes="(max-width: 768px) 100vw, 50vw"
+              />
+
+              {/* Overlay Content */}
+              <motion.div
+                className="absolute inset-0 z-10 flex flex-col bg-surface/90 p-8"
+                variants={{
+                  hidden: {
+                    opacity: 0,
+                    y: "-100%",
+                  },
+                  hover: {
+                    opacity: 1,
+                    y: 0,
+                  },
+                }}
+                initial="hidden"
+                transition={{
+                  duration: 0.55,
+                  ease: EXPO_OUT,
+                }}
+              >
+                <p className="m-auto font-serif text-base uppercase tracking-[0.3em] text-white mb-6">
+                  . The Brief .
+                </p>
+
+                <p className="font-sans text-white text-base leading-relaxed max-w-md">
+                  A full case study for {project.title} will live here —
+                  covering the brief, process, key decisions, and outcomes. Real
+                  copy coming in the content pass.
+                </p>
+              </motion.div>
+            </motion.div>
+
+            <div className="relative aspect-4/3 w-full overflow-hidden">
+              <Image
+                src={project.images.portrait}
+                alt={`${project.title} identity`}
+                fill
+                className="object-cover"
+                sizes="(max-width: 768px) 100vw, 50vw"
+              />
+            </div>
+          </div>
+          <div className="relative w-full aspect-16/7 mb-20 overflow-hidden">
+            <Image
+              src={project.images.landscape}
+              alt={`${project.title} full spread`}
+              fill
+              className="object-cover"
+              sizes="100vw"
             />
           </div>
-
-          <div
-            className="w-full aspect-16/7 mb-20"
-            style={{ backgroundColor: project.color, opacity: 0.5 }}
-          />
 
           {/* ── Placeholder copy — fadeUp used here ─ */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-16 mb-32">

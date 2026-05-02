@@ -1,10 +1,12 @@
 "use client";
-import { Project, projects } from "@/data/projects";
+import { projects } from "@/data/projects";
 import { EXPO_OUT } from "@/lib/easings";
 import { useMousePosition } from "@/lib/useMousePosition";
 import { AnimatePresence, motion } from "framer-motion";
+import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
+import ProjectRow from "./ProjectRow";
 const imageVariants = {
   initial: {
     opacity: 0,
@@ -27,18 +29,6 @@ const imageVariants = {
     transition: {
       duration: 0.3,
       ease: EXPO_OUT,
-    },
-  },
-};
-
-const rowVariants = {
-  initial: {
-    opacity: 1,
-  },
-  dimmed: {
-    opacity: 0.3,
-    transition: {
-      duration: 0.3,
     },
   },
 };
@@ -142,10 +132,17 @@ export default function WorkGrid() {
               className="w-95 h-70 md:w-115 md:h-85 overflow-hidden"
             >
               {/* Color placeholder — replace with next/image later */}
-              <div
-                className="w-full h-full"
-                style={{ backgroundColor: activeProject.color }}
-              >
+              <div className="relative w-full h-full">
+                <Image
+                  src={activeProject.images.landscape}
+                  alt={`${activeProject.title} project`}
+                  fill
+                  className="object-cover"
+                  priority={false}
+                  sizes="460px"
+                />
+
+                {/* Project label overlay */}
                 <div className="w-full h-full flex-flex-col justify-end p-6">
                   <p className="font-mono text-[10px] uppercase tracking-[0.25em] text-white/50 mb-1">
                     {activeProject.category}
@@ -160,66 +157,5 @@ export default function WorkGrid() {
         </AnimatePresence>
       </div>
     </section>
-  );
-}
-
-interface ProjectRowProps {
-  project: Project;
-  index: number;
-  isActive: boolean;
-  isDimmed: boolean;
-  onEnter: () => void;
-  onLeave: () => void;
-}
-
-function ProjectRow({
-  project,
-  index,
-  isActive,
-  isDimmed,
-  onEnter,
-  onLeave,
-}: ProjectRowProps) {
-  return (
-    <motion.li
-      animate={isDimmed ? "dimmed" : "initial"}
-      variants={rowVariants}
-      onMouseEnter={onEnter}
-      onMouseLeave={onLeave}
-      className="group "
-      data-cursor="hover"
-    >
-      <Link
-        href={`/work/${project.slug}`}
-        className="flex items-center justify-between py-7 md:py-9 gap-4"
-      >
-        {/* Left: index + title */}
-        <div className="flex items-baseline gap-6 md:gap-10">
-          <span className="font-mono text-[10px] text-muted tracking-widest w-6 shrink-0">
-            {String(index + 1).padStart(2, "0")}
-          </span>
-          <span className="font-serif text-[clamp(28px,4.5vw,72px)] leading-none text-text group-hover:text-accent transition-colors duration-500">
-            {project.title}
-          </span>
-        </div>
-        {/* Right: meta */}
-        <div className="hidden: md:flex items-center gap-10 shrink-0">
-          <span className="font-sans text-sm text-muted">
-            {project.category}
-          </span>
-          <span className="font-mono text-[10px] uppercase tracking-widest text-muted w-20 text-right">
-            {project.location}
-          </span>
-          {/* Arrow - slides in on hover */}
-          <motion.span
-            animate={{ x: isActive ? 0 : -6, opacity: isActive ? 1 : 0 }}
-            transition={{ duration: 0.3, ease: EXPO_OUT }}
-            className="font-mono text-sm text-accent"
-          >
-            →
-          </motion.span>
-        </div>
-      </Link>
-    </motion.li>
   );
 }
