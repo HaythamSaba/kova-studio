@@ -18,6 +18,12 @@ export default function CaseStudy({ project }: { project: Project }) {
 
   const detailsRef = useRef<HTMLDivElement>(null);
 
+  const imageGridRef = useRef<HTMLDivElement>(null);
+  const imageInnerRefs = useRef<(HTMLDivElement | null)[]>([]);
+
+  const wideImageRef = useRef<HTMLDivElement>(null);
+  const imageInnerRef = useRef<HTMLDivElement>(null);
+
   const currentIndex = projects.findIndex((p) => p.slug === project.slug);
   const nextProject = projects[(currentIndex + 1) % projects.length];
   const prevProject =
@@ -33,8 +39,8 @@ export default function CaseStudy({ project }: { project: Project }) {
           {
             y: 0,
             opacity: 1,
-            duration: 0.7, // ← fixed from 2
-            stagger: 0.08, // ← fixed from 0.3
+            duration: 0.7,
+            stagger: 0.08,
             ease: "power3.out",
             scrollTrigger: {
               trigger: detailsRef.current,
@@ -44,6 +50,62 @@ export default function CaseStudy({ project }: { project: Project }) {
           },
         );
       }
+
+      const prefersReducedMotion = window.matchMedia(
+        "(prefers-reduced-motion: reduce)",
+      ).matches;
+
+      if (!prefersReducedMotion && imageGridRef.current) {
+        ScrollTrigger.create({
+          trigger: imageGridRef.current,
+          start: "top 25%",
+          end: "+=900",
+          pin: true,
+          anticipatePin: 1,
+          invalidateOnRefresh: true,
+        });
+        imageInnerRefs.current.forEach((el) => {
+          if (!el) return;
+          gsap.fromTo(
+            el,
+            {
+              clipPath: "inset(10% 15% 10% 15% round 100%)",
+            },
+            {
+              clipPath: "inset(0% 0% 0% 0% round 0px)",
+              ease: "none",
+              scrollTrigger: {
+                trigger: imageGridRef.current,
+                start: "top 25%",
+                end: "+=900",
+                scrub: 1.5,
+              },
+            },
+          );
+        });
+      }
+
+      if (wideImageRef.current && imageInnerRef.current) {
+        gsap.fromTo(
+          imageInnerRef.current,
+          {
+            clipPath: "inset(0 40% 55% 40% round 40px)",
+            scale: 1,
+          },
+          {
+            clipPath: "inset(0% 0% 0% 0% round 0px)",
+            scale: 1.5,
+            ease: "none",
+            scrollTrigger: {
+              trigger: wideImageRef.current,
+              start: "top 50%",
+              end: "bottom bottom",
+              scrub: 2,
+            },
+          },
+        );
+      }
+
       ScrollTrigger.refresh();
     });
 
@@ -166,118 +228,218 @@ export default function CaseStudy({ project }: { project: Project }) {
             </p>
           </motion.div>
 
-          {/* ── Image grid — hover reveals content ───── */}
-          {/* mb-20 so wide image below has breathing room */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-20">
-            {[
-              { src: project.images.landscape, alt: `${project.title} detail` },
-              {
-                src: project.images.portrait,
-                alt: `${project.title} identity`,
-              },
-            ].map((img, i) => (
-              <motion.div
-                key={i}
-                className="relative aspect-4/3 w-full overflow-hidden cursor-pointer"
-                onHoverStart={() => setHoveredImage(i)}
-                onHoverEnd={() => setHoveredImage(null)}
-              >
-                {/* Image — scales on hover */}
+          {/* ── Image grid ──────────────────────────── */}
+          <div ref={imageGridRef} className="relative mb-20">
+            {/* ── Sticky inner — stays centred during pin ──── */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              {[
+                {
+                  src: project.images.landscape,
+                  alt: `${project.title} detail`,
+                },
+                {
+                  src: project.images.portrait,
+                  alt: `${project.title} identity`,
+                },
+              ].map((img, i) => (
                 <motion.div
-                  className="absolute inset-0"
-                  animate={{ scale: hoveredImage === i ? 1.05 : 1 }}
-                  transition={{ duration: 0.7, ease: EXPO_OUT }}
+                  key={i}
+                  className="relative aspect-4/3 w-full overflow-hidden cursor-pointer"
+                  onHoverStart={() => setHoveredImage(i)}
+                  onHoverEnd={() => setHoveredImage(null)}
                 >
-                  <Image
-                    src={img.src}
-                    alt={img.alt}
-                    fill
-                    className="object-cover"
-                    sizes="(max-width: 768px) 100vw, 50vw"
-                  />
-                </motion.div>
+                  {/* clipPath div — GSAP animates this */}
+                  <div
+                    ref={(el) => {
+                      imageInnerRefs.current[i] = el;
+                    }}
+                    className="absolute inset-0 overflow-hidden"
+                    style={{
+                      clipPath: "inset(10% 15% 10% 15% round 100%)",
+                    }}
+                  >
+                    <motion.div
+                      className="absolute inset-0"
+                      animate={{ scale: hoveredImage === i ? 1.05 : 1 }}
+                      transition={{ duration: 0.7, ease: EXPO_OUT }}
+                    >
+                      <Image
+                        src={img.src}
+                        alt={img.alt}
+                        fill
+                        className="object-cover"
+                        sizes="(max-width: 768px) 100vw, 50vw"
+                      />
+                    </motion.div>
+                  </div>
 
-                {/* Content overlay — slides down from top on hover */}
-                <motion.div
-                  className="absolute inset-0 z-10 flex flex-col bg-surface/50 p-8"
-                  variants={{
-                    hidden: { opacity: 1, y: "-100%" },
-                    hover: { opacity: 1, y: "0%" },
-                  }}
-                  initial="hidden"
-                  animate={hoveredImage === i ? "hover" : "hidden"}
-                  transition={{ duration: 0.55, ease: EXPO_OUT }}
-                >
-                  {i === 0 ? (
-                    <div>
-                      <p className="font-serif text-base uppercase tracking-[0.3em] text-white mb-6">
-                        . The Brief .
-                      </p>
-                      <p className="font-sans text-white text-base leading-relaxed max-w-md">
-                        A full case study for {project.title} will live here —
-                        covering the brief, process, key decisions, and
-                        outcomes. Real copy coming in the content pass.
-                      </p>
-                    </div>
-                  ) : (
-                    <div>
-                      <p className="font-serif text-base uppercase tracking-[0.3em] text-white mb-6">
-                        . The Outcome .
-                      </p>
-                      <p className="font-sans text-white text-base leading-relaxed">
-                        Placeholder for results, client feedback, and measurable
-                        impact of the {project.category.toLowerCase()} work
-                        delivered in {project.location}.
-                      </p>
-                    </div>
-                  )}
+                  {/* Hover overlay — unchanged */}
+                  <motion.div
+                    className="absolute inset-0 z-10 flex flex-col justify-center items-center bg-surface/50 p-8"
+                    variants={{
+                      hidden: { opacity: 1, y: "-100%" },
+                      hover: { opacity: 1, y: "0%" },
+                    }}
+                    initial="hidden"
+                    animate={hoveredImage === i ? "hover" : "hidden"}
+                    transition={{ duration: 0.55, ease: EXPO_OUT }}
+                  >
+                    {i === 0 ? (
+                      <div>
+                        <p className="font-serif text-base uppercase tracking-[0.3em] text-white mb-6">
+                          . The Brief .
+                        </p>
+                        <p className="font-sans text-white text-base leading-relaxed max-w-md">
+                          A full case study for {project.title} will live here —
+                          covering the brief, process, key decisions, and
+                          outcomes. Real copy coming in the content pass.
+                        </p>
+                      </div>
+                    ) : (
+                      <div>
+                        <p className="font-serif text-base uppercase tracking-[0.3em] text-white mb-6">
+                          . The Outcome .
+                        </p>
+                        <p className="font-sans text-white text-base leading-relaxed">
+                          Placeholder for results, client feedback, and
+                          measurable impact of the{" "}
+                          {project.category.toLowerCase()} work delivered in{" "}
+                          {project.location}.
+                        </p>
+                      </div>
+                    )}
+                  </motion.div>
                 </motion.div>
-              </motion.div>
-            ))}
+              ))}
+            </div>
           </div>
 
-          {/* ── Wide image ───────────────────────────── */}
-          <motion.div
-            className="relative w-full aspect-16/7 mb-20 overflow-hidden"
-            initial={{ scale: 0.5 }}
-            whileInView={{ scale: 1 }}
+          {/* ── Wide image → background for nav ─────────── */}
+          {/* Single wrapper contains both image and nav.     */}
+          {/* Image expands via clipPath scrub to cover nav.  */}
+          <div
+            ref={wideImageRef}
+            className="relative mb-0 overflow-hidden p-5"
+            // Height = image area + nav area combined
+            // Image starts contained, expands to fill all of this
           >
-            <Image
-              src={project.images.landscape}
-              alt={`${project.title} full spread`}
-              fill
-              className="object-cover"
-              sizes="100vw"
-            />
-          </motion.div>
-
-          {/* ── Project navigation ────────────────────── */}
-          <div className="grid grid-cols-2 gap-px bg-border border-t border-border pt-px">
-            <Link
-              href={`/work/${prevProject.slug}`}
-              data-cursor="hover"
-              className="group bg-bg px-8 py-10 flex flex-col gap-4 hover:bg-surface transition-colors duration-300"
+            {/* ── Image — absolutely fills the wrapper ─────── */}
+            {/* clipPath animated by GSAP — starts inset,       */}
+            {/* expands to cover everything including nav        */}
+            <div
+              ref={imageInnerRef}
+              className="absolute inset-0 z-0 top-20"
+              style={{
+                // Initial state matches GSAP fromTo clipPath
+                clipPath: "inset(0 40% 35% 40% round 40px)",
+              }}
             >
-              <p className="font-mono text-[9px] uppercase tracking-[0.3em] text-muted">
-                ← Previous
-              </p>
-              <p className="font-serif text-2xl text-text group-hover:text-accent transition-colors duration-300">
-                {prevProject.title}
-              </p>
-            </Link>
+              <Image
+                src={project.images.landscape}
+                alt={`${project.title} full spread`}
+                fill
+                className="object-cover"
+                sizes="100vw"
+              />
 
-            <Link
-              href={`/work/${nextProject.slug}`}
-              data-cursor="hover"
-              className="group bg-bg px-8 py-10 flex flex-col gap-4 hover:bg-surface transition-colors duration-300 text-right"
-            >
-              <p className="font-mono text-[9px] uppercase tracking-[0.3em] text-muted">
-                Next →
-              </p>
-              <p className="font-serif text-2xl text-text group-hover:text-accent transition-colors duration-300">
-                {nextProject.title}
-              </p>
-            </Link>
+              {/* Dark gradient over image so nav text stays readable */}
+              {/* Gradient is heavier at the bottom where nav sits   */}
+              <div
+                className="absolute inset-0"
+                style={{
+                  background:
+                    "linear-gradient(to bottom, rgba(14,12,10,0.2) 0%, rgba(14,12,10,0.75) 60%, rgba(14,12,10,0.92) 100%)",
+                }}
+              />
+            </div>
+
+            {/* ── Spacer — reserves the image's visual height ─ */}
+            {/* This is what makes the image "appear" to grow    */}
+            {/* from this aspect ratio upward as scroll expands  */}
+            <div className="relative z-10 w-full aspect-16/7" />
+
+            {/* ── Project navigation — sits on top of image ─── */}
+            {/* z-10 keeps it above the expanding image          */}
+            {/* Text is white since image is now the background  */}
+            <div className="relative z-10 grid grid-cols-2">
+              {/* Divider line between cards */}
+              <div className="absolute top-0 left-0 right-0 h-px bg-white/10" />
+              <div className="absolute top-0 bottom-0 left-1/2 w-px bg-white/10" />
+
+              {/* Previous project */}
+              <Link
+                href={`/work/${prevProject.slug}`}
+                data-cursor="hover"
+                className="group px-8 md:px-14 py-12 md:py-16 flex flex-col gap-4"
+              >
+                {/* Hover fill — subtle white tint */}
+                <motion.div
+                  initial={{ opacity: 0 }}
+                  whileHover={{ opacity: 1 }}
+                  transition={{ duration: 0.4 }}
+                  className="absolute inset-0 bg-white/5 pointer-events-none"
+                />
+
+                <p className="font-mono text-[9px] uppercase tracking-[0.3em] text-white/40 group-hover:text-white/60 transition-colors duration-300">
+                  ← Previous
+                </p>
+
+                {/* Project image thumbnail on hover */}
+                <div className="relative">
+                  <p className="font-serif text-[clamp(20px,3vw,36px)] text-white/80 group-hover:text-white transition-colors duration-500 leading-tight">
+                    {prevProject.title}
+                  </p>
+                  <p className="font-mono text-[9px] uppercase tracking-[0.25em] text-white/30 mt-2 group-hover:text-white/50 transition-colors duration-300">
+                    {prevProject.category}
+                  </p>
+                </div>
+
+                {/* Arrow slides right on hover */}
+                <motion.span
+                  animate={{ x: 0 }}
+                  whileHover={{ x: 6 }}
+                  className="font-mono text-xs text-accent"
+                >
+                  ←
+                </motion.span>
+              </Link>
+
+              {/* Next project */}
+              <Link
+                href={`/work/${nextProject.slug}`}
+                data-cursor="hover"
+                className="group relative px-8 md:px-14 py-12 md:py-16 flex flex-col gap-4 items-end text-right"
+              >
+                {/* Hover fill */}
+                <motion.div
+                  initial={{ opacity: 0 }}
+                  whileHover={{ opacity: 1 }}
+                  transition={{ duration: 0.4 }}
+                  className="absolute inset-0 bg-white/5 pointer-events-none"
+                />
+
+                <p className="font-mono text-[9px] uppercase tracking-[0.3em] text-white/40 group-hover:text-white/60 transition-colors duration-300">
+                  Next →
+                </p>
+
+                <div className="relative">
+                  <p className="font-serif text-[clamp(20px,3vw,36px)] text-white/80 group-hover:text-white transition-colors duration-500 leading-tight">
+                    {nextProject.title}
+                  </p>
+                  <p className="font-mono text-[9px] uppercase tracking-[0.25em] text-white/30 mt-2 group-hover:text-white/50 transition-colors duration-300">
+                    {nextProject.category}
+                  </p>
+                </div>
+
+                <motion.span
+                  animate={{ x: 0 }}
+                  whileHover={{ x: -6 }}
+                  className="font-mono text-xs text-accent"
+                >
+                  →
+                </motion.span>
+              </Link>
+            </div>
           </div>
         </div>
       </div>
