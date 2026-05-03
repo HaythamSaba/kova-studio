@@ -132,13 +132,13 @@ export default function WorkGrid() {
               className="w-95 h-70 md:w-115 md:h-85 overflow-hidden"
             >
               {/* Color placeholder — replace with next/image later */}
-              <div className="relative w-full h-full">
+              <div className="relative w-full h-full" 
+              style={{ backgroundColor: activeProject.color }}>
                 <Image
                   src={activeProject.images.landscape}
                   alt={`${activeProject.title} project`}
                   fill
                   className="object-cover"
-                  priority={false}
                   sizes="460px"
                 />
 

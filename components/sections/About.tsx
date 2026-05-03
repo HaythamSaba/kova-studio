@@ -5,7 +5,7 @@ import { useEffect, useRef } from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import Image from "next/image";
-
+import AboutImage from "@/public/images/studio/studio-photo.png";
 gsap.registerPlugin(ScrollTrigger);
 
 // ── Stats ─────────────────────────────────────────────
@@ -221,18 +221,19 @@ export default function About() {
           {/* This is the parent sticky needs to be   */}
           {/* taller than its sticky child            */}
           <div className="hidden md:block relative h-full">
-            <div className="sticky top-[10vh]">
+            <div className="sticky top-[20vh]">
               {/* Image */}
               <div className="w-full h-100 aspect-3/4 relative mb-4 overflow-hidden">
                 <Image
-                  src="/images/studio/studio-photo.png"
+                  src={AboutImage}
                   alt="Kova Studio workspace in Ljubljana"
                   fill
+                  placeholder="blur" // Lazy load
                   className="object-cover"
                   // This image is below the fold — lazy load is fine
                   // sizes matches the column width (roughly half viewport
                   // on desktop, capped at 700px)
-                  // sizes="(max-width: 768px) 100vw, 700px"
+                  sizes="(max-width: 768px) 100vw, 700px"
                 />
 
                 {/* Amber accent line */}
