@@ -7,6 +7,7 @@ import About from "@/components/sections/About";
 import Capabilities from "@/components/sections/Capabilities";
 import Contact from "@/components/sections/Contact";
 import Footer from "@/components/ui/Footer";
+import Marquee from "@/components/ui/Marquee";
 
 export default function Home() {
   return (
@@ -15,6 +16,7 @@ export default function Home() {
       <main id="main-content" className="bg-bg text-text">
         <Hero />
         <div id="hero-sentinel" />
+        <Marquee />
         <WorkGrid />
         <HorizontalScroll />
         <About />
