@@ -41,6 +41,10 @@ export const metadata: Metadata = {
   title: "Kova Studio — Crafted with intent. Built to endure.",
   description:
     "We build digital identities and web experiences for brands that take the long view.",
+  icons: {
+    icon: "/favicon.svg",
+    shortcut: "/favicon.svg",
+  },
 };
 
 // ─── Root Layout ───────────────────────────────────

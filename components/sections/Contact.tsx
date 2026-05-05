@@ -7,6 +7,7 @@ import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { EXPO_OUT } from "@/lib/easings";
 import MagneticLink from "../ui/MagneticLink";
+import MagneticEl from "../ui/MagneticEl";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -198,9 +199,20 @@ export default function Contact() {
             </p>
             <div className="flex flex-col gap-3">
               {socialLinks.map((link) => (
-                <MagneticLink key={link.label} href={link.href}>
-                  {link.label}
-                </MagneticLink>
+                <MagneticEl key={link.label} strength={0.3}>
+                  <a
+                    href={link.href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="group inline-flex items-center gap-3 font-sans text-muted hover:text-accent transition-colors duration-300 w-fit"
+                  >
+                    <span className="w-3 h-px bg-current group-hover:w-6 transition-all duration-300" />
+                    {link.label}
+                    <span className="font-mono text-[10px] text-muted/40 group-hover:text-accent/60 transition-colors duration-300">
+                      ↗
+                    </span>
+                  </a>
+                </MagneticEl>
               ))}
             </div>
           </div>

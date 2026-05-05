@@ -1,10 +1,11 @@
 // components/Navbar.tsx
 "use client";
 
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import Link from "next/link";
 import { motion, AnimatePresence, useSpring, useScroll } from "framer-motion";
 import { EXPO_OUT } from "@/lib/easings";
+import { useLenis } from "@/lib/useLenis";
 
 // ── Animation variants ────────────────────────────────
 const navVariants = {
@@ -30,6 +31,8 @@ const links = [
 export default function Navbar() {
   const [scrolled, setScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
+  const lenis = useLenis();
+
   const { scrollYProgress } = useScroll();
 
   const scaleX = useSpring(scrollYProgress, {
@@ -60,6 +63,29 @@ export default function Navbar() {
     return () => observer.disconnect();
   }, []);
 
+  // Smooth scroll via Lenis
+  function handleNavClick(
+    e: React.MouseEvent<HTMLAnchorElement>,
+    href: string,
+  ) {
+    e.preventDefault();
+
+    const target = document.querySelector(href);
+    if (!target) return;
+
+    if (lenis) {
+      lenis.scrollTo(target as HTMLElement, {
+        offset: -100,
+        duration: 2,
+        easing: (t: number) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+      });
+    } else {
+      target.scrollIntoView({ behavior: "smooth" });
+    }
+
+    setMenuOpen(false);
+  }
+
   const state = scrolled ? "frosted" : "transparent";
   return (
     <>
@@ -89,6 +115,7 @@ export default function Navbar() {
               <li key={link.href}>
                 <motion.a
                   href={link.href}
+                  onClick={(e) => handleNavClick(e, link.href)}
                   className="font-sans text-sm relative group transition-colors duration-300"
                   style={{
                     color: scrolled
