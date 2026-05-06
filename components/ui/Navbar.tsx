@@ -206,7 +206,7 @@ export default function Navbar() {
               exit={{ opacity: 0 }}
               transition={{ delay: 0.3 }}
               onClick={() => setMenuOpen(false)}
-              className="font-mono text-xs uppercase tracking-widest text-bg mt-4"
+              className="font-mono text-xs uppercase tracking-widest text-bg bg-accent px-4 py-2 mt-4"
             >
               Let&apos;s talk
             </motion.a>
