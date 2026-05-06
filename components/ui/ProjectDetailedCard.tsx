@@ -1,11 +1,12 @@
+"use client";
+
 import { forwardRef } from "react";
 import type { Project } from "@/data/projects";
 import Link from "next/link";
 import Image from "next/image";
 import { motion } from "framer-motion";
-import { EXPO_OUT } from "@/lib/easings";
 
-interface ProjectDetailedCard {
+interface ProjectDetailedCardProps {
   project: Project;
   index: number;
   format: "landscape" | "portrait";
@@ -14,129 +15,91 @@ interface ProjectDetailedCard {
   onLeave: () => void;
 }
 
-const ProjectDetailedCard = forwardRef<HTMLDivElement, ProjectDetailedCard>(
-  function ProjectDetailedCard(
-    { project, index, format, isHovered, onEnter, onLeave },
-    ref,
-  ) {
-    return (
-      <div
-        ref={ref}
-        style={{ clipPath: "inset(100% 0% 0% 0%)", opacity: 0 }}
-        className="group relative overflow-hidden"
-        onMouseEnter={onEnter}
-        onMouseLeave={onLeave}
-        data-cursor="hover"
-      >
-        <Link href={`/work/${project.slug}`} className="block">
-          {/* ── Image container ─────────────────── */}
-          {/* Aspect ratio changes based on format   */}
-          <div
-            className={`relative w-full overflow-hidden ${format === "landscape" ? "aspect-16/10" : "aspect-3/4"}`}
-          >
-            {/* Background color while image loads */}
-            <div
-              className="absolute inset-0"
-              style={{ backgroundColor: project.color }}
-            />
-
-            {/* Project Image */}
+const ProjectDetailedCard = forwardRef<
+  HTMLDivElement,
+  ProjectDetailedCardProps
+>(({ project, format, isHovered, onEnter, onLeave }, ref) => {
+  return (
+    <div
+      ref={ref}
+      className="group relative will-change-transform"
+      onMouseEnter={onEnter}
+      onMouseLeave={onLeave}
+    >
+      <Link href={`/work/${project.slug}`} className="block">
+        {/* Main Image Container */}
+        <div
+          className={`relative w-full overflow-hidden bg-surface ${
+            format === "landscape" ? "aspect-16/10" : "aspect-3/4"
+          }`}
+        >
+          {/* Parallax Wrapper */}
+          <div className="card-image-inner relative w-full h-full scale-110">
             <Image
               src={
                 format === "landscape"
                   ? project.images.landscape
                   : project.images.portrait
               }
-              alt={`${project.title} — ${project.category}`}
+              alt={project.title}
               fill
-              className="object-cover transition-transform duration-700 ease-out group-hover:scale-105"
-              sizes={
-                format === "landscape"
-                  ? "(max-width: 768px) 100vw, 60vw"
-                  : "(max-width: 768px) 100vw, 40vw"
-              }
+              className="object-cover"
+              sizes="(max-width: 768px) 100vw, 50vw"
             />
+          </div>
 
-            {/* Hover overlay */}
-            <motion.div
-              animate={{ opacity: isHovered ? 1 : 0 }}
-              transition={{ duration: 0.4 }}
-              className="absolute inset-0 bg-bg/60"
-            />
+          {/* Premium Minimal Overlay */}
+          <div
+            className={`absolute inset-0 bg-bg transition-opacity duration-700 ${isHovered ? "opacity-20" : "opacity-0"}`}
+          />
 
-            {/* ── Large index number ─────────────── */}
-            {/* Blooms upward from bottom on hover    */}
-            <motion.p
-              aria-hidden="true"
+          {/* Project title that appears only on hover inside the card */}
+          <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+            <motion.h3
+              initial={{ opacity: 0, scale: 0.8 }}
               animate={{
-                y: isHovered ? "0%" : "30%",
-                opacity: isHovered ? 0.12 : 0,
-              }}
-              transition={{ duration: 0.6, ease: EXPO_OUT }}
-              className="absolute bottom-0 right-4 font-serif text-[clamp(80px,14vw,200px)] leading-none text-white select-none pointer-events-none"
-            >
-              {String(index + 1).padStart(2, "0")}
-            </motion.p>
-
-            {/* Project details - slides up */}
-            <motion.div
-              animate={{
-                y: isHovered ? "0%" : "100%",
                 opacity: isHovered ? 1 : 0,
+                scale: isHovered ? 1 : 0.8,
               }}
-              transition={{ duration: 0.5, ease: EXPO_OUT }}
-              className="absolute bottom-0 left-0 right-0 p-6 md:p-8"
+              className="text-white font-serif text-5xl z-20"
             >
-              {/* Accent line */}
-              <div className="w-8 h-px bg-accent mb-4" />
+              View Project
+            </motion.h3>
+          </div>
+        </div>
 
-              <p className="font-mono text-[9px] uppercase tracking-[0.3em] text-white/50 mb-2">
-                {project.category}
-              </p>
-              <div className="flex items-end justify-between">
-                <p className="font-serif text-[clamp(20px,2.5vw,36px)] text-white leading-tight">
-                  {project.title}
-                </p>
-
-                {/* Arrow */}
-                <motion.span
-                  animate={{
-                    x: isHovered ? 0 : -8,
-                    opacity: isHovered ? 1 : 0,
-                  }}
-                  transition={{ duration: 0.3, delay: 0.1 }}
-                  className="font-mono text-sm text-accent mb-1"
-                >
-                  →
-                </motion.span>
-              </div>
-            </motion.div>
+        {/* Info Block - Kinetic Horizontal shift happens here */}
+        <div className="mt-6 flex flex-col gap-1">
+          <div className="overflow-hidden">
+            <p className="category-tag font-mono text-[10px] uppercase tracking-[0.5em] text-accent/60 will-change-transform">
+              {project.category}
+            </p>
           </div>
 
-          {/* Card footer - always visible */}
-          <div className="flex items-center justify-between pt-4 pb-2">
-            <div className="flex items-baseline gap-3">
-              <span className="font-mono text-[9px] text-muted tracking-widest">
-                {String(index + 1).padStart(2, "0")}
-              </span>
-              <span className="font-serif text-lg text-text transition-colors duration-300 group-hover:text-accent">
-                {project.title}
-              </span>
-            </div>
-
-            <div className="flex items-center gap-4">
-              <span className="font-sans text-xs text-muted hidden md:block">
-                {project.location}
-              </span>
-              <span className="font-mono text-[9px] text-muted/50 uppercase tracking-widest">
-                {project.year}
-              </span>
-            </div>
+          <div className="flex justify-between items-baseline">
+            <h3 className="font-serif text-2xl md:text-3xl text-text">
+              {project.title}
+            </h3>
+            <span className="font-mono text-[10px] text-muted">
+              {project.year}
+            </span>
           </div>
-        </Link>
-      </div>
-    );
-  },
-);
+
+          {/* Aesthetic progress bar that fills on hover */}
+          <div className="w-full h-1px bg-border mt-2 relative overflow-hidden">
+            <motion.div
+              initial={{ x: "-100%" }}
+              animate={{ x: isHovered ? "0%" : "-100%" }}
+              transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+              className="absolute inset-0 bg-accent"
+            />
+          </div>
+        </div>
+      </Link>
+    </div>
+  );
+});
+
+ProjectDetailedCard.displayName = "ProjectDetailedCard";
 
 export default ProjectDetailedCard;
