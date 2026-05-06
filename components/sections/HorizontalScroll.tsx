@@ -3,6 +3,7 @@
 import { projects } from "@/data/projects";
 import { useEffect, useRef } from "react";
 import ProjectCard from "../ui/ProjectCard";
+import { gsap } from "@/lib/gsap";
 
 export default function HorizontalScroll() {
   const sectionRef = useRef<HTMLElement>(null);

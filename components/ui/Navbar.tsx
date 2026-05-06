@@ -7,7 +7,6 @@ import { motion, AnimatePresence, useSpring, useScroll } from "framer-motion";
 import { EXPO_OUT } from "@/lib/easings";
 import { useLenis } from "@/lib/useLenis";
 
-// ── Animation variants ────────────────────────────────
 const navVariants = {
   transparent: {
     backgroundColor: "rgba(14, 12, 10, 0)",
@@ -21,7 +20,6 @@ const navVariants = {
   },
 };
 
-// ── Nav links ─────────────────────────────────────────
 const links = [
   { label: "Work", href: "#work" },
   { label: "About", href: "#about" },
@@ -31,10 +29,14 @@ const links = [
 export default function Navbar() {
   const [scrolled, setScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
+
+  // ── Mounted guard — prevents hydration mismatch ──
+  // useScroll produces different values on server vs client.
+  // We only render the progress line after mount.
+
   const lenis = useLenis();
 
   const { scrollYProgress } = useScroll();
-
   const scaleX = useSpring(scrollYProgress, {
     stiffness: 100,
     damping: 30,
@@ -43,27 +45,19 @@ export default function Navbar() {
 
   // ── IntersectionObserver ──────────────────────────
   useEffect(() => {
-    // We observe a tiny invisible div placed at the
-    // bottom of the hero. When it leaves the viewport
-    // (scrolled past), we flip to "frosted" state.
     const sentinel = document.querySelector("#hero-sentinel");
     if (!sentinel) return;
 
     const observer = new IntersectionObserver(
-      ([entry]) => {
-        // isIntersecting = hero bottom is still visible
-        // !isIntersecting = we've scrolled past it
-        setScrolled(!entry.isIntersecting);
-      },
+      ([entry]) => setScrolled(!entry.isIntersecting),
       { threshold: 0 },
     );
 
     observer.observe(sentinel);
-
     return () => observer.disconnect();
   }, []);
 
-  // Smooth scroll via Lenis
+  // ── Smooth scroll via Lenis ───────────────────────
   function handleNavClick(
     e: React.MouseEvent<HTMLAnchorElement>,
     href: string,
@@ -87,13 +81,17 @@ export default function Navbar() {
   }
 
   const state = scrolled ? "frosted" : "transparent";
+
   return (
     <>
+      {/* Scroll progress line — client only, no SSR */}
       <motion.div
+        suppressHydrationWarning
         className="fixed top-0 left-0 right-0 z-60 h-px bg-accent origin-left"
         style={{ scaleX }}
       />
-      {/* ── Main navbar ─────────────────────────────── */}
+
+      {/* Main navbar */}
       <motion.header
         variants={navVariants}
         animate={state}
@@ -113,10 +111,10 @@ export default function Navbar() {
           <ul className="hidden md:flex items-center gap-10">
             {links.map((link) => (
               <li key={link.href}>
-                <motion.a
+                <a
                   href={link.href}
                   onClick={(e) => handleNavClick(e, link.href)}
-                  className="font-sans text-sm relative group transition-colors duration-300"
+                  className="font-sans text-sm relative group transition-colors duration-300 cursor-pointer"
                   style={{
                     color: scrolled
                       ? "rgba(240,235,227,1)"
@@ -124,24 +122,24 @@ export default function Navbar() {
                   }}
                 >
                   {link.label}
-                  {/* Underline on hover */}
                   <span className="absolute -bottom-0.5 left-0 w-0 h-px bg-accent group-hover:w-full transition-all duration-300 ease-out" />
-                </motion.a>
+                </a>
               </li>
             ))}
           </ul>
 
-          {/* CTA */}
+          {/* CTA — uses Lenis scroll */}
           <div className="hidden md:block">
             <a
               href="#contact"
-              className="font-mono text-xs uppercase tracking-widest bg-accent text-bg border border-accent px-4 py-2 hover:bg-text hover:text-bg transition-colors duration-300"
+              onClick={(e) => handleNavClick(e, "#contact")}
+              className="font-mono text-xs uppercase tracking-widest bg-accent text-bg border border-accent px-4 py-2 hover:bg-text hover:text-bg transition-colors duration-300 cursor-pointer"
             >
               Let&apos;s talk
             </a>
           </div>
 
-          {/* Mobile menu button */}
+          {/* Mobile hamburger */}
           <button
             onClick={() => setMenuOpen(!menuOpen)}
             aria-label="Toggle menu"
@@ -174,7 +172,8 @@ export default function Navbar() {
           </button>
         </nav>
       </motion.header>
-      {/* ── Mobile menu overlay ───────────────────────── */}
+
+      {/* Mobile menu */}
       <AnimatePresence mode="wait">
         {menuOpen && (
           <motion.div
@@ -192,8 +191,14 @@ export default function Navbar() {
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: 20 }}
                 transition={{ delay: i * 0.08, duration: 0.4 }}
-                onClick={() => setMenuOpen(false)}
-                className="font-serif text-5xl italic text-text hover:text-accent transition-colors duration-300"
+                // ← now uses Lenis scroll, not just close menu
+                onClick={(e) =>
+                  handleNavClick(
+                    e as React.MouseEvent<HTMLAnchorElement>,
+                    link.href,
+                  )
+                }
+                className="font-serif text-5xl italic text-text hover:text-accent transition-colors duration-300 cursor-pointer"
               >
                 {link.label}
               </motion.a>
@@ -205,8 +210,13 @@ export default function Navbar() {
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
               transition={{ delay: 0.3 }}
-              onClick={() => setMenuOpen(false)}
-              className="font-mono text-xs uppercase tracking-widest text-bg bg-accent px-4 py-2 mt-4"
+              onClick={(e) =>
+                handleNavClick(
+                  e as React.MouseEvent<HTMLAnchorElement>,
+                  "#contact",
+                )
+              }
+              className="font-mono text-xs uppercase tracking-widest text-bg bg-accent px-4 py-2 mt-4 cursor-pointer"
             >
               Let&apos;s talk
             </motion.a>
