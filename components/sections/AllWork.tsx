@@ -3,13 +3,10 @@
 import { useEffect, useRef, useState } from "react";
 import { motion } from "framer-motion";
 import Link from "next/link";
-import { gsap } from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { gsap, ScrollTrigger } from "@/lib/gsap";
 import { projects } from "@/data/projects";
 import { EXPO_OUT } from "@/lib/easings";
 import ProjectDetailedCard from "../ui/ProjectDetailedCard";
-
-gsap.registerPlugin(ScrollTrigger);
 
 function getCardFormat(index: number): "landscape" | "portrait" {
   return index % 2 === 0 ? "landscape" : "portrait";

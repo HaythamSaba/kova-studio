@@ -2,11 +2,9 @@
 "use client";
 
 import { useEffect, useRef } from "react";
-import { gsap } from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { gsap, ScrollTrigger } from "@/lib/gsap";
 import Image from "next/image";
 import AboutImage from "@/public/images/studio/studio-photo.png";
-gsap.registerPlugin(ScrollTrigger);
 
 // ── Stats ─────────────────────────────────────────────
 const stats = [

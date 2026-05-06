@@ -2,14 +2,11 @@
 
 import { Project, projects } from "@/data/projects";
 import { EXPO_OUT } from "@/lib/easings";
-import { gsap } from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { gsap, ScrollTrigger } from "@/lib/gsap";
 import { useEffect, useRef, useState } from "react";
 import { motion } from "framer-motion";
 import Link from "next/link";
 import Image from "next/image";
-
-gsap.registerPlugin(ScrollTrigger);
 
 export default function CaseStudy({ project }: { project: Project }) {
   // ── Renamed for clarity — two different hover targets ──

@@ -3,13 +3,9 @@
 
 import { useEffect, useRef, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { gsap } from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { EXPO_OUT } from "@/lib/easings";
-import MagneticLink from "../ui/MagneticLink";
 import MagneticEl from "../ui/MagneticEl";
 
-gsap.registerPlugin(ScrollTrigger);
 
 const EMAIL = "haythamsaba@gmail.com";
 
