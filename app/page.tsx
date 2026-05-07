@@ -23,13 +23,6 @@ export default function Home() {
         <Capabilities />
         <Contact />
         <Footer />
-
-        {/* Placeholder */}
-        <div className="h-screen flex items-center justify-center border-t border-border">
-          <p className="font-mono text-muted text-sm uppercase tracking-widest">
-            Contact — coming Day 10
-          </p>
-        </div>
       </main>
     </>
   );
