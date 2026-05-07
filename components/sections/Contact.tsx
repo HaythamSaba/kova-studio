@@ -5,7 +5,7 @@ import { useEffect, useRef, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { EXPO_OUT } from "@/lib/easings";
 import MagneticEl from "../ui/MagneticEl";
-import { gsap } from "@/lib/gsap";
+import { gsap, ScrollTrigger } from "@/lib/gsap";
 
 const EMAIL = "haythamsaba@gmail.com";
 
