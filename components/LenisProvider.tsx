@@ -13,6 +13,13 @@ export default function LenisProvider({
   const lenisRef = useRef<Lenis | null>(null);
 
   useEffect(() => {
+    // Respect reduced motion — native scroll is the right fallback
+    const prefersReducedMotion = window.matchMedia(
+      "(prefers-reduced-motion: reduce)",
+    ).matches;
+
+    if (prefersReducedMotion) return;
+    
     // 1. Initialize Lenis
     const lenis = new Lenis({
       duration: 1.5,
@@ -21,7 +28,7 @@ export default function LenisProvider({
     });
     setGlobalLenis(lenis);
     lenisRef.current = lenis;
-    
+
     // 2. Wire Lenis to GSAP ScrollTrigger
     lenis.on("scroll", ScrollTrigger.update);
 

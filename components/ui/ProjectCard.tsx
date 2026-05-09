@@ -55,7 +55,7 @@ export default function ProjectCard({ project, index }: ProjectCardProps) {
           <p className="font-mono text-[9px] uppercase tracking-widest text-muted">
             {project.location}
           </p>
-          <p className="font-mono text-[9px] uppercase tracking-widest text-muted/50">
+          <p className="font-mono text-[9px] uppercase tracking-widest text-muted">
             {project.year}
           </p>
         </div>

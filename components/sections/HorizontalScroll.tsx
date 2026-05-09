@@ -16,7 +16,12 @@ export default function HorizontalScroll() {
     const progress = progressRef.current;
 
     if (!section || !track || !progress) return;
+    
+    const prefersReducedMotion = window.matchMedia(
+      "(prefers-reduced-motion: reduce)",
+    ).matches;
 
+    if (prefersReducedMotion) return;
     // total scrollable width = track width - viewport width
     const getScrollDistance = () => track.scrollWidth - window.innerWidth;
 

@@ -5,6 +5,7 @@ import { motion } from "framer-motion";
 import SplitText from "@/components/ui/SplitText";
 import { EXPO_OUT } from "@/lib/easings";
 import { gsap, ScrollTrigger } from "@/lib/gsap";
+import Image from "next/image";
 
 // ── CTA + side elements entrance ───────────────────
 const fadeUpVariants = {
@@ -98,10 +99,17 @@ export default function Hero() {
       className="relative overflow-hidden min-h-screen flex flex-col justify-end pb-20 px-8 md:px-16"
     >
       {/* ── Background image ──────────────────────── */}
-      <div
-        ref={HeroImgRef}
-        className="absolute inset-0 z-0 w-full bg-[url('/images/bg.png')] bg-cover bg-center will-change-transform"
-      />
+      <div ref={HeroImgRef} className="absolute inset-0 z-0">
+        <Image
+          src="/images/bg.png"
+          alt=""
+          fill
+          className="object-cover object-center"
+          // Hero image — above the fold, load immediately
+          priority
+          sizes="(max-width: 768px) 100vw, 33vw" // Keep the ref on the wrapper, not the Image
+        />
+      </div>
 
       {/* ── Top-right label ──────────────────────── */}
       <motion.p

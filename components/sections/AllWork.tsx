@@ -24,6 +24,20 @@ export default function AllWork() {
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
 
   useEffect(() => {
+    const prefersReducedMotion = window.matchMedia(
+      "(prefers-reduced-motion: reduce)",
+    ).matches;
+
+    if (prefersReducedMotion) {
+      // Show all cards immediately
+      cardRefs.current.forEach((card) => {
+        if (!card) return;
+        card.style.clipPath = "inset(0% 0% 0% 0%)";
+        card.style.opacity = "1";
+      });
+      return;
+    }
+    
     const ctx = gsap.context(() => {
       // 1. Hero Parallax (Cleaner, no scale)
       gsap.to(heroRef.current, {

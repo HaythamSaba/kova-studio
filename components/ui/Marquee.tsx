@@ -32,6 +32,18 @@ export default function Marquee() {
   const scrollTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   useEffect(() => {
+  const prefersReducedMotion = window.matchMedia(
+    "(prefers-reduced-motion: reduce)"
+  ).matches;
+
+  if (prefersReducedMotion) {
+    // show content statically - no animation or movement
+    if (trackRef.current) {
+      trackRef.current.style.transform = "translateX(0)";
+    }
+    return;
+  };
+
     const track = trackRef.current;
     if (!track) return;
 

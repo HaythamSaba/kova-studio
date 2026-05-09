@@ -45,6 +45,20 @@ export default function Capabilities() {
 
   useEffect(() => {
     const setupTimer = setTimeout(() => {
+      const prefersReducedMotion = window.matchMedia(
+        "(prefers-reduced-motion: reduce)",
+      ).matches;
+
+      if (prefersReducedMotion) {
+        // Make all elements visible immediately
+        tilesRef.current
+          ?.querySelectorAll(".capability-tile")
+          ?.forEach((el) => {
+            if (el) el.getAttribute("style")?.replace("opacity: 0;", "");
+          });
+        return;
+      }
+      
       const ctx = gsap.context(() => {
         // ── Header entrance ───────────────────────
         if (headerRef.current) {

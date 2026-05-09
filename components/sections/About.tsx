@@ -33,6 +33,19 @@ export default function About() {
     // We need the full page height to be known
     // before ScrollTrigger measures positions.
     const setupTimer = setTimeout(() => {
+      const prefersReducedMotion = window.matchMedia(
+        "(prefers-reduced-motion: reduce)",
+      ).matches;
+
+      if (prefersReducedMotion) {
+        // Make all elements visible immediately
+        paraRefs.current.forEach((el) => {
+          if (el) el.style.opacity = "1";
+        });
+        if (statsRef.current) statsRef.current.style.opacity = "1";
+        return;
+      }
+
       const ctx = gsap.context(() => {
         // ── Headline entrance ───────────────────────
         if (headlineRef.current) {
@@ -242,7 +255,7 @@ export default function About() {
                   <p className="font-mono text-[9px] uppercase tracking-[0.25em] text-white/40">
                     Ljubljana, Slovenia
                   </p>
-                  <p className="font-mono text-[9px] uppercase tracking-[0.25em] text-white/30">
+                  <p className="font-mono text-[9px] uppercase tracking-[0.25em] text-white">
                     2024
                   </p>
                 </div>
@@ -257,7 +270,7 @@ export default function About() {
                 />
               </div>
 
-              <p className="font-mono text-[9px] uppercase tracking-[0.25em] text-muted/40 text-right">
+              <p className="font-mono text-[9px] uppercase tracking-[0.25em] text-text text-right">
                 Studio — 2024
               </p>
             </div>
