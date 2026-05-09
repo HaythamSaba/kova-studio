@@ -56,7 +56,7 @@ export default function SplitText({
       {words.map((word, wordIndex) => (
         <span key={wordIndex} className="inline-block whitespace-nowrap">
           {word.split("").map((char, charIndex) => (
-            <span key={charIndex} className="inline-block overflow-hidden">
+            <span key={charIndex} className="inline-block">
               <motion.span className="inline-block" variants={charVariants}>
                 {char}
               </motion.span>

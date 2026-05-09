@@ -146,7 +146,7 @@ export default function Hero() {
               delay={0.05}
               stagger={0.02}
             />
-          </em>
+          </ em>
         </h1>
 
         {/* Bottom row */}
