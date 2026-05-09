@@ -122,7 +122,7 @@ export default function Capabilities() {
         <div
           ref={headerRef}
           style={{ opacity: 0 }}
-          className="flex items-baseline justify-between mb-20 pb-5 border-b border-border"
+          className="flex items-baseline justify-between mb-20 pb-5 border-b border-border p-8"
         >
           <p className="font-mono text-[10px] uppercase tracking-[0.3em] text-muted">
             What We Do
@@ -133,7 +133,7 @@ export default function Capabilities() {
         </div>
 
         {/* Intro headline */}
-        <div className="flex flex-col ">
+        <div className="flex flex-col p-8">
           <div className="mb-20">
             <h2 className="font-serif text-[clamp(36px,4.5vw,72px)] leading-[0.92] text-text relative z-10">
               <div className="w-80 h-30 bg-accent -top-20 absolute -z-10" />
@@ -241,7 +241,7 @@ export default function Capabilities() {
             ))}
           </div>
         </div>
-        <div className="mt-16 pt-6 border-t border-border flex flex-col md:flex-row md:items-center justify-between gap-6">
+        <div className="mt-16 p-8 border-t border-border flex flex-col md:flex-row md:items-center justify-between gap-6">
           <p className="font-sans text-muted text-sm max-w-sm leading-relaxed">
             Every engagement starts with a conversation. No briefs, no decks —
             just a direct discussion about what you&apos;re building and why.
