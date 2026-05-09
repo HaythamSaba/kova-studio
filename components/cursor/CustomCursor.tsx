@@ -5,21 +5,24 @@ import { useEffect, useRef, useState } from "react";
 import { useMousePosition } from "@/lib/useMousePosition";
 
 export default function CustomCursor() {
-  const dotRef  = useRef<HTMLDivElement>(null);
+  const dotRef = useRef<HTMLDivElement>(null);
   const ringRef = useRef<HTMLDivElement>(null);
-  const dot     = useRef({ x: 0, y: 0 });
-  const ring    = useRef({ x: 0, y: 0 });
-  const mouse   = useMousePosition();
+  const dot = useRef({ x: 0, y: 0 });
+  const ring = useRef({ x: 0, y: 0 });
+  const mouse = useMousePosition();
 
-  const [isHovered,  setIsHovered]  = useState(false);
+  const [isHovered, setIsHovered] = useState(false);
   const [isClicking, setIsClicking] = useState(false);
 
   // ── Detect touch device — lazy initializer ───────
-  // Runs once on mount. No useEffect needed.
-  // typeof window guard prevents SSR crash.
+  // Double check: pointer: coarse OR any touch points
+  // Catches Samsung Internet and iPad configurations
+  // that incorrectly report pointer: fine
   const [isTouchDevice] = useState<boolean>(() => {
     if (typeof window === "undefined") return false;
-    return window.matchMedia("(pointer: coarse)").matches;
+    const coarsePointer = window.matchMedia("(pointer: coarse)").matches;
+    const hasTouch = navigator.maxTouchPoints > 0;
+    return coarsePointer || hasTouch;
   });
 
   // ── Hover detection ──────────────────────────────
@@ -41,18 +44,18 @@ export default function CustomCursor() {
     };
 
     const handleMouseDown = () => setIsClicking(true);
-    const handleMouseUp   = () => setIsClicking(false);
+    const handleMouseUp = () => setIsClicking(false);
 
-    window.addEventListener("mouseover",  handleMouseOver);
-    window.addEventListener("mouseout",   handleMouseOut);
-    window.addEventListener("mousedown",  handleMouseDown);
-    window.addEventListener("mouseup",    handleMouseUp);
+    window.addEventListener("mouseover", handleMouseOver);
+    window.addEventListener("mouseout", handleMouseOut);
+    window.addEventListener("mousedown", handleMouseDown);
+    window.addEventListener("mouseup", handleMouseUp);
 
     return () => {
-      window.removeEventListener("mouseover",  handleMouseOver);
-      window.removeEventListener("mouseout",   handleMouseOut);
-      window.removeEventListener("mousedown",  handleMouseDown);
-      window.removeEventListener("mouseup",    handleMouseUp);
+      window.removeEventListener("mouseover", handleMouseOver);
+      window.removeEventListener("mouseout", handleMouseOut);
+      window.removeEventListener("mousedown", handleMouseDown);
+      window.removeEventListener("mouseup", handleMouseUp);
     };
   }, [isTouchDevice]);
 
@@ -67,18 +70,16 @@ export default function CustomCursor() {
     }
 
     function loop() {
-      dot.current.x  = lerp(dot.current.x,  mouse.current.x, 0.15);
-      dot.current.y  = lerp(dot.current.y,  mouse.current.y, 0.15);
+      dot.current.x = lerp(dot.current.x, mouse.current.x, 0.15);
+      dot.current.y = lerp(dot.current.y, mouse.current.y, 0.15);
       ring.current.x = lerp(ring.current.x, mouse.current.x, 0.08);
       ring.current.y = lerp(ring.current.y, mouse.current.y, 0.08);
 
       if (dotRef.current) {
-        dotRef.current.style.transform =
-          `translate(${dot.current.x}px, ${dot.current.y}px)`;
+        dotRef.current.style.transform = `translate(${dot.current.x}px, ${dot.current.y}px)`;
       }
       if (ringRef.current) {
-        ringRef.current.style.transform =
-          `translate(${ring.current.x}px, ${ring.current.y}px)`;
+        ringRef.current.style.transform = `translate(${ring.current.x}px, ${ring.current.y}px)`;
       }
 
       rafId = requestAnimationFrame(loop);
@@ -93,7 +94,7 @@ export default function CustomCursor() {
 
   return (
     <>
-      {/* Dot — small, precise, faster lerp */}
+      {/* Dot */}
       <div
         ref={dotRef}
         aria-hidden="true"
@@ -103,15 +104,15 @@ export default function CustomCursor() {
         <div
           className="rounded-full bg-accent transition-all duration-300 ease-out"
           style={{
-            width:     isClicking ? "6px"  : "8px",
-            height:    isClicking ? "6px"  : "8px",
+            width: isClicking ? "6px" : "8px",
+            height: isClicking ? "6px" : "8px",
             transform: "translate(-50%, -50%)",
-            opacity:   isClicking ? 1 : isHovered ? 0 : 1,
+            opacity: isClicking ? 1 : isHovered ? 0 : 1,
           }}
         />
       </div>
 
-      {/* Ring — larger, slower lerp, expands on hover */}
+      {/* Ring */}
       <div
         ref={ringRef}
         aria-hidden="true"
@@ -121,10 +122,10 @@ export default function CustomCursor() {
         <div
           className="rounded-full border border-accent transition-all duration-300 ease-out"
           style={{
-            width:     isClicking ? "28px" : isHovered ? "60px" : "36px",
-            height:    isClicking ? "28px" : isHovered ? "60px" : "36px",
+            width: isClicking ? "28px" : isHovered ? "60px" : "36px",
+            height: isClicking ? "28px" : isHovered ? "60px" : "36px",
             transform: "translate(-50%, -50%)",
-            opacity:   isHovered ? 0.6 : 0.4,
+            opacity: isHovered ? 0.6 : 0.4,
           }}
         />
       </div>

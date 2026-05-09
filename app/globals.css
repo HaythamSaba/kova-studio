@@ -35,11 +35,15 @@
       scroll-behavior: auto !important;
     }
   }
-  @media (pointer: fine) {
+  /* Hide native cursor only on true pointer devices */
+  /* pointer: fine + hover: hover = real mouse        */
+  /* Excludes touch screens and stylus-only devices   */
+  @media (pointer: fine) and (hover: hover) {
     * {
       cursor: none !important;
     }
   }
+
   *,
   *::before,
   *::after {
