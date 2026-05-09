@@ -14,7 +14,7 @@ export default function Footer() {
   const year = new Date().getFullYear();
 
   return (
-    <footer className="relative px-0 md:px-16 pt-16 pb-10 border-t border-border">
+    <footer className="relative px-8 md:px-16 pt-16 pb-10 border-t border-border">
       <div className="max-w-350 mx-auto">
         {/* Top row */}
         <div className="flex flex-col md:flex-row justify-between items-center gap-8 mb-60 relative">
