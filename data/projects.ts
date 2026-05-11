@@ -67,3 +67,9 @@ export const projects: Project[] = [
     },
   },
 ];
+
+export const stats = [
+  { value: 28, suffix: "+", label: "Projects delivered" },
+  { value: 4, suffix: "", label: "Years in practice" },
+  { value: 3, suffix: "", label: "People on the team" },
+];

@@ -6,6 +6,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { EXPO_OUT } from "@/lib/easings";
 import MagneticEl from "../ui/MagneticEl";
 import { gsap, ScrollTrigger } from "@/lib/gsap";
+import SectionHeader from "../ui/SectionHeader";
 
 const EMAIL = "haythamsaba@gmail.com";
 
@@ -119,14 +120,7 @@ export default function Contact() {
 
       <div className="max-w-350 mx-auto relative">
         {/* ── Section header ───────────────────────── */}
-        <div className="flex items-baseline justify-between mb-20 pb-5 border-b border-border">
-          <p className="font-mono text-[10px] uppercase tracking-[0.3em] text-muted">
-            Contact
-          </p>
-          <p className="font-mono text-[10px] uppercase tracking-[0.3em] text-muted">
-            Ljubljana, EU
-          </p>
-        </div>
+        <SectionHeader leftTitle="Contact" rightTitle="Ljubljana, EU" />
 
         {/* ── Main headline ────────────────────────── */}
         {/* clamp ensures it fills the viewport without */}

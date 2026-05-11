@@ -4,6 +4,7 @@ import { projects } from "@/data/projects";
 import { useEffect, useRef } from "react";
 import ProjectCard from "../ui/ProjectCard";
 import { gsap } from "@/lib/gsap";
+import SectionHeader from "../ui/SectionHeader";
 
 export default function HorizontalScroll() {
   const sectionRef = useRef<HTMLElement>(null);
@@ -56,15 +57,8 @@ export default function HorizontalScroll() {
       ref={sectionRef}
       className="relative h-screen overflow-hidden bg-bg"
     >
-      <div className="absolute top-8 left-8 md:left-16 z-10 flex items-center gap-6">
-        <p className="font-mono text-[10px] uppercase tracking-[0.3em] text-muted">
-          Case Studies
-        </p>
-        <div className="w-8 h-px bg-border" />
-        <p className="font-mono text-[10px] uppercase tracking-[0.3em] text-muted">
-          Scroll to explore
-        </p>
-      </div>
+      <SectionHeader leftTitle="Case Studies" rightTitle="Scroll to explore" />
+
       {/* Progress bar */}
       {/* Fixed at bottom of the pinned section */}
       <div className="absolute bottom-8 left-8 md:left-16 right-8 md:right-16 z-10">

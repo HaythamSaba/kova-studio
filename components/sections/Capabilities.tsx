@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { EXPO_OUT } from "@/lib/easings";
 import { gsap, ScrollTrigger } from "@/lib/gsap";
+import SectionHeader from "../ui/SectionHeader";
 
 // ── Services data ─────────────────────────────────────
 const services = [
@@ -39,7 +40,6 @@ const services = [
 
 export default function Capabilities() {
   const sectionRef = useRef<HTMLElement>(null);
-  const headerRef = useRef<HTMLDivElement>(null);
   const tilesRef = useRef<HTMLDivElement>(null);
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
 
@@ -58,26 +58,8 @@ export default function Capabilities() {
           });
         return;
       }
-      
+
       const ctx = gsap.context(() => {
-        // ── Header entrance ───────────────────────
-        if (headerRef.current) {
-          gsap.fromTo(
-            headerRef.current,
-            { y: 24, opacity: 0 },
-            {
-              y: 0,
-              opacity: 1,
-              duration: 0.8,
-              ease: "power3.out",
-              scrollTrigger: {
-                trigger: headerRef.current,
-                start: "top 85%",
-                toggleActions: "play none none none",
-              },
-            },
-          );
-        }
         // Tile clip-path reveals
         // Target all four tiles at once with stagger
         // clip-path wipes each tile upward in sequence.
@@ -115,22 +97,15 @@ export default function Capabilities() {
     <section
       ref={sectionRef}
       id="capabilities"
-      className="relative py-32 md:py-48 md:px-16 border-t border-border"
+      className="relative py-32 md:py-48 px-8 md:px-16 border-t border-border"
     >
       <div className="max-w-350 mx-auto">
         {/* Section header */}
-        <div
-          ref={headerRef}
-          style={{ opacity: 0 }}
-          className="flex items-baseline justify-between mb-20 pb-5 border-b border-border p-8"
-        >
-          <p className="font-mono text-[10px] uppercase tracking-[0.3em] text-muted">
-            What We Do
-          </p>
-          <p className="font-mono text-[10px] uppercase tracking-[0.3em] text-muted">
-            {services.length} Services
-          </p>
-        </div>
+        <SectionHeader
+          leftTitle="What We Do"
+          rightTitle={`${services.length} Services`}
+        />
+
 
         {/* Intro headline */}
         <div className="flex flex-col p-8">

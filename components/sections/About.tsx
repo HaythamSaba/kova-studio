@@ -5,13 +5,9 @@ import { useEffect, useRef } from "react";
 import { gsap, ScrollTrigger } from "@/lib/gsap";
 import Image from "next/image";
 import AboutImage from "@/public/images/studio/studio-photo.png";
-
-// ── Stats ─────────────────────────────────────────────
-const stats = [
-  { value: 28, suffix: "+", label: "Projects delivered" },
-  { value: 4, suffix: "", label: "Years in practice" },
-  { value: 3, suffix: "", label: "People on the team" },
-];
+import SectionHeader from "../ui/SectionHeader";
+import StatCard from "../ui/StatCard";
+import { stats } from "@/data/projects";
 
 // ── Paragraphs ────────────────────────────────────────
 const paragraphs = [
@@ -25,7 +21,6 @@ export default function About() {
   const headlineRef = useRef<HTMLHeadingElement>(null);
   const paraRefs = useRef<(HTMLParagraphElement | null)[]>([]);
   const tagsRef = useRef<HTMLDivElement>(null);
-  const counterRefs = useRef<(HTMLSpanElement | null)[]>([]);
   const statsRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -113,30 +108,6 @@ export default function About() {
         // ── Stat counters ───────────────────────────
         // Tween a proxy object { val: 0 } → { val: target }
         // and write the rounded value to textContent each frame.
-        counterRefs.current.forEach((el, i) => {
-          if (!el) return;
-
-          const target = stats[i].value;
-          const proxy = { val: 0 };
-
-          gsap.fromTo(
-            proxy,
-            { val: 0 },
-            {
-              val: target,
-              duration: 2,
-              ease: "power2.out",
-              scrollTrigger: {
-                trigger: statsRef.current,
-                start: "top 80%",
-                toggleActions: "play none none none",
-              },
-              onUpdate: () => {
-                el.textContent = Math.round(proxy.val).toString();
-              },
-            },
-          );
-        });
 
         // Recalculate positions after all triggers registered
         ScrollTrigger.refresh();
@@ -157,14 +128,7 @@ export default function About() {
       {/* max-w-350 = 87.5rem = 1400px in Tailwind v4 default scale ✓ */}
       <div className="max-w-350 mx-auto">
         {/* ── Section header ──────────────────────── */}
-        <div className="flex items-baseline justify-between mb-24 pb-5 border-b border-border">
-          <p className="font-mono text-[10px] uppercase tracking-[0.3em] text-muted">
-            The Studio
-          </p>
-          <p className="font-mono text-[10px] uppercase tracking-[0.3em] text-muted">
-            Est. 2020
-          </p>
-        </div>
+        <SectionHeader leftTitle="The Studio" rightTitle="Est. 2020" />
 
         {/* ── Split layout ────────────────────────── */}
         {/* Default grid stretch (no items-start) so  */}
@@ -278,37 +242,13 @@ export default function About() {
         </div>
 
         {/* ── Stats row ───────────────────────────── */}
+        {/* ── Stats row ───────────────────────────── */}
         <div
           ref={statsRef}
           className="grid grid-cols-3 mt-32 pt-16 border-t border-border"
         >
-          {stats.map((stat, i) => (
-            <div
-              key={stat.label}
-              className="flex flex-col gap-3 px-8 first:pl-0 last:pr-0 border-r border-border last:border-r-0"
-            >
-              <div className="flex items-baseline gap-1">
-                <span
-                  ref={(el) => {
-                    counterRefs.current[i] = el;
-                  }}
-                  className="font-serif text-[clamp(48px,6vw,96px)] leading-none text-text tabular-nums"
-                >
-                  0
-                </span>
-                {stat.suffix && (
-                  <span className="font-serif text-[clamp(24px,3vw,48px)] text-accent">
-                    {stat.suffix}
-                  </span>
-                )}
-              </div>
-
-              <p className="font-mono text-[10px] uppercase tracking-[0.25em] text-muted">
-                {stat.label}
-              </p>
-
-              <div className="w-8 h-px bg-border" />
-            </div>
+          {stats.map((stat) => (
+            <StatCard key={stat.label} stat={stat} statsRef={statsRef} />
           ))}
         </div>
       </div>
