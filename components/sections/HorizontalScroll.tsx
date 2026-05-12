@@ -123,6 +123,10 @@ export default function HorizontalScroll() {
             Let&apos;s talk
           </a>
         </div>
+
+        <div className="shrink-0 flex flex-col justify-center h-[65vh] w-[30vw] max-w-90 pl-8 border-l border-border">
+          
+        </div>
       </div>
     </section>
   );
