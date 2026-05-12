@@ -6,6 +6,7 @@ import LenisProvider from "@/components/LenisProvider";
 import CustomCursor from "@/components/cursor/CustomCursor";
 import Navbar from "@/components/ui/Navbar";
 import PageTransition from "@/components/sections/PageTransition";
+import { Analytics } from "@vercel/analytics/next";
 
 // ─── Font definitions ──────────────────────────────
 // next/font downloads fonts at build time, self-hosts them,
@@ -64,6 +65,7 @@ export default function RootLayout({
         <LenisProvider>
           <PageTransition>{children}</PageTransition>
         </LenisProvider>
+        <Analytics />
       </body>
     </html>
   );

@@ -1,5 +1,4 @@
 // app/page.tsx
-import { Analytics } from "@vercel/analytics/next";
 import Hero from "@/components/sections/Hero";
 import WorkGrid from "@/components/sections/WorkGrid";
 import HorizontalScroll from "@/components/sections/HorizontalScroll";
@@ -13,7 +12,6 @@ import Preloader from "@/components/ui/Preloader";
 export default function Home() {
   return (
     <>
-      <Analytics />
       <Preloader />
       <main id="main-content" className="bg-bg text-text">
         <Hero />
