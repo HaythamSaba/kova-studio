@@ -1,5 +1,5 @@
 // app/page.tsx
-// import Preloader from "@/components/ui/Preloader";
+import { Analytics } from "@vercel/analytics/next";
 import Hero from "@/components/sections/Hero";
 import WorkGrid from "@/components/sections/WorkGrid";
 import HorizontalScroll from "@/components/sections/HorizontalScroll";
@@ -8,11 +8,13 @@ import Capabilities from "@/components/sections/Capabilities";
 import Contact from "@/components/sections/Contact";
 import Footer from "@/components/ui/Footer";
 import Marquee from "@/components/ui/Marquee";
+import Preloader from "@/components/ui/Preloader";
 
 export default function Home() {
   return (
     <>
-      {/* <Preloader /> */}
+      <Analytics />
+      <Preloader />
       <main id="main-content" className="bg-bg text-text">
         <Hero />
         <div id="hero-sentinel" />
