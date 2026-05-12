@@ -5,7 +5,7 @@ import { useEffect, useRef } from "react";
 import ProjectCard from "../ui/ProjectCard";
 import { gsap } from "@/lib/gsap";
 import SectionHeader from "../ui/SectionHeader";
-import SectionTitle from "../ui/SectionTitle";
+import SidePanel from "../ui/SidePanel";
 
 export default function HorizontalScroll() {
   const sectionRef = useRef<HTMLElement>(null);
@@ -89,22 +89,18 @@ export default function HorizontalScroll() {
       >
         {/* Intro card - First "card" is just text */}
         <div className="shrink-0 flex flex-col justify-center h-[65vh] w-[30vw] max-w-90 pl-8 border-l border-border" />
-        <div className="shrink-0 flex flex-col justify-between h-[65vh] w-[40vw] max-w-120">
-          <p className="font-mono text-[10px] uppercase tracking-[0.3em] text-muted mb-6">
-            Selected Cases
-          </p>
 
-          <SectionTitle
-            as="h3"
-            Left={["Work that"]}
-            ColoredMiddle="leaves a mark."
-          />
-
+        <SidePanel
+          label="Selected Cases"
+          titleLeft={["Work that"]}
+          titleMiddle="leaves a mark."
+          className="w-[40vw] max-w-120"
+        >
           <p className="font-sans text-muted text-sm leading-relaxed max-w-xs">
             Each project is a collaboration built on trust, clarity, and a
             shared belief that design should outlast the brief.
           </p>
-        </div>
+        </SidePanel>
 
         {/* Project cards */}
         {projects.map((project, index) => (
@@ -112,26 +108,17 @@ export default function HorizontalScroll() {
         ))}
 
         {/* Outro card - Call to action */}
-        <div className="shrink-0 flex flex-col justify-between h-[65vh] w-[30vw] max-w-90 pl-8 border-l border-border">
-          <p className="font-mono text-[10px] uppercase tracking-[0.3em] text-muted mb-6">
-            Start a project
-          </p>
-
-          <SectionTitle
-            as="h3"
-            Left={["Have something"]}
-            ColoredMiddle="worth building?"
-          />
-
-          <a
-            href="#contact"
-            data-cursor="hover"
-            className="group inline-flex items-center gap-3 font-mono text-xs uppercase tracking-widest text-accent"
-          >
+        <SidePanel
+          label="Start a project"
+          titleLeft={["Have something"]}
+          titleMiddle="worth building?"
+          className="w-[30vw] max-w-90 pl-8 border-l border-border"
+        >
+          <a className="group inline-flex items-center gap-3 font-mono text-xs uppercase tracking-widest text-accent">
             <span className="w-6 h-px bg-accent group-hover:w-12 transition-all duration-500" />
             Let&apos;s talk
           </a>
-        </div>
+        </SidePanel>
 
         <div className="shrink-0 flex flex-col justify-center h-[65vh] w-[30vw] max-w-90 pl-8 border-l border-border" />
       </div>
