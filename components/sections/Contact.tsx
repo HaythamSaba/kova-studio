@@ -7,6 +7,7 @@ import { EXPO_OUT } from "@/lib/easings";
 import MagneticEl from "../ui/MagneticEl";
 import { gsap, ScrollTrigger } from "@/lib/gsap";
 import SectionHeader from "../ui/SectionHeader";
+import SectionTitle from "../ui/SectionTitle";
 
 const EMAIL = "haythamsaba@gmail.com";
 
@@ -125,6 +126,12 @@ export default function Contact() {
         {/* ── Main headline ────────────────────────── */}
         {/* clamp ensures it fills the viewport without */}
         {/* overflowing — scales between min and max    */}
+        <SectionTitle
+          as="h1"
+          Left={["Let's build", "something"]}
+          ColoredMiddle="worth keeping."
+          style={{ fontSize: "clamp(48px, 9vw, 160px)" }}
+        />
         <h2
           ref={headlineRef}
           className="font-serif leading-[0.88] tracking-tight text-text mb-20"
@@ -133,7 +140,6 @@ export default function Contact() {
             opacity: 0,
           }}
         >
-          Let&apos;s build
           <br />
           something
           <br />

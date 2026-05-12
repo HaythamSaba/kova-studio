@@ -5,6 +5,7 @@ import { AnimatePresence, motion } from "framer-motion";
 import { EXPO_OUT } from "@/lib/easings";
 import { gsap, ScrollTrigger } from "@/lib/gsap";
 import SectionHeader from "../ui/SectionHeader";
+import SectionTitle from "../ui/SectionTitle";
 
 // ── Services data ─────────────────────────────────────
 const services = [
@@ -106,16 +107,15 @@ export default function Capabilities() {
           rightTitle={`${services.length} Services`}
         />
 
-
         {/* Intro headline */}
         <div className="flex flex-col p-8">
-          <div className="mb-20">
-            <h2 className="font-serif text-[clamp(36px,4.5vw,72px)] leading-[0.92] text-text relative z-10">
-              <div className="w-80 h-30 bg-accent -top-20 absolute -z-10" />
-              Craft at every
-              <br />
-              <em className="text-accent">layer.</em>
-            </h2>
+          <div className="relative mb-20">
+            <div className="w-80 h-30 bg-accent -top-16 absolute" />
+            <SectionTitle
+              as="h2"
+              Left={["Craft at every"]}
+              ColoredMiddle="layer."
+            />
           </div>
 
           {/* Tiles grid */}

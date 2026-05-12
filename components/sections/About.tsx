@@ -8,6 +8,7 @@ import AboutImage from "@/public/images/studio/studio-photo.png";
 import SectionHeader from "../ui/SectionHeader";
 import StatCard from "../ui/StatCard";
 import { stats } from "@/data/projects";
+import ColoredTitle from "../ui/SectionTitle";
 
 // ── Paragraphs ────────────────────────────────────────
 const paragraphs = [
@@ -139,17 +140,11 @@ export default function About() {
           <div className="flex flex-col gap-16">
             {/* Headline — GSAP triggered, not Framer Motion */}
             {/* style opacity:0 prevents flash before GSAP    */}
-            <h2
-              ref={headlineRef}
-              style={{ opacity: 0 }}
-              className="font-serif text-[clamp(36px,4.5vw,72px)] leading-[0.92] text-text"
-            >
-              Small studio.
-              <br />
-              <em className="text-accent">Considered</em>
-              <br />
-              work.
-            </h2>
+            <ColoredTitle
+              Left={["Small studio."]}
+              ColoredMiddle="Considered"
+              Right="Work."
+            />
 
             {/* Paragraphs — GSAP only, no Framer Motion */}
             {/* style opacity:0 = initial state for GSAP  */}

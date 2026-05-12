@@ -5,6 +5,7 @@ import { useEffect, useRef } from "react";
 import ProjectCard from "../ui/ProjectCard";
 import { gsap } from "@/lib/gsap";
 import SectionHeader from "../ui/SectionHeader";
+import SectionTitle from "../ui/SectionTitle";
 
 export default function HorizontalScroll() {
   const sectionRef = useRef<HTMLElement>(null);
@@ -17,7 +18,7 @@ export default function HorizontalScroll() {
     const progress = progressRef.current;
 
     if (!section || !track || !progress) return;
-    
+
     const prefersReducedMotion = window.matchMedia(
       "(prefers-reduced-motion: reduce)",
     ).matches;
@@ -86,34 +87,42 @@ export default function HorizontalScroll() {
         className="absolute top-0 left-0 h-full flex items-center"
         style={{ paddingLeft: "8vw", paddingRight: "8vw", gap: "3vw" }}
       >
-        {/* Intro card - First "card" is just text — sets context */}
-        <div className="shrink-0 flex flex-col justify-end h-[65vh] w-[40vw] max-w-120">
+        {/* Intro card - First "card" is just text */}
+        <div className="shrink-0 flex flex-col justify-center h-[65vh] w-[30vw] max-w-90 pl-8 border-l border-border" />
+        <div className="shrink-0 flex flex-col justify-between h-[65vh] w-[40vw] max-w-120">
           <p className="font-mono text-[10px] uppercase tracking-[0.3em] text-muted mb-6">
             Selected Cases
           </p>
-          <h2 className="font-serif text-[clamp(36px,4vw,64px)] leading-[0.92] text-text mb-8">
-            Work that
-            <br />
-            <em>leaves a mark.</em>
-          </h2>
+
+          <SectionTitle
+            as="h3"
+            Left={["Work that"]}
+            ColoredMiddle="leaves a mark."
+          />
+
           <p className="font-sans text-muted text-sm leading-relaxed max-w-xs">
             Each project is a collaboration built on trust, clarity, and a
             shared belief that design should outlast the brief.
           </p>
         </div>
+
         {/* Project cards */}
         {projects.map((project, index) => (
           <ProjectCard key={project.slug} project={project} index={index} />
         ))}
-        <div className="shrink-0 flex flex-col justify-center h-[65vh] w-[30vw] max-w-90 pl-8 border-l border-border">
+
+        {/* Outro card - Call to action */}
+        <div className="shrink-0 flex flex-col justify-between h-[65vh] w-[30vw] max-w-90 pl-8 border-l border-border">
           <p className="font-mono text-[10px] uppercase tracking-[0.3em] text-muted mb-6">
             Start a project
           </p>
-          <h3 className="font-serif text-[clamp(28px,3vw,48px)] leading-[0.95] text-text mb-8">
-            Have something
-            <br />
-            <em>worth building?</em>
-          </h3>
+
+          <SectionTitle
+            as="h3"
+            Left={["Have something"]}
+            ColoredMiddle="worth building?"
+          />
+
           <a
             href="#contact"
             data-cursor="hover"
@@ -124,9 +133,7 @@ export default function HorizontalScroll() {
           </a>
         </div>
 
-        <div className="shrink-0 flex flex-col justify-center h-[65vh] w-[30vw] max-w-90 pl-8 border-l border-border">
-          
-        </div>
+        <div className="shrink-0 flex flex-col justify-center h-[65vh] w-[30vw] max-w-90 pl-8 border-l border-border" />
       </div>
     </section>
   );
