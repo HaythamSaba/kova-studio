@@ -7,6 +7,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
 import ProjectRow from "./ProjectRow";
+import SectionHeader from "../ui/SectionHeader";
 const imageVariants = {
   initial: {
     opacity: 0,
@@ -79,14 +80,8 @@ export default function WorkGrid() {
     <section id="work" className="relative py-32 px-8 md:px-16">
       {/* Section Header */}
       <div className="max-w-200 mx-auto">
-        <div className="flex items-baseline justify-between mb-16 pb-5 border-b border-border">
-          <p className="font-mono text-[10px] uppercase tracking-[0.3em] text-muted">
-            Selected Work
-          </p>
-          <p className="font-mono text-[10px] uppercase tracking-[0.3em] text-muted">
-            {projects.length} Projects
-          </p>
-        </div>
+        <SectionHeader leftTitle="Selected Work" rightTitle={`${projects.length} Projects`} />
+
         {/* Project rows */}
         <ul className="divide-y divide-border">
           {projects.map((project, index) => (
@@ -131,7 +126,7 @@ export default function WorkGrid() {
               exit="exit"
               className="w-95 h-70 md:w-115 md:h-85 overflow-hidden"
             >
-              {/* Color placeholder — replace with next/image later */}
+              {/* Color placeholder — in case the image fails to load */}
               <div className="relative w-full h-full" 
               style={{ backgroundColor: activeProject.color }}>
                 <Image
