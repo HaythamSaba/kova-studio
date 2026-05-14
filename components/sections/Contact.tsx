@@ -132,24 +132,11 @@ export default function Contact() {
           ColoredMiddle="worth keeping."
           style={{ fontSize: "clamp(48px, 9vw, 160px)" }}
         />
-        <h2
-          ref={headlineRef}
-          className="font-serif leading-[0.88] tracking-tight text-text mb-20"
-          style={{
-            fontSize: "clamp(48px, 9vw, 160px)",
-            opacity: 0,
-          }}
-        >
-          <br />
-          something
-          <br />
-          <em className="text-accent">worth keeping.</em>
-        </h2>
 
         {/* ── Content row ──────────────────────────── */}
         <div
           ref={contentRef}
-          className="flex flex-col md:flex-row justify-around gap-10 md:gap-0"
+          className="flex flex-col md:flex-row justify-around gap-10 md:gap-0 mt-20"
         >
           {/* ── Email block ──────────────────────── */}
           <div className="flex flex-col gap-2 md:gap-5">
