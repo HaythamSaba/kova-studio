@@ -286,10 +286,8 @@ export default function CaseStudy({ project }: { project: Project }) {
                         <p className="font-serif text-base uppercase tracking-[0.3em] text-white mb-6">
                           . The Brief .
                         </p>
-                        <p className="font-sans text-white text-base leading-relaxed max-w-md">
-                          A full case study for {project.title} will live here —
-                          covering the brief, process, key decisions, and
-                          outcomes. Real copy coming in the content pass.
+                        <p className="font-sans text-white text-base leading-relaxed">
+                          {project.copy.brief}
                         </p>
                       </div>
                     ) : (
@@ -298,10 +296,7 @@ export default function CaseStudy({ project }: { project: Project }) {
                           . The Outcome .
                         </p>
                         <p className="font-sans text-white text-base leading-relaxed">
-                          Placeholder for results, client feedback, and
-                          measurable impact of the{" "}
-                          {project.category.toLowerCase()} work delivered in{" "}
-                          {project.location}.
+                          {project.copy.outcome}
                         </p>
                       </div>
                     )}
