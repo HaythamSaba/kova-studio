@@ -21,7 +21,7 @@ export async function generateMetadata({
   if (!project) return {};
 
   return {
-    title: `${project.title} — Kova Studio`,
+    title: `${project.title}`,
     description: project.tagline,
   };
 }
