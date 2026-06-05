@@ -16,7 +16,7 @@ const rowVariants = {
     opacity: 1,
   },
   dimmed: {
-    opacity: 0.3,
+    filter: "blur(5px)",
     transition: {
       duration: 0.3,
     },
