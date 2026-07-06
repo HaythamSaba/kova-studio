@@ -96,7 +96,7 @@ export default function Hero() {
   return (
     <section
       ref={containerRef}
-      className="relative overflow-hidden min-h-screen flex flex-col justify-end pb-20 px-8 md:px-16"
+      className="relative overflow-hidden min-h-screen flex flex-col justify-end pb-10 px-8 md:px-16"
     >
       {/* ── Background image ──────────────────────── */}
       <div ref={HeroImgRef} className="absolute inset-0 z-0">
@@ -130,7 +130,7 @@ export default function Hero() {
         className="relative z-20 max-w-350 w-full mx-auto"
       >
         {/* Eyebrow */}
-        <p className="hero-item font-mono text-[11px] uppercase tracking-[0.3em] text-accent mb-8">
+        <p className="hero-item font-mono text-[11px]  uppercase tracking-[0.3em] text-white  mb-8">
           Selected Work — 2024
         </p>
 
@@ -152,7 +152,7 @@ export default function Hero() {
         {/* Bottom row */}
         <div className="hero-item flex flex-col md:flex-row md:items-end justify-between gap-8">
           {/* Tagline */}
-          <p className="font-sans text-muted text-base max-w-sm leading-relaxed">
+          <p className="font-sans text-white text-base max-w-sm leading-relaxed">
             We build digital identities and web experiences for brands that take
             the long view.
           </p>
@@ -171,7 +171,7 @@ export default function Hero() {
             <a
               href="#contact"
               data-cursor="hover"
-              className="font-mono text-xs uppercase tracking-widest text-muted hover:text-accent transition-colors duration-300"
+              className="font-mono bg-accent py-4 px-8 text-sm uppercase tracking-widest text-white hover:text-bg transition-colors duration-300"
             >
               Start a project
             </a>
