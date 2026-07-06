@@ -95,7 +95,7 @@ export default function Footer() {
             whileHover={{ y: -2 }}
             transition={{ duration: 0.3, ease: EXPO_OUT }}
             data-cursor="hover"
-            className="group flex items-center gap-2 font-mono text-[10px] uppercase tracking-[0.25em] text-muted hover:text-accent transition-colors duration-300"
+            className="group border border-accent p-4 flex items-center gap-2 font-mono text-[10px] uppercase tracking-[0.25em] text-white hover:bg-accent hover:border-none transition-colors duration-300"
           >
             Back to top
             <motion.div
