@@ -146,7 +146,7 @@ export default function Hero() {
               delay={0.05}
               stagger={0.02}
             />
-          </ em>
+          </em>
         </h1>
 
         {/* Bottom row */}
@@ -178,30 +178,6 @@ export default function Hero() {
           </div>
         </div>
       </div>
-
-      {/* ── Scroll indicator ─────────────────────── */}
-      <motion.div
-        variants={fadeUpVariants}
-        initial="hidden"
-        animate="visible"
-        custom={1.8}
-        className="absolute bottom-8 right-8 md:right-16 z-20 flex flex-col items-center gap-2"
-      >
-        <motion.div
-          animate={{ y: [0, 6, 0] }}
-          transition={{
-            duration: 1.8,
-            repeat: Infinity,
-            ease: "easeInOut",
-            delay: 2,
-          }}
-          className="w-px h-10 bg-linear-to-b from-transparent to-accent"
-        />
-
-        <p className="font-mono text-[9px] uppercase tracking-[0.3em] text-muted rotate-90 origin-center mt-2">
-          Scroll
-        </p>
-      </motion.div>
     </section>
   );
 }
