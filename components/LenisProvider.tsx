@@ -33,17 +33,18 @@ export default function LenisProvider({
     lenis.on("scroll", ScrollTrigger.update);
 
     // 3. Wire GSAP ticker to Lenis
-    gsap.ticker.add((time) => {
+    const update = (time: number) => {
       lenis.raf(time * 1000);
-    });
+    };
+    gsap.ticker.add(update);
 
     // 3.1 Prevent GSAP from adding its own lagSmoothing
     gsap.ticker.lagSmoothing(0);
 
     // 4. Cleanup on unmount
     return () => {
+      gsap.ticker.remove(update);
       lenis.destroy();
-      gsap.ticker.remove((time) => lenis.raf(time * 1000));
     };
   }, []); // empty dependency array = run once on mount
 
