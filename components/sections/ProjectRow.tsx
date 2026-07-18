@@ -54,7 +54,7 @@ export default function ProjectRow({
           </span>
         </div>
         {/* Right: meta */}
-        <div className="hidden: md:flex items-center gap-10 shrink-0">
+        <div className="hidden md:flex items-center gap-10 shrink-0">
           <span className="font-sans text-sm text-muted">
             {project.category}
           </span>
