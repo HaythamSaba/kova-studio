@@ -55,7 +55,10 @@ export default function Capabilities() {
         tilesRef.current
           ?.querySelectorAll(".capability-tile")
           ?.forEach((el) => {
-            if (el) el.getAttribute("style")?.replace("opacity: 0;", "");
+            if (el instanceof HTMLElement) {
+              el.style.opacity = "1";
+              el.style.clipPath = "none";
+            }
           });
         return;
       }
