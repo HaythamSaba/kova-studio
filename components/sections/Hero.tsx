@@ -107,7 +107,7 @@ export default function Hero() {
           className="object-cover object-center"
           // Hero image — above the fold, load immediately
           priority
-          // sizes="(max-width: 768px) 100vw, 33vw" // Keep the ref on the wrapper, not the Image
+          sizes="100vw"
         />
       </div>
 
