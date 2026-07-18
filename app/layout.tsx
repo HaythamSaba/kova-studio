@@ -39,10 +39,9 @@ const dmMono = DM_Mono({
 
 // ─── Metadata ──────────────────────────────────────
 export const metadata: Metadata = {
-  // title: "Kova Studio — Crafted with intent. Built to endure.",
   title: {
     template: "%s | Kova Studio",
-    default: "Hello Kova Studio",
+    default: "Kova Studio — Crafted with intent. Built to endure.",
   },
   description:
     "We build digital identities and web experiences for brands that take the long view.",
