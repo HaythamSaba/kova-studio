@@ -7,6 +7,7 @@ import CustomCursor from "@/components/cursor/CustomCursor";
 import Navbar from "@/components/ui/Navbar";
 import PageTransition from "@/components/sections/PageTransition";
 import { Analytics } from "@vercel/analytics/next";
+import { MotionConfig } from "framer-motion";
 
 // ─── Font definitions ──────────────────────────────
 // next/font downloads fonts at build time, self-hosts them,
