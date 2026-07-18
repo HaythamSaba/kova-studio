@@ -67,7 +67,9 @@ export default function RootLayout({
         <CustomCursor />
         <Navbar />
         <LenisProvider>
-          <PageTransition>{children}</PageTransition>
+          <MotionConfig>
+            <PageTransition>{children}</PageTransition>
+          </MotionConfig>
         </LenisProvider>
         <Analytics />
       </body>
