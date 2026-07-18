@@ -15,7 +15,7 @@ export function useMousePosition() {
     return () => {
       window.removeEventListener("mousemove", handleMouseMove);
     }
-  })
+  }, [])
 
   return position;
 }
