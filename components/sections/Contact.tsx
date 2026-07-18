@@ -127,7 +127,7 @@ export default function Contact() {
         {/* clamp ensures it fills the viewport without */}
         {/* overflowing — scales between min and max    */}
         <SectionTitle
-          as="h1"
+          as="h2"
           Left={["Let's build", "something"]}
           ColoredMiddle="worth keeping."
           style={{ fontSize: "clamp(48px, 9vw, 160px)" }}
