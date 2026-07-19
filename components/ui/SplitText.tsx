@@ -54,7 +54,11 @@ export default function SplitText({
       aria-label={text}
     >
       {words.map((word, wordIndex) => (
-        <span key={wordIndex} className="inline-block whitespace-nowrap">
+        <span
+          key={wordIndex}
+          aria-hidden="true"
+          className="inline-block whitespace-nowrap"
+        >
           {word.split("").map((char, charIndex) => (
             <span key={charIndex} className="inline-block">
               <motion.span className="inline-block" variants={charVariants}>
