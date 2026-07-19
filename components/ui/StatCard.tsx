@@ -17,6 +17,15 @@ export default function StatCard({ stat, statsRef }: StatProps) {
     const el = counterRef.current;
     if (!el) return;
 
+    const prefersReducedMotion = window.matchMedia(
+      "(prefers-reduced-motion: reduce)",
+    ).matches;
+
+    if (prefersReducedMotion) {
+      el.textContent = stat.value.toString();
+      return;
+    }
+
     const proxy = { val: 0 };
 
     const ctx = gsap.context(() => {
