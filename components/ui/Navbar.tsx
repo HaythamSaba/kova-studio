@@ -1,7 +1,7 @@
 // components/Navbar.tsx
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { motion, AnimatePresence, useSpring, useScroll } from "framer-motion";
 import { EXPO_OUT } from "@/lib/easings";
@@ -29,6 +29,8 @@ const links = [
 export default function Navbar() {
   const [scrolled, setScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
+  const hamburgerRef = useRef<HTMLButtonElement>(null);
+  const firstMenuLinkRef = useRef<HTMLAnchorElement>(null);
 
   // ── Mounted guard — prevents hydration mismatch ──
   // useScroll produces different values on server vs client.
@@ -56,6 +58,23 @@ export default function Navbar() {
     observer.observe(sentinel);
     return () => observer.disconnect();
   }, []);
+
+  // ── Mobile menu: Escape to close + focus management ─
+  useEffect(() => {
+    if (!menuOpen) return;
+
+    firstMenuLinkRef.current?.focus();
+
+    function handleKeyDown(e: KeyboardEvent) {
+      if (e.key === "Escape") {
+        setMenuOpen(false);
+        hamburgerRef.current?.focus();
+      }
+    }
+
+    document.addEventListener("keydown", handleKeyDown);
+    return () => document.removeEventListener("keydown", handleKeyDown);
+  }, [menuOpen]);
 
   // ── Smooth scroll via Lenis ───────────────────────
   function handleNavClick(
@@ -141,8 +160,11 @@ export default function Navbar() {
 
           {/* Mobile hamburger */}
           <button
+            ref={hamburgerRef}
             onClick={() => setMenuOpen(!menuOpen)}
             aria-label="Toggle menu"
+            aria-expanded={menuOpen}
+            aria-controls="mobile-menu"
             className="md:hidden flex flex-col gap-1.5 p-1"
             data-cursor="hover"
           >
@@ -177,6 +199,10 @@ export default function Navbar() {
       <AnimatePresence mode="wait">
         {menuOpen && (
           <motion.div
+            id="mobile-menu"
+            role="dialog"
+            aria-modal="true"
+            aria-label="Mobile navigation"
             initial={{ opacity: 0, y: -20 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -20 }}
@@ -186,6 +212,7 @@ export default function Navbar() {
             {links.map((link, i) => (
               <motion.a
                 key={link.href}
+                ref={i === 0 ? firstMenuLinkRef : undefined}
                 href={link.href}
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
