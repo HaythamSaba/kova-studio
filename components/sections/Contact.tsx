@@ -201,7 +201,10 @@ export default function Contact() {
                   >
                     <span className="w-3 h-px bg-current group-hover:w-6 transition-all duration-300" />
                     {link.label}
-                    <span className="font-mono text-[10px] text-muted/40 group-hover:text-accent/60 transition-colors duration-300">
+                    <span
+                      aria-hidden="true"
+                      className="font-mono text-[10px] text-muted/40 group-hover:text-accent/60 transition-colors duration-300"
+                    >
                       ↗
                     </span>
                   </a>
@@ -214,7 +217,11 @@ export default function Contact() {
 
       {/* ── Toast notification ───────────────────────── */}
       {/* Fixed bottom-centre — appears on email copy    */}
-      <div className="fixed bottom-8 left-1/2 -translate-x-1/2 z-200 pointer-events-none">
+      <div
+        className="fixed bottom-8 left-1/2 -translate-x-1/2 z-200 pointer-events-none"
+        role="status"
+        aria-live="polite"
+      >
         <AnimatePresence mode="wait">
           {copied && (
             <motion.div
@@ -236,8 +243,3 @@ export default function Contact() {
     </section>
   );
 }
-
-// ── Magnetic Link Component ───────────────────────────
-// Subtle magnetic hover — the link moves slightly
-// toward the cursor when nearby. Uses mouse position
-// relative to the element's centre.
