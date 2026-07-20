@@ -5,6 +5,7 @@ import { motion } from "framer-motion";
 import SplitText from "@/components/ui/SplitText";
 import { EXPO_OUT } from "@/lib/easings";
 import { gsap, ScrollTrigger } from "@/lib/gsap";
+import { prefersReducedMotion } from "@/lib/prefersReducedMotion";
 import Image from "next/image";
 
 // ── CTA + side elements entrance ───────────────────
@@ -28,12 +29,8 @@ export default function Hero() {
 
   useEffect(() => {
     const ctx = gsap.context(() => {
-      const prefersReducedMotion = window.matchMedia(
-        "(prefers-reduced-motion: reduce)",
-      ).matches;
-
       if (
-        prefersReducedMotion ||
+        prefersReducedMotion() ||
         !containerRef.current ||
         !HeroImgRef.current ||
         !heroContentRef.current

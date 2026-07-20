@@ -2,6 +2,7 @@
 
 import { useEffect, useRef } from "react";
 import { gsap } from "@/lib/gsap";
+import { prefersReducedMotion } from "@/lib/prefersReducedMotion";
 
 interface SectionHeaderProps {
   leftTitle: string;
@@ -15,11 +16,7 @@ export default function SectionHeader({
   const headerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    const prefersReducedMotion = window.matchMedia(
-      "(prefers-reduced-motion: reduce)",
-    ).matches;
-
-    if (prefersReducedMotion) {
+    if (prefersReducedMotion()) {
       if (headerRef.current) headerRef.current.style.opacity = "1";
       return;
     }

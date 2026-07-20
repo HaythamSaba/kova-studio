@@ -2,6 +2,7 @@
 
 import { gsap, ScrollTrigger } from "@/lib/gsap";
 import { useEffect, useRef } from "react";
+import { prefersReducedMotion } from "@/lib/prefersReducedMotion";
 
 type HeadingTag = "h1" | "h2" | "h3" | "h4" | "h5" | "h6";
 
@@ -27,18 +28,16 @@ export default function SectionTitle({
     // Delay setup — About is deep in the page.
     // We need the full page height to be known
     // before ScrollTrigger measures positions.
-    const setupTimer = setTimeout(() => {
-      const prefersReducedMotion = window.matchMedia(
-        "(prefers-reduced-motion: reduce)",
-      ).matches;
+    let ctx: gsap.Context | undefined;
 
-      if (prefersReducedMotion) {
+    const setupTimer = setTimeout(() => {
+      if (prefersReducedMotion()) {
         // Make all elements visible immediately
         if (headlineRef.current) headlineRef.current.style.opacity = "1";
         return;
       }
 
-      const ctx = gsap.context(() => {
+      ctx = gsap.context(() => {
         // ── Headline entrance ───────────────────────
         if (headlineRef.current) {
           gsap.fromTo(
@@ -60,11 +59,12 @@ export default function SectionTitle({
 
         ScrollTrigger.refresh();
       });
-
-      return () => ctx.revert();
     }, 500);
 
-    return () => clearTimeout(setupTimer);
+    return () => {
+      clearTimeout(setupTimer);
+      ctx?.revert();
+    };
   }, []);
 
   return (

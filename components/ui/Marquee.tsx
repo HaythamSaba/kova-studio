@@ -2,6 +2,7 @@
 
 import { useEffect, useRef } from "react";
 import { gsap } from "@/lib/gsap";
+import { prefersReducedMotion } from "@/lib/prefersReducedMotion";
 
 const items = [
   "Brand Identity",
@@ -32,17 +33,13 @@ export default function Marquee() {
   const scrollTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   useEffect(() => {
-  const prefersReducedMotion = window.matchMedia(
-    "(prefers-reduced-motion: reduce)"
-  ).matches;
-
-  if (prefersReducedMotion) {
+  if (prefersReducedMotion()) {
     // show content statically - no animation or movement
     if (trackRef.current) {
       trackRef.current.style.transform = "translateX(0)";
     }
     return;
-  };
+  }
 
     const track = trackRef.current;
     if (!track) return;
@@ -122,6 +119,9 @@ export default function Marquee() {
     wrapper?.addEventListener("mouseleave", handleMouseLeave);
 
     return () => {
+      // Kill any in-flight timeScale boost/pause tween before killing
+      // the main tween itself, otherwise it can keep ticking after unmount.
+      if (tweenRef.current) gsap.killTweensOf(tweenRef.current);
       tweenRef.current?.kill();
 
       if (scrollTimeoutRef.current) {

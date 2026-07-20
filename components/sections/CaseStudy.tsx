@@ -3,6 +3,7 @@
 import { Project, projects } from "@/data/projects";
 import { EXPO_OUT } from "@/lib/easings";
 import { gsap, ScrollTrigger } from "@/lib/gsap";
+import { prefersReducedMotion } from "@/lib/prefersReducedMotion";
 import { useEffect, useRef, useState } from "react";
 import { motion } from "framer-motion";
 import Link from "next/link";
@@ -48,11 +49,7 @@ export default function CaseStudy({ project }: { project: Project }) {
         );
       }
 
-      const prefersReducedMotion = window.matchMedia(
-        "(prefers-reduced-motion: reduce)",
-      ).matches;
-
-      if (!prefersReducedMotion && imageGridRef.current) {
+      if (!prefersReducedMotion() && imageGridRef.current) {
         ScrollTrigger.create({
           trigger: imageGridRef.current,
           start: "top 25%",

@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { EXPO_OUT } from "@/lib/easings";
 import { gsap, ScrollTrigger } from "@/lib/gsap";
+import { prefersReducedMotion } from "@/lib/prefersReducedMotion";
 import SectionHeader from "../ui/SectionHeader";
 import SectionTitle from "../ui/SectionTitle";
 
@@ -48,11 +49,7 @@ export default function Capabilities() {
     let ctx: gsap.Context | undefined;
 
     const setupTimer = setTimeout(() => {
-      const prefersReducedMotion = window.matchMedia(
-        "(prefers-reduced-motion: reduce)",
-      ).matches;
-
-      if (prefersReducedMotion) {
+      if (prefersReducedMotion()) {
         // Make all elements visible immediately
         tilesRef.current
           ?.querySelectorAll(".capability-tile")

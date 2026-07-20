@@ -8,7 +8,6 @@ import { motion } from "framer-motion";
 
 interface ProjectDetailedCardProps {
   project: Project;
-  index: number;
   format: "landscape" | "portrait";
   isHovered: boolean;
   onEnter: () => void;

@@ -3,7 +3,8 @@
 import { useEffect, useRef, useState } from "react";
 import { motion } from "framer-motion";
 import Link from "next/link";
-import { gsap } from "@/lib/gsap";
+import { gsap, ScrollTrigger } from "@/lib/gsap";
+import { prefersReducedMotion } from "@/lib/prefersReducedMotion";
 import { projects } from "@/data/projects";
 import { EXPO_OUT } from "@/lib/easings";
 import ProjectDetailedCard from "../ui/ProjectDetailedCard";
@@ -24,11 +25,7 @@ export default function AllWork() {
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
 
   useEffect(() => {
-    const prefersReducedMotion = window.matchMedia(
-      "(prefers-reduced-motion: reduce)",
-    ).matches;
-
-    if (prefersReducedMotion) {
+    if (prefersReducedMotion()) {
       // Show all cards immediately
       cardRefs.current.forEach((card) => {
         if (!card) return;
@@ -110,6 +107,8 @@ export default function AllWork() {
           });
         }
       });
+
+      ScrollTrigger.refresh();
     });
 
     return () => ctx.revert();
@@ -204,10 +203,9 @@ export default function AllWork() {
                   className="grid grid-cols-1 md:grid-cols-12 gap-12 md:gap-20 items-center"
                 >
                   {left && (
-                    <div className="md:col-span-7 will-change-transform">
+                    <div className="md:col-span-7">
                       <ProjectDetailedCard
                         project={left}
-                        index={rowIndex * 2}
                         format={getCardFormat(rowIndex * 2)}
                         isHovered={hoveredIndex === rowIndex * 2}
                         onEnter={() => setHoveredIndex(rowIndex * 2)}
@@ -220,10 +218,9 @@ export default function AllWork() {
                   )}
 
                   {right && (
-                    <div className="md:col-span-5 pt-0 md:pt-32 will-change-transform">
+                    <div className="md:col-span-5 pt-0 md:pt-32">
                       <ProjectDetailedCard
                         project={right}
-                        index={rowIndex * 2 + 1}
                         format={getCardFormat(rowIndex * 2 + 1)}
                         isHovered={hoveredIndex === rowIndex * 2 + 1}
                         onEnter={() => setHoveredIndex(rowIndex * 2 + 1)}

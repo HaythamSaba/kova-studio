@@ -4,6 +4,7 @@ import Lenis from "lenis";
 import { gsap, ScrollTrigger } from "@/lib/gsap";
 import { useEffect, useRef } from "react";
 import { setGlobalLenis } from "@/lib/useLenis";
+import { prefersReducedMotion } from "@/lib/prefersReducedMotion";
 
 export default function LenisProvider({
   children,
@@ -14,11 +15,7 @@ export default function LenisProvider({
 
   useEffect(() => {
     // Respect reduced motion — native scroll is the right fallback
-    const prefersReducedMotion = window.matchMedia(
-      "(prefers-reduced-motion: reduce)",
-    ).matches;
-
-    if (prefersReducedMotion) return;
+    if (prefersReducedMotion()) return;
     
     // 1. Initialize Lenis
     const lenis = new Lenis({

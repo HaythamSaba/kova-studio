@@ -8,6 +8,7 @@ import MagneticEl from "../ui/MagneticEl";
 import { gsap, ScrollTrigger } from "@/lib/gsap";
 import SectionHeader from "../ui/SectionHeader";
 import SectionTitle from "../ui/SectionTitle";
+import { prefersReducedMotion } from "@/lib/prefersReducedMotion";
 
 const EMAIL = "haythamsaba@gmail.com";
 
@@ -42,18 +43,16 @@ export default function Contact() {
 
   // ── Scroll animations ─────────────────────────────
   useEffect(() => {
-    const setupTimer = setTimeout(() => {
-      const prefersReducedMotion = window.matchMedia(
-        "(prefers-reduced-motion: reduce)",
-      ).matches;
+    let ctx: gsap.Context | undefined;
 
-      if (prefersReducedMotion) {
+    const setupTimer = setTimeout(() => {
+      if (prefersReducedMotion()) {
         // Make all elements visible immediately
         if (headlineRef.current) headlineRef.current.style.opacity = "1";
         if (contentRef.current) contentRef.current.style.opacity = "1";
         return;
       }
-      const ctx = gsap.context(() => {
+      ctx = gsap.context(() => {
         // Headline — large text wipes in from below
         if (headlineRef.current) {
           gsap.fromTo(
@@ -96,11 +95,12 @@ export default function Contact() {
 
         ScrollTrigger.refresh();
       }, sectionRef);
-
-      return () => ctx.revert();
     }, 500);
 
-    return () => clearTimeout(setupTimer);
+    return () => {
+      clearTimeout(setupTimer);
+      ctx?.revert();
+    };
   }, []);
 
   return (

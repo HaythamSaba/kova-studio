@@ -4,6 +4,7 @@ import { projects } from "@/data/projects";
 import { useEffect, useRef } from "react";
 import ProjectCard from "../ui/ProjectCard";
 import { gsap } from "@/lib/gsap";
+import { prefersReducedMotion } from "@/lib/prefersReducedMotion";
 import SectionHeader from "../ui/SectionHeader";
 import SidePanel from "../ui/SidePanel";
 
@@ -19,11 +20,7 @@ export default function HorizontalScroll() {
 
     if (!section || !track || !progress) return;
 
-    const prefersReducedMotion = window.matchMedia(
-      "(prefers-reduced-motion: reduce)",
-    ).matches;
-
-    if (prefersReducedMotion) return;
+    if (prefersReducedMotion()) return;
     // total scrollable width = track width - viewport width
     const getScrollDistance = () => track.scrollWidth - window.innerWidth;
 

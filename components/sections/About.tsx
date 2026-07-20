@@ -3,6 +3,7 @@
 
 import { useEffect, useRef } from "react";
 import { gsap, ScrollTrigger } from "@/lib/gsap";
+import { prefersReducedMotion } from "@/lib/prefersReducedMotion";
 import Image from "next/image";
 import AboutImage from "@/public/images/studio/studio-photo.png";
 import SectionHeader from "../ui/SectionHeader";
@@ -31,11 +32,7 @@ export default function About() {
     let ctx: gsap.Context | undefined;
 
     const setupTimer = setTimeout(() => {
-      const prefersReducedMotion = window.matchMedia(
-        "(prefers-reduced-motion: reduce)",
-      ).matches;
-
-      if (prefersReducedMotion) {
+      if (prefersReducedMotion()) {
         // Make all elements visible immediately
         paraRefs.current.forEach((el) => {
           if (el) el.style.opacity = "1";
