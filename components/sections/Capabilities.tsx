@@ -45,6 +45,8 @@ export default function Capabilities() {
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
 
   useEffect(() => {
+    let ctx: gsap.Context | undefined;
+
     const setupTimer = setTimeout(() => {
       const prefersReducedMotion = window.matchMedia(
         "(prefers-reduced-motion: reduce)",
@@ -63,7 +65,7 @@ export default function Capabilities() {
         return;
       }
 
-      const ctx = gsap.context(() => {
+      ctx = gsap.context(() => {
         // Tile clip-path reveals
         // Target all four tiles at once with stagger
         // clip-path wipes each tile upward in sequence.
@@ -91,10 +93,12 @@ export default function Capabilities() {
         }
         ScrollTrigger.refresh();
       }, sectionRef);
-      return () => ctx.revert();
     }, 500);
 
-    return () => clearTimeout(setupTimer);
+    return () => {
+      clearTimeout(setupTimer);
+      ctx?.revert();
+    };
   }, []);
 
   return (
