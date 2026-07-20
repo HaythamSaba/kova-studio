@@ -4,7 +4,7 @@
 import { useEffect, useRef, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { EXPO_OUT } from "@/lib/easings";
-import MagneticEl from "../ui/MagneticEl";
+import MagneticLink from "../ui/MagneticLink";
 import { gsap, ScrollTrigger } from "@/lib/gsap";
 import SectionHeader from "../ui/SectionHeader";
 import SectionTitle from "../ui/SectionTitle";
@@ -192,23 +192,9 @@ export default function Contact() {
             </p>
             <div className="flex flex-col gap-3">
               {socialLinks.map((link) => (
-                <MagneticEl key={link.label} strength={0.3}>
-                  <a
-                    href={link.href}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="group inline-flex items-center gap-3 font-sans text-muted hover:text-accent transition-colors duration-300 w-fit"
-                  >
-                    <span className="w-3 h-px bg-current group-hover:w-6 transition-all duration-300" />
-                    {link.label}
-                    <span
-                      aria-hidden="true"
-                      className="font-mono text-[10px] text-muted/40 group-hover:text-accent/60 transition-colors duration-300"
-                    >
-                      ↗
-                    </span>
-                  </a>
-                </MagneticEl>
+                <MagneticLink key={link.label} href={link.href}>
+                  {link.label}
+                </MagneticLink>
               ))}
             </div>
           </div>
