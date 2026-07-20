@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { motion } from "framer-motion";
 import { EXPO_OUT } from "@/lib/easings";
+import { EMAIL } from "@/lib/constants";
 const footerLinks = [
   { label: "Work", href: "#work" },
   { label: "About", href: "#about" },
@@ -63,11 +64,11 @@ export default function Footer() {
               Contact
             </p>
             <a
-              href="mailto:haythamsaba@gmail.com"
+              href={`mailto:${EMAIL}`}
               className="font-sans text-sm text-muted hover:text-accent transition-colors duration-300 w-fit"
               data-cursor="hover"
             >
-              haythamsaba@gmail.com
+              {EMAIL}
             </a>
             <p className="font-sans text-sm text-muted">Ljubljana, Slovenia</p>
           </div>

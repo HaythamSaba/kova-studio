@@ -9,8 +9,7 @@ import { gsap, ScrollTrigger } from "@/lib/gsap";
 import SectionHeader from "../ui/SectionHeader";
 import SectionTitle from "../ui/SectionTitle";
 import { prefersReducedMotion } from "@/lib/prefersReducedMotion";
-
-const EMAIL = "haythamsaba@gmail.com";
+import { EMAIL } from "@/lib/constants";
 
 const socialLinks = [
   { label: "Instagram", href: "https://instagram.com" },
