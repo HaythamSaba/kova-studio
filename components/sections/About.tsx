@@ -28,6 +28,8 @@ export default function About() {
     // Delay setup — About is deep in the page.
     // We need the full page height to be known
     // before ScrollTrigger measures positions.
+    let ctx: gsap.Context | undefined;
+
     const setupTimer = setTimeout(() => {
       const prefersReducedMotion = window.matchMedia(
         "(prefers-reduced-motion: reduce)",
@@ -42,7 +44,7 @@ export default function About() {
         return;
       }
 
-      const ctx = gsap.context(() => {
+      ctx = gsap.context(() => {
         // ── Headline entrance ───────────────────────
         if (headlineRef.current) {
           gsap.fromTo(
@@ -113,11 +115,12 @@ export default function About() {
         // Recalculate positions after all triggers registered
         ScrollTrigger.refresh();
       }, sectionRef);
-
-      return () => ctx.revert();
     }, 500);
 
-    return () => clearTimeout(setupTimer);
+    return () => {
+      clearTimeout(setupTimer);
+      ctx?.revert();
+    };
   }, []);
 
   return (
