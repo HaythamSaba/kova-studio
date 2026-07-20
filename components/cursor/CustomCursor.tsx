@@ -102,11 +102,9 @@ export default function CustomCursor() {
         style={{ willChange: "transform" }}
       >
         <div
-          className="rounded-full bg-accent transition-all duration-300 ease-out"
+          className="rounded-full bg-accent w-2 h-2 transition-[transform,opacity] duration-300 ease-out"
           style={{
-            width: isClicking ? "6px" : "8px",
-            height: isClicking ? "6px" : "8px",
-            transform: "translate(-50%, -50%)",
+            transform: `translate(-50%, -50%) scale(${isClicking ? 6 / 8 : 1})`,
             opacity: isClicking ? 1 : isHovered ? 0 : 1,
           }}
         />
@@ -120,11 +118,9 @@ export default function CustomCursor() {
         style={{ willChange: "transform" }}
       >
         <div
-          className="rounded-full border border-accent transition-all duration-300 ease-out"
+          className="rounded-full border border-accent w-15 h-15 transition-[transform,opacity] duration-300 ease-out"
           style={{
-            width: isClicking ? "28px" : isHovered ? "60px" : "36px",
-            height: isClicking ? "28px" : isHovered ? "60px" : "36px",
-            transform: "translate(-50%, -50%)",
+            transform: `translate(-50%, -50%) scale(${isClicking ? 28 / 60 : isHovered ? 1 : 36 / 60})`,
             opacity: isHovered ? 0.6 : 0.4,
           }}
         />
