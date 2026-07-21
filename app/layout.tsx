@@ -3,7 +3,7 @@
 import type { Metadata } from "next";
 import { Cormorant_Garamond, DM_Sans, DM_Mono } from "next/font/google";
 import "./globals.css";
-import LenisProvider from "@/components/LenisProvider";
+import LenisProvider from "@/components/providers/LenisProvider";
 import CustomCursor from "@/components/cursor/CustomCursor";
 import Navbar from "@/components/ui/Navbar";
 import PageTransition from "@/components/sections/PageTransition";

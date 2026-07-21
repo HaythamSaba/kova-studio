@@ -16,7 +16,7 @@ export default function LenisProvider({
   useEffect(() => {
     // Respect reduced motion — native scroll is the right fallback
     if (prefersReducedMotion()) return;
-    
+
     // 1. Initialize Lenis
     const lenis = new Lenis({
       duration: 1.5,
