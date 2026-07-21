@@ -170,8 +170,8 @@ export default function Marquee() {
 function MarqueeItems() {
   return (
     <div className="flex items-center shrink-0">
-      {items.map((item, i) => (
-        <span key={i} className="flex items-center shrink-0">
+      {items.map((item) => (
+        <span key={item} className="flex items-center shrink-0">
           <span className="font-serif font-bold text-[20px] uppercase tracking-[0.25em] text-white hover:text-accent transition-colors duration-300 cursor-default">
             {item}
           </span>
