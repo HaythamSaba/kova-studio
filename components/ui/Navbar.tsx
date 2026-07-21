@@ -31,6 +31,7 @@ export default function Navbar() {
   const [menuOpen, setMenuOpen] = useState(false);
   const hamburgerRef = useRef<HTMLButtonElement>(null);
   const firstMenuLinkRef = useRef<HTMLAnchorElement>(null);
+  const menuRef = useRef<HTMLDivElement>(null);
 
   // ── Mounted guard — prevents hydration mismatch ──
   // useScroll produces different values on server vs client.
@@ -59,21 +60,45 @@ export default function Navbar() {
     return () => observer.disconnect();
   }, []);
 
-  // ── Mobile menu: Escape to close + focus management ─
+  // ── Mobile menu: Escape to close, Tab trap, focus restore ─
   useEffect(() => {
     if (!menuOpen) return;
 
+    const hamburger = hamburgerRef.current;
     firstMenuLinkRef.current?.focus();
 
     function handleKeyDown(e: KeyboardEvent) {
       if (e.key === "Escape") {
         setMenuOpen(false);
-        hamburgerRef.current?.focus();
+        return;
+      }
+
+      if (e.key === "Tab" && menuRef.current) {
+        const focusable = menuRef.current.querySelectorAll<HTMLElement>(
+          "a[href], button:not([disabled])",
+        );
+        if (focusable.length === 0) return;
+
+        const first = focusable[0];
+        const last = focusable[focusable.length - 1];
+
+        if (e.shiftKey && document.activeElement === first) {
+          e.preventDefault();
+          last.focus();
+        } else if (!e.shiftKey && document.activeElement === last) {
+          e.preventDefault();
+          first.focus();
+        }
       }
     }
 
     document.addEventListener("keydown", handleKeyDown);
-    return () => document.removeEventListener("keydown", handleKeyDown);
+    return () => {
+      document.removeEventListener("keydown", handleKeyDown);
+      // Restore focus to the trigger on every close path (Escape,
+      // clicking a link, clicking outside), not just Escape.
+      hamburger?.focus();
+    };
   }, [menuOpen]);
 
   // ── Smooth scroll via Lenis ───────────────────────
@@ -199,6 +224,7 @@ export default function Navbar() {
       <AnimatePresence mode="wait">
         {menuOpen && (
           <motion.div
+            ref={menuRef}
             id="mobile-menu"
             role="dialog"
             aria-modal="true"
@@ -218,7 +244,6 @@ export default function Navbar() {
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: 20 }}
                 transition={{ delay: i * 0.08, duration: 0.4 }}
-                // ← now uses Lenis scroll, not just close menu
                 onClick={(e) =>
                   handleNavClick(
                     e as React.MouseEvent<HTMLAnchorElement>,
