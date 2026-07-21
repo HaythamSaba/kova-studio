@@ -1,3 +1,4 @@
+
 // app/layout.tsx
 import type { Metadata } from "next";
 import { Cormorant_Garamond, DM_Sans, DM_Mono } from "next/font/google";
@@ -39,16 +40,32 @@ const dmMono = DM_Mono({
 });
 
 // ─── Metadata ──────────────────────────────────────
+const title = "Kova Studio — Crafted with intent. Built to endure.";
+const description =
+  "We build digital identities and web experiences for brands that take the long view.";
+
 export const metadata: Metadata = {
+  metadataBase: new URL("https://kova-studio-hs.vercel.app/"),
   title: {
     template: "%s | Kova Studio",
-    default: "Kova Studio — Crafted with intent. Built to endure.",
+    default: title,
   },
-  description:
-    "We build digital identities and web experiences for brands that take the long view.",
+  description,
   icons: {
     icon: "/favicon.svg",
     shortcut: "/favicon.svg",
+  },
+  openGraph: {
+    title,
+    description,
+    type: "website",
+    locale: "en_US",
+    siteName: "Kova Studio",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title,
+    description,
   },
 };
 
