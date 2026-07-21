@@ -6,6 +6,7 @@ import Link from "next/link";
 import { motion, AnimatePresence, useSpring, useScroll } from "framer-motion";
 import { EXPO_OUT } from "@/lib/easings";
 import { useLenis } from "@/lib/useLenis";
+import Image from "next/image";
 
 const navVariants = {
   transparent: {
@@ -144,11 +145,14 @@ export default function Navbar() {
       >
         <nav className="max-w-7xl mx-auto flex justify-between items-center px-6 py-4">
           {/* Logo */}
-          <Link
-            href="/"
-            className="font-mono text-sm uppercase tracking-[0.2em] text-text"
-          >
-            Kova
+          <Link href="/">
+            <Image
+              src="/images/logo.png"
+              alt="Kova Studio"
+              width={32}
+              height={32}
+              priority
+            />
           </Link>
 
           {/* Desktop links */}
