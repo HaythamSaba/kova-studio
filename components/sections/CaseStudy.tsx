@@ -58,13 +58,13 @@ export default function CaseStudy({ project }: { project: Project }) {
           anticipatePin: 1,
           invalidateOnRefresh: true,
         });
-        imageInnerRefs.current.forEach((el) => {
-          if (!el) return;
+        const imageInners = imageInnerRefs.current.filter(
+          (el): el is HTMLDivElement => el !== null,
+        );
+        if (imageInners.length > 0) {
           gsap.fromTo(
-            el,
-            {
-              clipPath: "inset(10% 15% 10% 15% round 100%)",
-            },
+            imageInners,
+            { clipPath: "inset(10% 15% 10% 15% round 100%)" },
             {
               clipPath: "inset(0% 0% 0% 0% round 0px)",
               ease: "none",
@@ -76,7 +76,7 @@ export default function CaseStudy({ project }: { project: Project }) {
               },
             },
           );
-        });
+        }
       }
 
       if (wideImageRef.current && imageInnerRef.current) {
@@ -369,7 +369,7 @@ export default function CaseStudy({ project }: { project: Project }) {
                   className="absolute inset-0 bg-white/5 pointer-events-none"
                 />
 
-                <p className="font-mono text-[9px] uppercase tracking-[0.3em] text-white/40 group-hover:text-white/60 transition-colors duration-300">
+                <p className="font-mono text-[9px] uppercase tracking-[0.3em] text-white/70 group-hover:text-white transition-colors duration-300">
                   ← Previous
                 </p>
 
@@ -378,7 +378,7 @@ export default function CaseStudy({ project }: { project: Project }) {
                   <p className="font-serif text-[clamp(20px,3vw,36px)] text-white/80 group-hover:text-white transition-colors duration-500 leading-tight">
                     {prevProject.title}
                   </p>
-                  <p className="font-mono text-[9px] uppercase tracking-[0.25em] text-white/30 mt-2 group-hover:text-white/50 transition-colors duration-300">
+                  <p className="font-mono text-[9px] uppercase tracking-[0.25em] text-white/60 mt-2 group-hover:text-white/80 transition-colors duration-300">
                     {prevProject.category}
                   </p>
                 </div>
@@ -407,7 +407,7 @@ export default function CaseStudy({ project }: { project: Project }) {
                   className="absolute inset-0 bg-white/5 pointer-events-none"
                 />
 
-                <p className="font-mono text-[9px] uppercase tracking-[0.3em] text-white/40 group-hover:text-white/60 transition-colors duration-300">
+                <p className="font-mono text-[9px] uppercase tracking-[0.3em] text-white/70 group-hover:text-white transition-colors duration-300">
                   Next →
                 </p>
 
@@ -415,7 +415,7 @@ export default function CaseStudy({ project }: { project: Project }) {
                   <p className="font-serif text-[clamp(20px,3vw,36px)] text-white/80 group-hover:text-white transition-colors duration-500 leading-tight">
                     {nextProject.title}
                   </p>
-                  <p className="font-mono text-[9px] uppercase tracking-[0.25em] text-white/30 mt-2 group-hover:text-white/50 transition-colors duration-300">
+                  <p className="font-mono text-[9px] uppercase tracking-[0.25em] text-white/60 mt-2 group-hover:text-white/80 transition-colors duration-300">
                     {nextProject.category}
                   </p>
                 </div>
