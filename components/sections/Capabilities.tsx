@@ -158,7 +158,8 @@ export default function Capabilities() {
                     <span
                       className="font-mono text-[10px] uppercase tracking-[0.3em]"
                       style={{
-                        color: hoveredIndex === i ? "#1a1714" : "#8a8278",
+                        color:
+                          hoveredIndex === i ? "var(--color-surface)" : "#8a8278",
                       }}
                     >
                       {service.index}
@@ -170,7 +171,8 @@ export default function Capabilities() {
                       transition={{ duration: 0.3, ease: EXPO_OUT }}
                       className="font-mono text-sm transition-colors duration-300"
                       style={{
-                        color: hoveredIndex === i ? "#0e0c0a" : "#8a8278",
+                        color:
+                          hoveredIndex === i ? "var(--color-bg)" : "#8a8278",
                       }}
                     >
                       →
@@ -186,7 +188,8 @@ export default function Capabilities() {
                   <p
                     className="font-sans text-sm leading-relaxed max-w-xs"
                     style={{
-                      color: hoveredIndex === i ? "#1a1714 " : "#8a8278",
+                      color:
+                        hoveredIndex === i ? "var(--color-surface)" : "#8a8278",
                     }}
                   >
                     {service.description}
@@ -205,7 +208,10 @@ export default function Capabilities() {
                         <span
                           className="font-mono text-[11px] uppercase tracking-[0.25em]"
                           style={{
-                            color: hoveredIndex === i ? "#1a1714" : "#8a8278",
+                            color:
+                              hoveredIndex === i
+                                ? "var(--color-surface)"
+                                : "#8a8278",
                           }}
                         >
                           {service.detail}
