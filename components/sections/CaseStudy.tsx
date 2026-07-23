@@ -9,10 +9,9 @@ import { motion } from "framer-motion";
 import Link from "next/link";
 import Image from "next/image";
 import CaseStudyHero from "../ui/CaseStudyHero";
+import CaseStudyMetaRow from "../ui/CaseStudyMetaRow";
 
 export default function CaseStudy({ project }: { project: Project }) {
-  // ── Renamed for clarity — two different hover targets ──
-  const [hoveredMeta, setHoveredMeta] = useState<number | null>(null);
   const [hoveredImage, setHoveredImage] = useState<number | null>(null);
 
   const detailsRef = useRef<HTMLDivElement>(null);
@@ -116,47 +115,7 @@ export default function CaseStudy({ project }: { project: Project }) {
       <div className="px-8 md:px-16 py-16">
         <div className="max-w-350 mx-auto">
           {/* ── Meta row — GSAP stagger ─────────────── */}
-          <div
-            ref={detailsRef}
-            className="grid grid-cols-2 md:grid-cols-4 gap-px mb-20"
-          >
-            {[
-              { label: "Client", value: project.title, i: 0 },
-              { label: "Category", value: project.category, i: 1 },
-              { label: "Location", value: project.location, i: 2 },
-              { label: "Year", value: project.year, i: 3 },
-            ].map(({ label, value, i }) => (
-              <motion.div
-                key={label}
-                className="detail-item relative px-6 py-8 flex flex-col gap-2 border-l-2 overflow-hidden"
-                style={{ borderColor: project.color }}
-                onMouseEnter={() => setHoveredMeta(i)}
-                onMouseLeave={() => setHoveredMeta(null)}
-                data-cursor="hover"
-              >
-                {/* Colour fill — z-0 so content sits above it */}
-                <motion.div
-                  animate={{
-                    clipPath:
-                      hoveredMeta === i
-                        ? "inset(0 0% 0 0)"
-                        : "inset(0 100% 0 0)",
-                  }}
-                  transition={{ duration: 1, ease: EXPO_OUT }}
-                  className="absolute inset-0 pointer-events-none z-0"
-                  style={{ backgroundColor: project.color }}
-                />
-
-                {/* Content — z-10 sits above fill ─── */}
-                <div className="relative z-10">
-                  <p className="font-mono text-[11px] uppercase mb-2 tracking-[0.3em] text-text">
-                    {label}
-                  </p>
-                  <p className="font-sans text-text text-sm">{value}</p>
-                </div>
-              </motion.div>
-            ))}
-          </div>
+          <CaseStudyMetaRow ref={detailsRef} project={project} />
 
           {/* ── Tagline ──────────────────────────────── */}
           <motion.div
