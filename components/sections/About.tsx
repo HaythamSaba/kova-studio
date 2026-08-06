@@ -124,7 +124,7 @@ export default function About() {
     <section
       ref={sectionRef}
       id="about"
-      className="relative py-32 md:py-48 px-8 md:px-16 border-t border-border"
+      className="relative py-32 px-8 md:px-16"
     >
       {/* max-w-350 = 87.5rem = 1400px in Tailwind v4 default scale ✓ */}
       <div className="max-w-350 mx-auto">
@@ -178,7 +178,7 @@ export default function About() {
               ].map((tag) => (
                 <span
                   key={tag}
-                  className="font-mono text-[9px] uppercase tracking-[0.25em] text-muted border border-border px-3 py-1.5"
+                  className="font-mono text-[9px] uppercase tracking-[0.25em] text-text border border-accent px-3 py-1.5"
                 >
                   {tag}
                 </span>
@@ -240,7 +240,7 @@ export default function About() {
         {/* ── Stats row ───────────────────────────── */}
         <div
           ref={statsRef}
-          className="grid grid-cols-3 mt-32 pt-16 border-t border-border"
+          className="grid grid-cols-3 mt-32 pt-16 border-t border-accent"
         >
           {stats.map((stat) => (
             <StatCard key={stat.label} stat={stat} statsRef={statsRef} />
