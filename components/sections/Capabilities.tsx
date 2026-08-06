@@ -138,9 +138,6 @@ export default function Capabilities() {
                 data-cursor="hover"
               >
                 {/* ── Hover fill ─────────────────────── */}
-                {/* Expands from bottom on hover via      */}
-                {/* clip-path — the same technique as     */}
-                {/* the entrance animation but reversed   */}
                 <motion.div
                   animate={{
                     clipPath:
