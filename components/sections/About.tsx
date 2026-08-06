@@ -27,8 +27,7 @@ export default function About() {
 
   useEffect(() => {
     // Delay setup — About is deep in the page.
-    // We need the full page height to be known
-    // before ScrollTrigger measures positions.
+
     let ctx: gsap.Context | undefined;
 
     const setupTimer = setTimeout(() => {
@@ -61,10 +60,7 @@ export default function About() {
           );
         }
 
-        // ── Paragraph entrances (one trigger each) ──
-        // Each paragraph is independent — they fire
-        // as the user scrolls into each one.
-        // GSAP only. No Framer Motion on these.
+        // ── Paragraph entrances (one trigger each)
         paraRefs.current.forEach((el, i) => {
           if (!el) return;
 
@@ -76,7 +72,7 @@ export default function About() {
               opacity: 1,
               duration: 0.9,
               ease: "power3.out",
-              delay: i * 0.08, // slight cascade between paragraphs
+              delay: i * 0.08,
               scrollTrigger: {
                 trigger: el,
                 start: "top 88%",
@@ -106,10 +102,6 @@ export default function About() {
         }
 
         // ── Stat counters ───────────────────────────
-        // Tween a proxy object { val: 0 } → { val: target }
-        // and write the rounded value to textContent each frame.
-
-        // Recalculate positions after all triggers registered
         ScrollTrigger.refresh();
       }, sectionRef);
     }, 500);
@@ -132,23 +124,17 @@ export default function About() {
         <SectionHeader leftTitle="The Studio" rightTitle="Est. 2020" />
 
         {/* ── Split layout ────────────────────────── */}
-        {/* Default grid stretch (no items-start) so  */}
-        {/* right column = left column height.        */}
-        {/* This is what gives sticky room to work.   */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-16 md:gap-24">
           {/* ── Left column ─────────────────────── */}
           <div className="flex flex-col gap-16">
-            {/* Headline — GSAP triggered, not Framer Motion */}
-            {/* style opacity:0 prevents flash before GSAP    */}
+            {/* Headline — GSAP triggered */}
             <ColoredTitle
               Left={["Small studio."]}
               ColoredMiddle="Considered"
               Right="Work."
             />
 
-            {/* Paragraphs — GSAP only, no Framer Motion */}
-            {/* style opacity:0 = initial state for GSAP  */}
-            {/* Never use Tailwind opacity-0 + GSAP together */}
+            {/* Paragraphs — GSAP triggered */}
             <div className="flex flex-col gap-10">
               {paragraphs.map((text, i) => (
                 <p
@@ -187,9 +173,6 @@ export default function About() {
           </div>
 
           {/* ── Right column — sticky image ──────── */}
-          {/* h-full fills grid row = left col height */}
-          {/* This is the parent sticky needs to be   */}
-          {/* taller than its sticky child            */}
           <div className="hidden md:block relative h-full">
             <div className="sticky top-[20vh]">
               {/* Image */}
@@ -200,9 +183,6 @@ export default function About() {
                   fill
                   placeholder="blur" // Lazy load
                   className="object-cover"
-                  // This image is below the fold — lazy load is fine
-                  // sizes matches the column width (roughly half viewport
-                  // on desktop, capped at 700px)
                   sizes="(max-width: 768px) 100vw, 700px"
                 />
 
@@ -236,7 +216,6 @@ export default function About() {
           </div>
         </div>
 
-        {/* ── Stats row ───────────────────────────── */}
         {/* ── Stats row ───────────────────────────── */}
         <div
           ref={statsRef}
