@@ -40,7 +40,7 @@ One build-time warning: Next.js misidentifies the workspace root because of an u
 | K6 | Arbitrary 500ms timeout before ScrollTrigger setup | High | M | Open |
 | K7 | Case study page only partially respects reduced motion | High | S | Open |
 | K8 | Pinned/scrubbed scroll sections run unmodified on mobile | High | M | Decided |
-| K9 | No "concept project" disclosure anywhere in the UI | High | S | Decided |
+| K9 | No "concept project" disclosure anywhere in the UI | High | S | Done |
 | K10 | Duplicate/conflicting global `cursor:none` rule | Medium | S | Open |
 | K11 | No intentional focus-visible styling | Medium | S | Open |
 | K12 | GSAP and Framer Motion both implement the same scroll-fade effect | Medium | M | Open |
@@ -170,6 +170,8 @@ gsap.set(headerRef.current, { opacity: 0 });
 **Decision (2026-11-22):** Replace the footer's entire "Recognition" column (`components/ui/Footer.tsx:77-83`, currently "Awwwards Nominee" / "CSS Design Awards") with a single disclosure line: *"Kova Studio is a concept project by Haytham Saba. Studio, clients and outcomes are fictional."* Both "Awwwards Nominee" and "CSS Design Awards" are removed outright, not softened.
 
 **Decision (2026-11-22, follow-up):** No link to a real Awwwards submission — confirmed nothing in this project has been submitted anywhere. The disclosure line stands alone, with no link of any kind. This also settles K2's scope: every award/recognition reference site-wide (the footer pair above, plus Norda's Awwwards line in `data/projects.ts:56`) is removed, not reworded into softer award-adjacent language.
+
+**Fixed (2026-11-22):** `components/ui/Footer.tsx`'s "Recognition" column (previously "Awwwards Nominee" / "CSS Design Awards") is replaced with a "Note" column reading *"Kova Studio is a concept project by Haytham Saba. Studio, clients and outcomes are fictional."* — no link. Verified: sitewide grep for award/recognition terms now returns zero matches, and `tsc --noEmit` is clean. K2 and K9 are both complete; the fictional-studio disclosure decision is fully implemented.
 
 ---
 

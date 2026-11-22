@@ -73,13 +73,15 @@ export default function Footer() {
             <p className="font-sans text-sm text-muted">Ljubljana, Slovenia</p>
           </div>
 
-          {/* Recognition */}
+          {/* Disclosure */}
           <div className="flex flex-col gap-3">
             <p className="font-mono text-sm uppercase tracking-[0.5em] mb-1">
-              Recognition
+              Note
             </p>
-            <p className="font-sans text-sm text-muted">Awwwards Nominee</p>
-            <p className="font-sans text-sm text-muted">CSS Design Awards</p>
+            <p className="font-sans text-sm text-muted leading-relaxed">
+              Kova Studio is a concept project by Haytham Saba. Studio,
+              clients and outcomes are fictional.
+            </p>
           </div>
         </div>
 
