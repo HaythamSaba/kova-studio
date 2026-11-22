@@ -168,7 +168,7 @@ export default function Hero() {
             <a
               href="#contact"
               data-cursor="hover"
-              className="font-mono bg-accent py-4 px-8 text-sm uppercase tracking-widest text-white hover:text-bg transition-colors duration-300"
+              className="font-mono bg-accent py-4 px-8 text-sm uppercase tracking-widest text-bg hover:bg-text transition-colors duration-300"
             >
               Start a project
             </a>

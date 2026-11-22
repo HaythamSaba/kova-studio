@@ -35,7 +35,7 @@ One build-time warning: Next.js misidentifies the workspace root because of an u
 | K1 | Hero headline/CTA invisible until ~1,300px of scroll | Critical | M | Open |
 | K2 | Fabricated, specific "credibility" claims (awards, funding, metrics) | Critical | S | Done |
 | K3 | Preloader blocks every load, ignores reduced motion | Critical | S | Decided |
-| K4 | Primary CTA fails WCAG AA contrast at rest | Critical | S | Open |
+| K4 | Primary CTA fails WCAG AA contrast at rest | Critical | S | Done |
 | K5 | Content hidden via inline `opacity:0` breaks if JS fails | High | M | Open |
 | K6 | Arbitrary 500ms timeout before ScrollTrigger setup | High | M | Open |
 | K7 | Case study page only partially respects reduced motion | High | S | Open |
@@ -113,6 +113,8 @@ className="... bg-accent text-bg hover:text-white transition-colors duration-300
 ```
 `text-bg` on `bg-accent` measures ≈5.9:1 — comfortably passes AA.
 **Effort:** S
+
+**Fixed (2026-11-22):** Grepped every `bg-accent` usage in the codebase to catch all same-element instances, not just the one cited above. Found two: `components/sections/Hero.tsx:171` ("Start a project") and `components/ui/Footer.tsx:101` ("Back to top", which passed at rest but failed on `:hover` once `hover:bg-accent` applied with no matching text-color change). Hero's CTA is now `text-bg hover:bg-text` (background swaps on hover instead of text color, so text stays on the passing `text-bg` color in both states — ≈5.9:1 at rest and on hover, mirroring the pattern already used by Navbar's own CTA). Footer's button gained `hover:text-bg` so its hover state also lands on ≈5.9:1 instead of ≈3.3:1. First attempt at the Hero fix only swapped which state failed (moved the ≈3.3:1 failure from rest to hover) — caught and corrected before verifying. Verified: no remaining `bg-accent`+`text-white` same-element pairing anywhere in the codebase (grep), `tsc --noEmit` clean.
 
 ---
 
