@@ -33,7 +33,7 @@ One build-time warning: Next.js misidentifies the workspace root because of an u
 | ID | Title | Priority | Effort | Status |
 |---|---|---|---|---|
 | K1 | Hero headline/CTA invisible until ~1,300px of scroll | Critical | M | Open |
-| K2 | Fabricated, specific "credibility" claims (awards, funding, metrics) | Critical | S | Decided |
+| K2 | Fabricated, specific "credibility" claims (awards, funding, metrics) | Critical | S | Done |
 | K3 | Preloader blocks every load, ignores reduced motion | Critical | S | Decided |
 | K4 | Primary CTA fails WCAG AA contrast at rest | Critical | S | Open |
 | K5 | Content hidden via inline `opacity:0` breaks if JS fails | High | M | Open |
@@ -86,6 +86,8 @@ gsap.to(".hero-item", { opacity: 1, y: 0, stagger: 0.08, duration: 0.6, delay: 0
 **Decision (2026-11-22):** Do both. Rewrite every specific, checkable claim in `data/projects.ts` — the Awwwards mention, the €2.4M funding figure, the 28,000-subscriber/3.4%-conversion numbers, the café count — as qualitative outcomes with nothing a recruiter could fact-check and fail to find. The disclosure itself lives in the footer per K9, not duplicated here.
 
 **Decision (2026-11-22, follow-up):** No link to a real Awwwards submission — nothing in this project has actually been submitted to any award site, and all studio/client/outcome data is fictional. Scope expanded accordingly: remove every award or recognition reference anywhere in the codebase, not just the numeric claims. A full search turned up exactly two locations: `data/projects.ts:56` (Norda's "won an Honorable Mention on Awwwards within three weeks of launch") and `components/ui/Footer.tsx:81-82` ("Awwwards Nominee" / "CSS Design Awards"). Both are removed outright, not softened or reworded into a vaguer award-shaped claim.
+
+**Fixed (2026-11-22):** `data/projects.ts` rewritten. Removed the Awwwards mention (Norda) and every specific checkable figure: Terrain's 28,000-subscriber/3.4%-conversion claim, Norda's 60% inbound-inquiry increase, Veld's "tripled"/14-café counts, and Stav's €2.4M Series A with named investor cities — each replaced with an equivalent qualitative outcome (e.g. "strong early demand, with conversion well ahead of what the category typically sees"). Stav's brief line "preparing for a Series A round" was deliberately left as-is — it's scene-setting about the client's situation at the time of engagement, not a checkable outcome claim. Verified: no remaining award/currency/percentage/count references in the file (grep), `tsc --noEmit` clean. The footer's "Recognition" column (K9) is not yet touched — that's a separate fix.
 
 ### K3 — Preloader blocks every page load and ignores `prefers-reduced-motion`
 **Problem:** `components/ui/Preloader.tsx`. Renders unconditionally in `app/page.tsx:15` on every full load of `/` (including a recruiter hitting back/forward or refreshing). The counter runs 0→100 with variable per-tick delays (`Math.max(20, 80 - progress*80)`, settling at 60ms near the end) plus a 300ms initial pause and a 600ms hold at 100 before the exit wipe — roughly 2–3+ seconds minimum before the real page is visible. There is no `prefersReducedMotion()` check anywhere in the component, unlike every other animated component in the codebase.

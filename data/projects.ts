@@ -34,7 +34,7 @@ export const projects: Project[] = [
       brief:
         "Terrain came to us with a positioning problem. They make sustainable outdoor gear for serious hikers — but their brand looked like every other outdoor company. Bold typefaces, conquest photography, aggressive colour. They wanted something different. A brand that felt like the landscape itself — patient, textured, enduring. We were brought in to build the full identity system and a Shopify-based e-commerce experience ahead of their Vienna flagship store opening.",
       outcome:
-        "We built the identity around the contour line — the cartographic tool that makes terrain readable. It became the mark, the packaging system, the web grid. Every surface speaks the same quiet language. The e-commerce site launched to 28,000 email subscribers with a 3.4% conversion rate in the first month — above  the industry average for premium outdoor apparel. The Vienna store opened to a waiting list.",
+        "We built the identity around the contour line — the cartographic tool that makes terrain readable. It became the mark, the packaging system, the web grid. Every surface speaks the same quiet language. The e-commerce site launched to strong early demand, with conversion well ahead of what the category typically sees. The Vienna store opened to a waiting list.",
     },
   },
   {
@@ -53,7 +53,7 @@ export const projects: Project[] = [
       brief:
         "Norda is a Scandinavian architecture firm with offices in Amsterdam and Oslo. They had a body of work that deserved better than the static PDF portfolios their competitors were using. Their brief was direct: build something that feels like standing inside one of our buildings. Scroll-driven. Full-screen photography. No noise.",
       outcome:
-        "We built a full-screen scroll experience where each project unfolds like a spatial sequence — photography that fills the viewport, typography that breathes, transitions that feel architectural rather than digital.The site won an Honorable Mention on Awwwards within three weeks of launch. Norda reported a 60% increase in inbound inquiries from clients citing the website as their first point of contact with the firm.",
+        "We built a full-screen scroll experience where each project unfolds like a spatial sequence — photography that fills the viewport, typography that breathes, transitions that feel architectural rather than digital. Within weeks of launch, Norda was fielding a steady rise in inbound inquiries from clients who cited the website as their first point of contact with the firm.",
     },
   },
   {
@@ -72,7 +72,7 @@ export const projects: Project[] = [
       brief:
         "Veld is a specialty coffee roaster operating out of Berlin's Neukölln district. They source single-origin beans from Ethiopia, Colombia, and Georgia, and roast in small batches for wholesale and direct-to-consumer. They needed an identity that matched the obsessive quality of the product — something that could live on a bag, a swing tag, an espresso cup, and a minimal web presence without losing integrity at any scale.",
       outcome:
-        "The identity is built around provenance — the idea that every bean has a specific origin, a specific altitude, a specific farmer. The mark is a simplified topographic profile of the Ethiopian highlands where their flagship bean grows. Applied across kraft packaging, ceramic cups, and a minimal web presence that focuses entirely on the sourcing story. Veld's wholesale accounts tripled in the six months following the rebrand. The packaging now sits in 14 independent cafés across Berlin and Vienna.",
+        "The identity is built around provenance — the idea that every bean has a specific origin, a specific altitude, a specific farmer. The mark is a simplified topographic profile of the Ethiopian highlands where their flagship bean grows. Applied across kraft packaging, ceramic cups, and a minimal web presence that focuses entirely on the sourcing story. Veld's wholesale accounts grew substantially in the months following the rebrand, and the packaging now sits on shelves in independent cafés across Berlin and Vienna.",
     },
   },
   {
@@ -91,7 +91,7 @@ export const projects: Project[] = [
       brief:
         "Stav is a Ljubljana-based legal tech startup building contract automation tools for the EU market. They were preparing for a Series A round and needed an investor site that communicated traction, credibility, and European ambition — in that order. The challenge: legal tech is a credibility-first category. The site needed to feel like the product already existed and was already trusted, even before the public launch.",
       outcome:
-        "We led both the digital strategy and the web build. The strategy work defined the positioning — not 'legal tech for SMEs' (crowded) but 'the contract layer for EU market entry' (specific, defensible,  timely given regulatory changes in 2024). The investor site launched two weeks before the  fundraising roadshow. Stav closed their Series A at €2.4M with participation from two Vienna-based  funds and one Amsterdam-based operator. The founding team credited the site as the strongest asset in their pitch deck.",
+        "We led both the digital strategy and the web build. The strategy work defined the positioning — not 'legal tech for SMEs' (crowded) but 'the contract layer for EU market entry' (specific, defensible, timely given regulatory changes in 2024). The investor site launched two weeks before the fundraising roadshow and went on to close a successful funding round, with the founding team crediting the site as the strongest asset in their pitch deck.",
     },
   },
 ];
