@@ -41,7 +41,7 @@ One build-time warning: Next.js misidentifies the workspace root because of an u
 | K7 | Case study page only partially respects reduced motion | High | S | Open |
 | K8 | Pinned/scrubbed scroll sections run unmodified on mobile | High | M | Decided |
 | K9 | No "concept project" disclosure anywhere in the UI | High | S | Done |
-| K10 | Duplicate/conflicting global `cursor:none` rule | Medium | S | Open |
+| K10 | Duplicate/conflicting global `cursor:none` rule | Medium | S | Done |
 | K11 | No intentional focus-visible styling | Medium | S | Open |
 | K12 | GSAP and Framer Motion both implement the same scroll-fade effect | Medium | M | Open |
 | K13 | Full-screen curtain transition on every navigation, every time | Medium | S | Open |
@@ -186,6 +186,8 @@ gsap.set(headerRef.current, { opacity: 0 });
 
 **Solution:** Delete the unscoped block at the bottom (lines 66-68); the guarded rule at 41-45 already expresses the intended behavior.
 **Effort:** S
+
+**Fixed (2026-11-22):** Removed the trailing unscoped `* { cursor: none !important; }` block from `app/globals.css`. The native cursor is now hidden only under `@media (pointer: fine) and (hover: hover)`, matching the comment's original intent; touch/stylus/hybrid-pointer devices keep their system cursor. Verified: grep for `cursor: none` now returns exactly one match (the guarded rule), `tsc --noEmit` clean.
 
 ### K11 — No intentional focus-visible styling
 **Problem:** No `focus:`, `focus-visible:`, or `outline` rule exists anywhere in the codebase (checked all `.tsx`/`.css`). Every link, button, and the mobile hamburger relies entirely on the browser's default focus ring.
