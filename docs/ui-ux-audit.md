@@ -83,7 +83,9 @@ gsap.to(".hero-item", { opacity: 1, y: 0, stagger: 0.08, duration: 0.6, delay: 0
 
 **Effort:** S
 
-**Decision (2026-11-22):** Do both. Rewrite every specific, checkable claim in `data/projects.ts` — the Awwwards mention, the €2.4M funding figure, the 28,000-subscriber/3.4%-conversion numbers, the café count — as qualitative outcomes with nothing a recruiter could fact-check and fail to find. The disclosure itself lives in the footer per K9, not duplicated here. Whether to additionally link the real Awwwards submission is still pending — to be specified separately before implementation.
+**Decision (2026-11-22):** Do both. Rewrite every specific, checkable claim in `data/projects.ts` — the Awwwards mention, the €2.4M funding figure, the 28,000-subscriber/3.4%-conversion numbers, the café count — as qualitative outcomes with nothing a recruiter could fact-check and fail to find. The disclosure itself lives in the footer per K9, not duplicated here.
+
+**Decision (2026-11-22, follow-up):** No link to a real Awwwards submission — nothing in this project has actually been submitted to any award site, and all studio/client/outcome data is fictional. Scope expanded accordingly: remove every award or recognition reference anywhere in the codebase, not just the numeric claims. A full search turned up exactly two locations: `data/projects.ts:56` (Norda's "won an Honorable Mention on Awwwards within three weeks of launch") and `components/ui/Footer.tsx:81-82` ("Awwwards Nominee" / "CSS Design Awards"). Both are removed outright, not softened or reworded into a vaguer award-shaped claim.
 
 ### K3 — Preloader blocks every page load and ignores `prefers-reduced-motion`
 **Problem:** `components/ui/Preloader.tsx`. Renders unconditionally in `app/page.tsx:15` on every full load of `/` (including a recruiter hitting back/forward or refreshing). The counter runs 0→100 with variable per-tick delays (`Math.max(20, 80 - progress*80)`, settling at 60ms near the end) plus a 300ms initial pause and a 600ms hold at 100 before the exit wipe — roughly 2–3+ seconds minimum before the real page is visible. There is no `prefersReducedMotion()` check anywhere in the component, unlike every other animated component in the codebase.
@@ -163,7 +165,9 @@ gsap.set(headerRef.current, { opacity: 0 });
 **Solution:** One line, placed where it won't interrupt the experience — e.g. in the footer's "Recognition" column (which currently holds the fabricated awards) or as a closing line in About: *"A fictional studio built to demonstrate [name]'s frontend/motion work."*
 **Effort:** S
 
-**Decision (2026-11-22):** Replace the footer's entire "Recognition" column (`components/ui/Footer.tsx:77-83`, currently "Awwwards Nominee" / "CSS Design Awards") with a single disclosure line: *"Kova Studio is a concept project by Haytham Saba. Studio, clients and outcomes are fictional."* "CSS Design Awards" is removed outright, not softened. Whether to add a link to Haytham's real Awwwards submission is a separate pending decision, not yet made.
+**Decision (2026-11-22):** Replace the footer's entire "Recognition" column (`components/ui/Footer.tsx:77-83`, currently "Awwwards Nominee" / "CSS Design Awards") with a single disclosure line: *"Kova Studio is a concept project by Haytham Saba. Studio, clients and outcomes are fictional."* Both "Awwwards Nominee" and "CSS Design Awards" are removed outright, not softened.
+
+**Decision (2026-11-22, follow-up):** No link to a real Awwwards submission — confirmed nothing in this project has been submitted anywhere. The disclosure line stands alone, with no link of any kind. This also settles K2's scope: every award/recognition reference site-wide (the footer pair above, plus Norda's Awwwards line in `data/projects.ts:56`) is removed, not reworded into softer award-adjacent language.
 
 ---
 
@@ -298,8 +302,8 @@ const nextConfig: NextConfig = {
 
 No fixes have been implemented yet — these are agreed approaches, captured inline under K2/K3/K8/K9 above, for whenever each item is picked up:
 
-- **K2/K9:** Both. Rewrite every specific, checkable claim in `data/projects.ts` (awards, funding amounts, subscriber counts, conversion rates, café counts) as qualitative outcomes. Replace the footer's "Recognition" column with one disclosure line: *"Kova Studio is a concept project by Haytham Saba. Studio, clients and outcomes are fictional."* Remove "CSS Design Awards" outright.
+- **K2/K9:** Both. Rewrite every specific, checkable claim in `data/projects.ts` (awards, funding amounts, subscriber counts, conversion rates, café counts) as qualitative outcomes. Replace the footer's "Recognition" column with one disclosure line: *"Kova Studio is a concept project by Haytham Saba. Studio, clients and outcomes are fictional."* Remove every award/recognition reference outright — "Awwwards Nominee" and "CSS Design Awards" in `components/ui/Footer.tsx:81-82`, and the "Honorable Mention on Awwwards" line in `data/projects.ts:56` — with no link to a real submission, since nothing in this project has actually been submitted anywhere.
 - **K3:** Keep the Preloader. Show it once per session via `sessionStorage`, shorten it to ~1 second total, and skip it entirely for `prefers-reduced-motion` users.
 - **K8:** Disable all pinning/scrubbing below 768px, falling back to simple fade-ins, implemented with `gsap.matchMedia()` so the behavior reverts cleanly across the breakpoint.
 
-**Still pending (separate decision, not yet made):** whether to add a link to the real Awwwards submission in the K2/K9 disclosure.
+All three decision points are now fully resolved; nothing is pending.
