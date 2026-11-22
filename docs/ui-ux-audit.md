@@ -42,7 +42,7 @@ One build-time warning: Next.js misidentifies the workspace root because of an u
 | K8 | Pinned/scrubbed scroll sections run unmodified on mobile | High | M | Decided |
 | K9 | No "concept project" disclosure anywhere in the UI | High | S | Done |
 | K10 | Duplicate/conflicting global `cursor:none` rule | Medium | S | Done |
-| K11 | No intentional focus-visible styling | Medium | S | Open |
+| K11 | No intentional focus-visible styling | Medium | S | Done |
 | K12 | GSAP and Framer Motion both implement the same scroll-fade effect | Medium | M | Open |
 | K13 | Full-screen curtain transition on every navigation, every time | Medium | S | Open |
 | K14 | Unoptimized source images (15MB+ of PNGs) | Medium | S | Open |
@@ -202,6 +202,8 @@ gsap.set(headerRef.current, { opacity: 0 });
 }
 ```
 **Effort:** S
+
+**Fixed (2026-11-22):** Added the `:focus-visible` rule exactly as proposed to `app/globals.css`'s `@layer base`, right after the `body` block. Every interactive element sitewide now gets an intentional accent-colored outline on keyboard focus instead of each browser's unstyled default. Verified: `next build` compiles cleanly (Turbopack/Tailwind v4 accepted the new rule with no CSS errors), all routes still static/SSG.
 
 ### K12 — GSAP and Framer Motion both implement the same "fade up on scroll into view" effect
 **Problem:** The "fade/slide up when scrolled into view" pattern is implemented twice, in two different libraries, in different files: via `gsap.fromTo(...)` + `ScrollTrigger` in `About.tsx`, `Capabilities.tsx`, `Contact.tsx`, `SectionTitle.tsx`, `SectionHeader.tsx`; and via Framer Motion's `whileInView`/`animate` props in `CaseStudy.tsx`'s tagline block (lines 119-129) and `AllWorkHero.tsx`'s intro paragraph/CTA (lines 31-38, 64-84).

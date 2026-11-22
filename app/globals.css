@@ -61,4 +61,11 @@
     font-family: var(--font-sans);
     -webkit-font-smoothing: antialiased;
   }
+
+  /* Intentional focus ring — matches the dark/amber palette      */
+  /* instead of leaving keyboard focus to each browser's default. */
+  :focus-visible {
+    outline: 2px solid var(--color-accent);
+    outline-offset: 3px;
+  }
 }
