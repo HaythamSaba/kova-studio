@@ -6,6 +6,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { EXPO_OUT } from "@/lib/easings";
 import MagneticLink from "../ui/MagneticLink";
 import { gsap, ScrollTrigger } from "@/lib/gsap";
+import { onWindowLoad } from "@/lib/onWindowLoad";
 import SectionHeader from "../ui/SectionHeader";
 import SectionTitle from "../ui/SectionTitle";
 import { prefersReducedMotion } from "@/lib/prefersReducedMotion";
@@ -42,63 +43,62 @@ export default function Contact() {
 
   // ── Scroll animations ─────────────────────────────
   useEffect(() => {
-    let ctx: gsap.Context | undefined;
+    if (prefersReducedMotion()) {
+      // Make all elements visible immediately
+      if (headlineRef.current) headlineRef.current.style.opacity = "1";
+      if (contentRef.current) contentRef.current.style.opacity = "1";
+      return;
+    }
 
-    const setupTimer = setTimeout(() => {
-      if (prefersReducedMotion()) {
-        // Make all elements visible immediately
-        if (headlineRef.current) headlineRef.current.style.opacity = "1";
-        if (contentRef.current) contentRef.current.style.opacity = "1";
-        return;
+    const ctx = gsap.context(() => {
+      // Headline — large text wipes in from below
+      if (headlineRef.current) {
+        gsap.fromTo(
+          headlineRef.current,
+          { y: 60, opacity: 0 },
+          {
+            y: 0,
+            opacity: 1,
+            duration: 1.1,
+            ease: "power3.out",
+            scrollTrigger: {
+              trigger: headlineRef.current,
+              start: "top 85%",
+              toggleActions: "play none none none",
+            },
+          },
+        );
       }
-      ctx = gsap.context(() => {
-        // Headline — large text wipes in from below
-        if (headlineRef.current) {
-          gsap.fromTo(
-            headlineRef.current,
-            { y: 60, opacity: 0 },
-            {
-              y: 0,
-              opacity: 1,
-              duration: 1.1,
-              ease: "power3.out",
-              scrollTrigger: {
-                trigger: headlineRef.current,
-                start: "top 85%",
-                toggleActions: "play none none none",
-              },
-            },
-          );
-        }
 
-        // Content row — staggered children
-        if (contentRef.current) {
-          const children = contentRef.current.children;
-          gsap.fromTo(
-            children,
-            { y: 32, opacity: 0 },
-            {
-              y: 0,
-              opacity: 1,
-              duration: 0.8,
-              ease: "power3.out",
-              stagger: 0.1,
-              scrollTrigger: {
-                trigger: contentRef.current,
-                start: "top 85%",
-                toggleActions: "play none none none",
-              },
+      // Content row — staggered children
+      if (contentRef.current) {
+        const children = contentRef.current.children;
+        gsap.fromTo(
+          children,
+          { y: 32, opacity: 0 },
+          {
+            y: 0,
+            opacity: 1,
+            duration: 0.8,
+            ease: "power3.out",
+            stagger: 0.1,
+            scrollTrigger: {
+              trigger: contentRef.current,
+              start: "top 85%",
+              toggleActions: "play none none none",
             },
-          );
-        }
+          },
+        );
+      }
 
-        ScrollTrigger.refresh();
-      }, sectionRef);
-    }, 500);
+      ScrollTrigger.refresh();
+    }, sectionRef);
+
+    const removeLoadListener = onWindowLoad(() => ScrollTrigger.refresh());
 
     return () => {
-      clearTimeout(setupTimer);
-      ctx?.revert();
+      removeLoadListener();
+      ctx.revert();
     };
   }, []);
 

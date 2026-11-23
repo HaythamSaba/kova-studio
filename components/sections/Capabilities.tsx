@@ -5,6 +5,7 @@ import { AnimatePresence, motion } from "framer-motion";
 import { EXPO_OUT } from "@/lib/easings";
 import { gsap, ScrollTrigger } from "@/lib/gsap";
 import { prefersReducedMotion } from "@/lib/prefersReducedMotion";
+import { onWindowLoad } from "@/lib/onWindowLoad";
 import SectionHeader from "../ui/SectionHeader";
 import SectionTitle from "../ui/SectionTitle";
 
@@ -46,44 +47,42 @@ export default function Capabilities() {
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
 
   useEffect(() => {
-    let ctx: gsap.Context | undefined;
+    if (prefersReducedMotion()) return;
 
-    const setupTimer = setTimeout(() => {
-      if (prefersReducedMotion()) return;
+    const ctx = gsap.context(() => {
+      // Tile clip-path reveals
+      // Target all four tiles at once with stagger
+      // clip-path wipes each tile upward in sequence.
+      if (tilesRef.current) {
+        const tiles = tilesRef.current.querySelectorAll(".capability-tile");
+        gsap.fromTo(
+          tiles,
+          {
+            clipPath: "inset(0 0 100% 0)",
+            opacity: 0,
+          },
+          {
+            clipPath: "inset(0 0 0% 0)",
+            opacity: 1,
+            duration: 0.9,
+            ease: "power3.out",
+            stagger: 0.3,
+            scrollTrigger: {
+              trigger: tilesRef.current,
+              start: "top 80%",
+              toggleActions: "play none none none",
+            },
+          },
+        );
+      }
+      ScrollTrigger.refresh();
+    }, sectionRef);
 
-      ctx = gsap.context(() => {
-        // Tile clip-path reveals
-        // Target all four tiles at once with stagger
-        // clip-path wipes each tile upward in sequence.
-        if (tilesRef.current) {
-          const tiles = tilesRef.current.querySelectorAll(".capability-tile");
-          gsap.fromTo(
-            tiles,
-            {
-              clipPath: "inset(0 0 100% 0)",
-              opacity: 0,
-            },
-            {
-              clipPath: "inset(0 0 0% 0)",
-              opacity: 1,
-              duration: 0.9,
-              ease: "power3.out",
-              stagger: 0.3,
-              scrollTrigger: {
-                trigger: tilesRef.current,
-                start: "top 80%",
-                toggleActions: "play none none none",
-              },
-            },
-          );
-        }
-        ScrollTrigger.refresh();
-      }, sectionRef);
-    }, 500);
+    const removeLoadListener = onWindowLoad(() => ScrollTrigger.refresh());
 
     return () => {
-      clearTimeout(setupTimer);
-      ctx?.revert();
+      removeLoadListener();
+      ctx.revert();
     };
   }, []);
 

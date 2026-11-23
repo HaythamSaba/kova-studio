@@ -3,6 +3,7 @@
 import { gsap, ScrollTrigger } from "@/lib/gsap";
 import { useEffect, useRef } from "react";
 import { prefersReducedMotion } from "@/lib/prefersReducedMotion";
+import { onWindowLoad } from "@/lib/onWindowLoad";
 
 type HeadingTag = "h1" | "h2" | "h3" | "h4" | "h5" | "h6";
 
@@ -25,41 +26,36 @@ export default function SectionTitle({
   const headlineRef = useRef<HTMLHeadingElement>(null);
 
   useEffect(() => {
-    // Delay setup — About is deep in the page.
-    // We need the full page height to be known
-    // before ScrollTrigger measures positions.
-    let ctx: gsap.Context | undefined;
+    if (prefersReducedMotion()) return;
 
-    const setupTimer = setTimeout(() => {
-      if (prefersReducedMotion()) return;
-
-      ctx = gsap.context(() => {
-        // ── Headline entrance ───────────────────────
-        if (headlineRef.current) {
-          gsap.fromTo(
-            headlineRef.current,
-            { y: 40, opacity: 0 },
-            {
-              y: 0,
-              opacity: 1,
-              duration: 1,
-              ease: "power3.out",
-              scrollTrigger: {
-                trigger: headlineRef.current,
-                start: "top 85%",
-                toggleActions: "play none none none",
-              },
+    const ctx = gsap.context(() => {
+      // ── Headline entrance ───────────────────────
+      if (headlineRef.current) {
+        gsap.fromTo(
+          headlineRef.current,
+          { y: 40, opacity: 0 },
+          {
+            y: 0,
+            opacity: 1,
+            duration: 1,
+            ease: "power3.out",
+            scrollTrigger: {
+              trigger: headlineRef.current,
+              start: "top 85%",
+              toggleActions: "play none none none",
             },
-          );
-        }
+          },
+        );
+      }
 
-        ScrollTrigger.refresh();
-      });
-    }, 500);
+      ScrollTrigger.refresh();
+    });
+
+    const removeLoadListener = onWindowLoad(() => ScrollTrigger.refresh());
 
     return () => {
-      clearTimeout(setupTimer);
-      ctx?.revert();
+      removeLoadListener();
+      ctx.revert();
     };
   }, []);
 

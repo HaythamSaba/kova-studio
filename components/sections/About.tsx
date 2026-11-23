@@ -4,6 +4,7 @@
 import { useEffect, useRef } from "react";
 import { gsap, ScrollTrigger } from "@/lib/gsap";
 import { prefersReducedMotion } from "@/lib/prefersReducedMotion";
+import { onWindowLoad } from "@/lib/onWindowLoad";
 import Image from "next/image";
 import AboutImage from "@/public/images/studio/studio-photo.png";
 import SectionHeader from "../ui/SectionHeader";
@@ -26,82 +27,78 @@ export default function About() {
   const statsRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    // Delay setup — About is deep in the page.
+    if (prefersReducedMotion()) return;
 
-    let ctx: gsap.Context | undefined;
-
-    const setupTimer = setTimeout(() => {
-      if (prefersReducedMotion()) return;
-
-      ctx = gsap.context(() => {
-        // ── Headline entrance ───────────────────────
-        if (headlineRef.current) {
-          gsap.fromTo(
-            headlineRef.current,
-            { y: 40, opacity: 0 },
-            {
-              y: 0,
-              opacity: 1,
-              duration: 1,
-              ease: "power3.out",
-              scrollTrigger: {
-                trigger: headlineRef.current,
-                start: "top 85%",
-                toggleActions: "play none none none",
-              },
+    const ctx = gsap.context(() => {
+      // ── Headline entrance ───────────────────────
+      if (headlineRef.current) {
+        gsap.fromTo(
+          headlineRef.current,
+          { y: 40, opacity: 0 },
+          {
+            y: 0,
+            opacity: 1,
+            duration: 1,
+            ease: "power3.out",
+            scrollTrigger: {
+              trigger: headlineRef.current,
+              start: "top 85%",
+              toggleActions: "play none none none",
             },
-          );
-        }
+          },
+        );
+      }
 
-        // ── Paragraph entrances (one trigger each)
-        paraRefs.current.forEach((el, i) => {
-          if (!el) return;
+      // ── Paragraph entrances (one trigger each)
+      paraRefs.current.forEach((el, i) => {
+        if (!el) return;
 
-          gsap.fromTo(
-            el,
-            { y: 40, opacity: 0 },
-            {
-              y: 0,
-              opacity: 1,
-              duration: 0.9,
-              ease: "power3.out",
-              delay: i * 0.08,
-              scrollTrigger: {
-                trigger: el,
-                start: "top 88%",
-                toggleActions: "play none none none",
-              },
+        gsap.fromTo(
+          el,
+          { y: 40, opacity: 0 },
+          {
+            y: 0,
+            opacity: 1,
+            duration: 0.9,
+            ease: "power3.out",
+            delay: i * 0.08,
+            scrollTrigger: {
+              trigger: el,
+              start: "top 88%",
+              toggleActions: "play none none none",
             },
-          );
-        });
+          },
+        );
+      });
 
-        // ── Tags row entrance ───────────────────────
-        if (tagsRef.current) {
-          gsap.fromTo(
-            tagsRef.current,
-            { y: 24, opacity: 0 },
-            {
-              y: 0,
-              opacity: 1,
-              duration: 0.8,
-              ease: "power3.out",
-              scrollTrigger: {
-                trigger: tagsRef.current,
-                start: "top 88%",
-                toggleActions: "play none none none",
-              },
+      // ── Tags row entrance ───────────────────────
+      if (tagsRef.current) {
+        gsap.fromTo(
+          tagsRef.current,
+          { y: 24, opacity: 0 },
+          {
+            y: 0,
+            opacity: 1,
+            duration: 0.8,
+            ease: "power3.out",
+            scrollTrigger: {
+              trigger: tagsRef.current,
+              start: "top 88%",
+              toggleActions: "play none none none",
             },
-          );
-        }
+          },
+        );
+      }
 
-        // ── Stat counters ───────────────────────────
-        ScrollTrigger.refresh();
-      }, sectionRef);
-    }, 500);
+      // ── Stat counters ───────────────────────────
+      ScrollTrigger.refresh();
+    }, sectionRef);
+
+    const removeLoadListener = onWindowLoad(() => ScrollTrigger.refresh());
 
     return () => {
-      clearTimeout(setupTimer);
-      ctx?.revert();
+      removeLoadListener();
+      ctx.revert();
     };
   }, []);
 
