@@ -48,7 +48,7 @@ One build-time warning: Next.js misidentifies the workspace root because of an u
 | K14 | Unoptimized source images (15MB+ of PNGs) | Medium | S | Open |
 | K15 | No Open Graph image | Medium | S | Open |
 | K16 | No sitemap/robots | Medium | S | Open |
-| K17 | Turbopack workspace-root warning | Low | S | Open |
+| K17 | Turbopack workspace-root warning | Low | S | Done |
 | K18 | README is unedited `create-next-app` boilerplate | Low | S | Open |
 | K19 | Hero pin distance is a fixed px value, not viewport-relative | Low | S | Open |
 
@@ -270,6 +270,8 @@ const nextConfig: NextConfig = {
 };
 ```
 **Effort:** S
+
+**Fixed (2026-11-23):** Added `turbopack: { root: __dirname }` to `next.config.ts`. Verified: re-ran `next build` — the "We detected multiple lockfiles..." warning no longer appears; build output starts directly at "Creating an optimized production build," all routes still static/SSG.
 
 ### K18 — README is unedited `create-next-app` boilerplate
 **Problem:** `README.md` still references `Geist` (a font this project doesn't use — it uses Cormorant Garamond/DM Sans/DM Mono) and generic "Learn Next.js" links, with nothing about what Kova Studio actually is.
