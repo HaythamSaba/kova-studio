@@ -38,7 +38,7 @@ One build-time warning: Next.js misidentifies the workspace root because of an u
 | K4 | Primary CTA fails WCAG AA contrast at rest | Critical | S | Done |
 | K5 | Content hidden via inline `opacity:0` breaks if JS fails | High | M | Done |
 | K6 | Arbitrary 500ms timeout before ScrollTrigger setup | High | M | Open |
-| K7 | Case study page only partially respects reduced motion | High | S | Open |
+| K7 | Case study page only partially respects reduced motion | High | S | Done |
 | K8 | Pinned/scrubbed scroll sections run unmodified on mobile | High | M | Decided |
 | K9 | No "concept project" disclosure anywhere in the UI | High | S | Done |
 | K10 | Duplicate/conflicting global `cursor:none` rule | Medium | S | Done |

@@ -27,16 +27,18 @@ export default function CaseStudy({ project }: { project: Project }) {
 
   useEffect(() => {
     const ctx = gsap.context(() => {
+      const reducedMotion = prefersReducedMotion();
+
       if (detailsRef.current) {
         const items = detailsRef.current.querySelectorAll(".detail-item");
         gsap.fromTo(
           items,
-          { y: 24, opacity: 0 },
+          { y: reducedMotion ? 0 : 24, opacity: reducedMotion ? 1 : 0 },
           {
             y: 0,
             opacity: 1,
-            duration: 0.7,
-            stagger: 0.08,
+            duration: reducedMotion ? 0 : 0.7,
+            stagger: reducedMotion ? 0 : 0.08,
             ease: "power3.out",
             scrollTrigger: {
               trigger: detailsRef.current,
@@ -47,7 +49,7 @@ export default function CaseStudy({ project }: { project: Project }) {
         );
       }
 
-      if (!prefersReducedMotion() && imageGridRef.current) {
+      if (!reducedMotion && imageGridRef.current) {
         ScrollTrigger.create({
           trigger: imageGridRef.current,
           start: "top 25%",
@@ -77,7 +79,7 @@ export default function CaseStudy({ project }: { project: Project }) {
         }
       }
 
-      if (wideImageRef.current && imageInnerRef.current) {
+      if (!reducedMotion && wideImageRef.current && imageInnerRef.current) {
         gsap.fromTo(
           imageInnerRef.current,
           {
