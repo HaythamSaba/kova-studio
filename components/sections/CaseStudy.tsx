@@ -26,9 +26,9 @@ export default function CaseStudy({ project }: { project: Project }) {
     projects[(currentIndex - 1 + projects.length) % projects.length];
 
   useEffect(() => {
-    const ctx = gsap.context(() => {
-      const reducedMotion = prefersReducedMotion();
+    const reducedMotion = prefersReducedMotion();
 
+    const ctx = gsap.context(() => {
       if (detailsRef.current) {
         const items = detailsRef.current.querySelectorAll(".detail-item");
         gsap.fromTo(
@@ -47,36 +47,6 @@ export default function CaseStudy({ project }: { project: Project }) {
             },
           },
         );
-      }
-
-      if (!reducedMotion && imageGridRef.current) {
-        ScrollTrigger.create({
-          trigger: imageGridRef.current,
-          start: "top 25%",
-          end: "+=900",
-          pin: true,
-          anticipatePin: 1,
-          invalidateOnRefresh: true,
-        });
-        const imageInners = imageInnerRefs.current.filter(
-          (el): el is HTMLDivElement => el !== null,
-        );
-        if (imageInners.length > 0) {
-          gsap.fromTo(
-            imageInners,
-            { clipPath: "inset(10% 15% 10% 15% round 100%)" },
-            {
-              clipPath: "inset(0% 0% 0% 0% round 0px)",
-              ease: "none",
-              scrollTrigger: {
-                trigger: imageGridRef.current,
-                start: "top 25%",
-                end: "+=900",
-                scrub: 1.5,
-              },
-            },
-          );
-        }
       }
 
       if (!reducedMotion && wideImageRef.current && imageInnerRef.current) {
@@ -103,7 +73,80 @@ export default function CaseStudy({ project }: { project: Project }) {
       ScrollTrigger.refresh();
     });
 
-    return () => ctx.revert();
+    // Image-grid pin + scrub on desktop; a simple fade-in on mobile,
+    // where pin + scrub + Lenis is a well-documented source of jank (K8).
+    let mm: ReturnType<typeof gsap.matchMedia> | undefined;
+
+    if (!reducedMotion && imageGridRef.current) {
+      mm = gsap.matchMedia();
+
+      mm.add("(min-width: 768px)", () => {
+        const pinCtx = gsap.context(() => {
+          ScrollTrigger.create({
+            trigger: imageGridRef.current,
+            start: "top 25%",
+            end: "+=900",
+            pin: true,
+            anticipatePin: 1,
+            invalidateOnRefresh: true,
+          });
+          const imageInners = imageInnerRefs.current.filter(
+            (el): el is HTMLDivElement => el !== null,
+          );
+          if (imageInners.length > 0) {
+            gsap.fromTo(
+              imageInners,
+              { clipPath: "inset(10% 15% 10% 15% round 100%)" },
+              {
+                clipPath: "inset(0% 0% 0% 0% round 0px)",
+                ease: "none",
+                scrollTrigger: {
+                  trigger: imageGridRef.current,
+                  start: "top 25%",
+                  end: "+=900",
+                  scrub: 1.5,
+                },
+              },
+            );
+          }
+        });
+
+        return () => pinCtx.revert();
+      });
+
+      mm.add("(max-width: 767px)", () => {
+        const fadeCtx = gsap.context(() => {
+          const imageInners = imageInnerRefs.current.filter(
+            (el): el is HTMLDivElement => el !== null,
+          );
+          if (imageInners.length > 0) {
+            gsap.fromTo(
+              imageInners,
+              { opacity: 0, y: 24 },
+              {
+                opacity: 1,
+                y: 0,
+                duration: 0.7,
+                stagger: 0.12,
+                ease: "power3.out",
+                scrollTrigger: {
+                  trigger: imageGridRef.current,
+                  start: "top 85%",
+                  toggleActions: "play none none none",
+                },
+              },
+            );
+          }
+        });
+
+        return () => fadeCtx.revert();
+      });
+    }
+
+    return () => {
+      ctx.revert();
+      mm?.revert();
+    };
   }, []);
 
   return (

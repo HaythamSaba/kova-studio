@@ -28,15 +28,15 @@ export default function Hero() {
   const heroContentRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    const ctx = gsap.context(() => {
-      if (
-        prefersReducedMotion() ||
-        !containerRef.current ||
-        !HeroImgRef.current ||
-        !heroContentRef.current
-      )
-        return;
+    if (
+      prefersReducedMotion() ||
+      !containerRef.current ||
+      !HeroImgRef.current ||
+      !heroContentRef.current
+    )
+      return;
 
+    const ctx = gsap.context(() => {
       // ── Text entrance — plays on mount, independent of scroll ──
       // (previously gated behind the pinned scroll timeline below,
       // so it stayed invisible until ~65% through a 2000px scroll)
@@ -52,39 +52,72 @@ export default function Hero() {
           ease: "power3.out",
         },
       );
-
-      // ── Master timeline — scroll-scrubbed image expansion only ──
-      const tl = gsap.timeline({
-        scrollTrigger: {
-          trigger: containerRef.current,
-          start: "top top",
-          end: "+=2000",
-          scrub: 1.5,
-          pin: true,
-          anticipatePin: 1,
-          invalidateOnRefresh: true,
-        },
-      });
-
-      // ── Image expansion ──────────────────────────
-      tl.fromTo(
-        HeroImgRef.current,
-        {
-          clipPath: "outset(25% 25% 25% 25% round 100%)",
-          scale: 0.5,
-        },
-        {
-          clipPath: "inset(0% 0% 0% 0% round 0px)",
-          scale: 1,
-          ease: "none",
-          duration: 1,
-        },
-      );
-
-      ScrollTrigger.refresh();
     }, containerRef);
 
-    return () => ctx.revert();
+    // ── Image treatment — pinned/scrubbed on desktop, simple
+    // fade-in on mobile where pin + scrub + Lenis is jank-prone ──
+    const mm = gsap.matchMedia();
+
+    mm.add("(min-width: 768px)", () => {
+      const pinCtx = gsap.context(() => {
+        const tl = gsap.timeline({
+          scrollTrigger: {
+            trigger: containerRef.current,
+            start: "top top",
+            end: "+=2000",
+            scrub: 1.5,
+            pin: true,
+            anticipatePin: 1,
+            invalidateOnRefresh: true,
+          },
+        });
+
+        tl.fromTo(
+          HeroImgRef.current,
+          {
+            clipPath: "outset(25% 25% 25% 25% round 100%)",
+            scale: 0.5,
+          },
+          {
+            clipPath: "inset(0% 0% 0% 0% round 0px)",
+            scale: 1,
+            ease: "none",
+            duration: 1,
+          },
+        );
+
+        ScrollTrigger.refresh();
+      }, containerRef);
+
+      return () => pinCtx.revert();
+    });
+
+    mm.add("(max-width: 767px)", () => {
+      const fadeCtx = gsap.context(() => {
+        gsap.fromTo(
+          HeroImgRef.current,
+          {
+            clipPath: "outset(10% 10% 10% 10% round 60px)",
+            scale: 0.92,
+            opacity: 0.6,
+          },
+          {
+            clipPath: "inset(0% 0% 0% 0% round 0px)",
+            scale: 1,
+            opacity: 1,
+            duration: 0.9,
+            ease: "power3.out",
+          },
+        );
+      }, containerRef);
+
+      return () => fadeCtx.revert();
+    });
+
+    return () => {
+      ctx.revert();
+      mm.revert();
+    };
   }, []);
 
   return (

@@ -24,42 +24,73 @@ export default function HorizontalScroll() {
     // total scrollable width = track width - viewport width
     const getScrollDistance = () => track.scrollWidth - window.innerWidth;
 
-    const ctx = gsap.context(() => {
-      const tl = gsap.timeline({
-        scrollTrigger: {
-          trigger: section,
-          start: "top top",
-          end: () => `+=${getScrollDistance()}`,
-          pin: true,
-          scrub: 1,
-          anticipatePin: 1,
-          invalidateOnRefresh: true,
-          onUpdate: (self) => {
-            if (progress) {
-              progress.style.transform = `scaleX(${self.progress})`;
-            }
-          },
-        },
-      });
-      tl.to(track, {
-        x: () => -getScrollDistance(),
-        ease: "none",
-      });
-    }, section);
+    // Pin + horizontal scrub on desktop; a simple vertical fade-in on
+    // mobile, where the section scrolls natively and pin + scrub + Lenis
+    // is a well-documented source of jank (see K8).
+    const mm = gsap.matchMedia();
 
-    return () => ctx.revert(); // clean up all ScrollTriggers on unmount
+    mm.add("(min-width: 768px)", () => {
+      const ctx = gsap.context(() => {
+        const tl = gsap.timeline({
+          scrollTrigger: {
+            trigger: section,
+            start: "top top",
+            end: () => `+=${getScrollDistance()}`,
+            pin: true,
+            scrub: 1,
+            anticipatePin: 1,
+            invalidateOnRefresh: true,
+            onUpdate: (self) => {
+              if (progress) {
+                progress.style.transform = `scaleX(${self.progress})`;
+              }
+            },
+          },
+        });
+        tl.to(track, {
+          x: () => -getScrollDistance(),
+          ease: "none",
+        });
+      }, section);
+
+      return () => ctx.revert();
+    });
+
+    mm.add("(max-width: 767px)", () => {
+      const ctx = gsap.context(() => {
+        gsap.fromTo(
+          track.children,
+          { opacity: 0, y: 24 },
+          {
+            opacity: 1,
+            y: 0,
+            duration: 0.6,
+            ease: "power3.out",
+            stagger: 0.1,
+            scrollTrigger: {
+              trigger: section,
+              start: "top 80%",
+              toggleActions: "play none none none",
+            },
+          },
+        );
+      }, section);
+
+      return () => ctx.revert();
+    });
+
+    return () => mm.revert(); // clean up all ScrollTriggers on unmount
   }, []);
 
   return (
     <section
       ref={sectionRef}
-      className="relative h-screen overflow-hidden bg-bg"
+      className="relative bg-bg overflow-x-auto md:h-screen md:overflow-hidden"
     >
       <SectionHeader leftTitle="Case Studies" rightTitle="Scroll to explore" />
 
-      {/* Progress bar */}
-      {/* Fixed at bottom of the pinned section */}
-      <div className="absolute bottom-8 left-8 md:left-16 right-8 md:right-16 z-10">
+      {/* Progress bar — tied to the pinned desktop scrub only */}
+      <div className="hidden md:block absolute bottom-8 left-8 md:left-16 right-8 md:right-16 z-10">
         <div className="flex items-center justify-between mb-2">
           <p className="font-mono text-[9px] uppercase tracking-[0.3em] text-muted">
             01
@@ -78,11 +109,11 @@ export default function HorizontalScroll() {
           />
         </div>
       </div>
-      {/* Horizontal track - This is what GSAP translates leftward   */}
+      {/* Horizontal track — GSAP translates this leftward on desktop;
+          on mobile it scrolls natively inside the section's overflow-x */}
       <div
         ref={trackRef}
-        className="absolute top-0 left-0 h-full flex items-center"
-        style={{ paddingLeft: "8vw", paddingRight: "8vw", gap: "3vw" }}
+        className="relative flex items-center gap-6 px-8 py-20 md:absolute md:top-0 md:left-0 md:h-full md:gap-[3vw] md:px-[8vw] md:py-0"
       >
         {/* Intro card - First "card" is just text */}
         <div className="shrink-0 flex flex-col justify-center h-[65vh] w-[30vw] max-w-90 pl-8 border-l border-border" />

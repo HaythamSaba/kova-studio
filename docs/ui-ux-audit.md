@@ -39,7 +39,7 @@ One build-time warning: Next.js misidentifies the workspace root because of an u
 | K5 | Content hidden via inline `opacity:0` breaks if JS fails | High | M | Done |
 | K6 | Arbitrary 500ms timeout before ScrollTrigger setup | High | M | Done |
 | K7 | Case study page only partially respects reduced motion | High | S | Done |
-| K8 | Pinned/scrubbed scroll sections run unmodified on mobile | High | M | Decided |
+| K8 | Pinned/scrubbed scroll sections run unmodified on mobile | High | M | Done |
 | K9 | No "concept project" disclosure anywhere in the UI | High | S | Done |
 | K10 | Duplicate/conflicting global `cursor:none` rule | Medium | S | Done |
 | K11 | No intentional focus-visible styling | Medium | S | Done |
@@ -170,6 +170,8 @@ Verified: grepped for remaining `style={{ opacity: 0` across all components (zer
 **Effort:** M
 
 **Decision (2026-11-22):** Disable all pinning and scrubbing below 768px; fall back to simple fade-ins at that breakpoint. Implement with `gsap.matchMedia()` (rather than a one-shot `window.innerWidth` check) so the pinned/scrubbed timelines are scoped to the ≥768px condition and cleanly revert if the breakpoint is crossed live (device rotation, resizing a browser window).
+
+**Fixed (2026-11-23):** `Hero.tsx`, `HorizontalScroll.tsx`, and `CaseStudy.tsx`'s image-grid now each use `gsap.matchMedia()` with a `(min-width: 768px)` branch (unchanged pin + scrub) and a `(max-width: 767px)` branch (a plain `power3.out` fade/slide-in on scroll-into-view, no pin, no scrub). `HorizontalScroll.tsx`'s section/track JSX also goes responsive: the section scrolls natively (`overflow-x-auto`) below 768px instead of relying on the JS-driven `x` translate, and the track switches from `absolute` positioning to normal in-flow `flex` layout at that breakpoint. Verified: `tsc --noEmit` clean, `next build` compiles with all routes still static/SSG.
 
 ### K9 — No "this is a concept project" disclosure anywhere
 **Problem:** Checked `app/layout.tsx` metadata, `components/ui/Footer.tsx`, `components/sections/About.tsx`, `components/sections/Contact.tsx`, and `README.md` — none mention that Kova Studio or its four clients are fictional.
