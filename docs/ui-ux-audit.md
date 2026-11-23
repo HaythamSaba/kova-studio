@@ -32,7 +32,7 @@ One build-time warning: Next.js misidentifies the workspace root because of an u
 
 | ID | Title | Priority | Effort | Status |
 |---|---|---|---|---|
-| K1 | Hero headline/CTA invisible until ~1,300px of scroll | Critical | M | Open |
+| K1 | Hero headline/CTA invisible until ~1,300px of scroll | Critical | M | Done |
 | K2 | Fabricated, specific "credibility" claims (awards, funding, metrics) | Critical | S | Done |
 | K3 | Preloader blocks every load, ignores reduced motion | Critical | S | Decided |
 | K4 | Primary CTA fails WCAG AA contrast at rest | Critical | S | Done |
@@ -71,6 +71,8 @@ gsap.to(".hero-item", { opacity: 1, y: 0, stagger: 0.08, duration: 0.6, delay: 0
 // keep only the image clip-path/scale tween inside the scroll-scrubbed timeline
 ```
 **Effort:** M
+
+**Fixed (2026-11-23):** `components/sections/Hero.tsx`. Removed `.hero-item` from the pinned/scrubbed timeline entirely — it no longer has an opacity/y state tied to scroll position at all. In its place, a standalone `gsap.fromTo(".hero-item", ...)` runs once on mount (0.2s delay, 0.7s duration, `power3.out`), fully independent of the `ScrollTrigger` pin. The pinned timeline now does exactly one thing: the background image's clip-path/scale expansion. Both are still inside the same `prefersReducedMotion()` early-return guard, so reduced-motion behavior is unchanged. Verified: `tsc --noEmit` clean, `next build` compiles with all routes still static/SSG. Not independently re-verified in a browser against real scroll feel (no browser session run this pass) — worth a visual check before considering this fully closed.
 
 ### K2 — Fabricated, specific "credibility" claims with no disclosure that the studio/clients are fictional
 **Problem:** `data/projects.ts` states as fact: Norda "won an Honorable Mention on Awwwards within three weeks of launch" (line 56); Terrain's site "launched to 28,000 email subscribers with a 3.4% conversion rate" (line 37); Stav "closed their Series A at €2.4M with participation from two Vienna-based funds" (line 94); Veld's "wholesale accounts tripled... packaging now sits in 14 independent cafés" (line 75). `components/ui/Footer.tsx:81-82` separately claims "Awwwards Nominee" and "CSS Design Awards" for Kova Studio itself. None of this is flagged anywhere as illustrative/fictional — not in the footer, not in About, not in metadata, not in the README.

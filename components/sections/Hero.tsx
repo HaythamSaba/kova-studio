@@ -37,13 +37,23 @@ export default function Hero() {
       )
         return;
 
-      // ── Initial states ───────────────────────────
-      gsap.set(".hero-item", {
-        opacity: 0,
-        y: 40,
-      });
+      // ── Text entrance — plays on mount, independent of scroll ──
+      // (previously gated behind the pinned scroll timeline below,
+      // so it stayed invisible until ~65% through a 2000px scroll)
+      gsap.fromTo(
+        ".hero-item",
+        { opacity: 0, y: 40 },
+        {
+          opacity: 1,
+          y: 0,
+          stagger: 0.08,
+          duration: 0.7,
+          delay: 0.2,
+          ease: "power3.out",
+        },
+      );
 
-      // ── Master timeline ──────────────────────────
+      // ── Master timeline — scroll-scrubbed image expansion only ──
       const tl = gsap.timeline({
         scrollTrigger: {
           trigger: containerRef.current,
@@ -69,19 +79,6 @@ export default function Hero() {
           ease: "none",
           duration: 1,
         },
-      );
-
-      // ── Text reveal near end of expansion ───────
-      tl.to(
-        ".hero-item",
-        {
-          opacity: 1,
-          y: 0,
-          stagger: 0.08,
-          duration: 0.45,
-          ease: "power3.out",
-        },
-        0.82,
       );
 
       ScrollTrigger.refresh();
