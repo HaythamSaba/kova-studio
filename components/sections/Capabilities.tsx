@@ -49,18 +49,7 @@ export default function Capabilities() {
     let ctx: gsap.Context | undefined;
 
     const setupTimer = setTimeout(() => {
-      if (prefersReducedMotion()) {
-        // Make all elements visible immediately
-        tilesRef.current
-          ?.querySelectorAll(".capability-tile")
-          ?.forEach((el) => {
-            if (el instanceof HTMLElement) {
-              el.style.opacity = "1";
-              el.style.clipPath = "none";
-            }
-          });
-        return;
-      }
+      if (prefersReducedMotion()) return;
 
       ctx = gsap.context(() => {
         // Tile clip-path reveals
@@ -132,7 +121,6 @@ export default function Capabilities() {
               <div
                 key={service.index}
                 className="capability-tile relative bg-bg p-10 flex flex-col gap-8 group min-h-85"
-                style={{ opacity: 0, clipPath: "inset(0 0 100% 0)" }}
                 onMouseEnter={() => setHoveredIndex(i)}
                 onMouseLeave={() => setHoveredIndex(null)}
                 data-cursor="hover"

@@ -31,11 +31,7 @@ export default function SectionTitle({
     let ctx: gsap.Context | undefined;
 
     const setupTimer = setTimeout(() => {
-      if (prefersReducedMotion()) {
-        // Make all elements visible immediately
-        if (headlineRef.current) headlineRef.current.style.opacity = "1";
-        return;
-      }
+      if (prefersReducedMotion()) return;
 
       ctx = gsap.context(() => {
         // ── Headline entrance ───────────────────────
@@ -70,7 +66,7 @@ export default function SectionTitle({
   return (
     <Tag
       ref={headlineRef}
-      style={{ opacity: 0, ...style }}
+      style={style}
       className={`font-serif text-[clamp(36px,4.5vw,72px)] leading-[0.92] text-text ${className}`}
     >
       {Left.map((item, i) => (

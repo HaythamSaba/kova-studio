@@ -36,7 +36,7 @@ One build-time warning: Next.js misidentifies the workspace root because of an u
 | K2 | Fabricated, specific "credibility" claims (awards, funding, metrics) | Critical | S | Done |
 | K3 | Preloader blocks every load, ignores reduced motion | Critical | S | Done |
 | K4 | Primary CTA fails WCAG AA contrast at rest | Critical | S | Done |
-| K5 | Content hidden via inline `opacity:0` breaks if JS fails | High | M | Open |
+| K5 | Content hidden via inline `opacity:0` breaks if JS fails | High | M | Done |
 | K6 | Arbitrary 500ms timeout before ScrollTrigger setup | High | M | Open |
 | K7 | Case study page only partially respects reduced motion | High | S | Open |
 | K8 | Pinned/scrubbed scroll sections run unmodified on mobile | High | M | Decided |
@@ -136,6 +136,12 @@ className="... bg-accent text-bg hover:text-white transition-colors duration-300
 gsap.set(headerRef.current, { opacity: 0 });
 ```
 **Effort:** M (same fix repeated across 4 files)
+
+**Fixed (2026-11-23):** Removed the inline `style={{ opacity: 0 }}` (and, in `Capabilities.tsx`, `clipPath: "inset(0 0 100% 0)"`) from all four files. Each element now starts visible by default in server-rendered HTML; the hidden "from" state is applied client-side by the existing `gsap.fromTo(...)`'s own from-tuple (already present in every case — no new tweens needed), matching the pattern `Hero.tsx` already used correctly. Each reduced-motion branch simplified from manually resetting `el.style.opacity = "1"` back to a plain early `return` — nothing needs resetting now that nothing was hidden in the first place. `SectionTitle.tsx`'s `style` prop also changed from forcibly merging `opacity: 0` over any caller-supplied style to passing it through unchanged (`style={style}`), so a caller's own style (e.g. `Contact.tsx`'s `fontSize` clamp) is no longer silently combined with a forced invisibility default.
+
+Bonus fix discovered while touching this code: `About.tsx`'s reduced-motion branch reset `paraRefs` and `statsRef` opacity but never reset `tagsRef` — under reduced motion, the credential tags ("Brand Identity," "Web Design," etc.) were permanently invisible, a second, independent bug with the same root cause. Removing the inline `opacity:0` fixes that case too, since there's nothing left to forget to reset.
+
+Verified: grepped for remaining `style={{ opacity: 0` across all components (zero hits; the two `opacity: 0.9`/`0.7` matches found are unrelated decorative watermarks), `tsc --noEmit` clean, `next build` compiles with all routes still static/SSG.
 
 ### K6 — Arbitrary 500ms timeout substitutes for a real "layout is ready" signal
 **Problem:** `components/sections/About.tsx:33`, `components/sections/Capabilities.tsx:51`, `components/sections/Contact.tsx:47`, `components/ui/SectionTitle.tsx:33` all wrap their `gsap.context`/ScrollTrigger setup in `setTimeout(fn, 500)`, with a comment explaining it's waiting for "the full page height to be known" before ScrollTrigger measures trigger positions. Meanwhile `Hero.tsx` and `HorizontalScroll.tsx` set up ScrollTrigger immediately, with no such wait.

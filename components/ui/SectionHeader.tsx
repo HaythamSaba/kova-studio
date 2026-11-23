@@ -16,10 +16,7 @@ export default function SectionHeader({
   const headerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    if (prefersReducedMotion()) {
-      if (headerRef.current) headerRef.current.style.opacity = "1";
-      return;
-    }
+    if (prefersReducedMotion()) return;
 
     const ctx = gsap.context(() => {
       // ── Header entrance ───────────────────────
@@ -48,7 +45,6 @@ export default function SectionHeader({
   return (
     <div
       ref={headerRef}
-      style={{ opacity: 0 }}
       className="flex items-baseline justify-between mb-20 pb-5 border-b border-border p-8"
     >
       <p className="font-mono text-[10px] uppercase tracking-[0.3em] text-muted">

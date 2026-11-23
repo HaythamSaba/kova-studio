@@ -31,14 +31,7 @@ export default function About() {
     let ctx: gsap.Context | undefined;
 
     const setupTimer = setTimeout(() => {
-      if (prefersReducedMotion()) {
-        // Make all elements visible immediately
-        paraRefs.current.forEach((el) => {
-          if (el) el.style.opacity = "1";
-        });
-        if (statsRef.current) statsRef.current.style.opacity = "1";
-        return;
-      }
+      if (prefersReducedMotion()) return;
 
       ctx = gsap.context(() => {
         // ── Headline entrance ───────────────────────
@@ -142,7 +135,6 @@ export default function About() {
                   ref={(el) => {
                     paraRefs.current[i] = el;
                   }}
-                  style={{ opacity: 0 }}
                   className="font-sans text-muted text-lg leading-relaxed max-w-md mb-80"
                 >
                   {text}
@@ -151,11 +143,7 @@ export default function About() {
             </div>
 
             {/* Credential tags — GSAP triggered */}
-            <div
-              ref={tagsRef}
-              style={{ opacity: 0 }}
-              className="flex flex-wrap gap-3"
-            >
+            <div ref={tagsRef} className="flex flex-wrap gap-3">
               {[
                 "Brand Identity",
                 "Web Design",
