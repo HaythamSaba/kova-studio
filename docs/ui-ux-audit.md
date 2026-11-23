@@ -34,7 +34,7 @@ One build-time warning: Next.js misidentifies the workspace root because of an u
 |---|---|---|---|---|
 | K1 | Hero headline/CTA invisible until ~1,300px of scroll | Critical | M | Done |
 | K2 | Fabricated, specific "credibility" claims (awards, funding, metrics) | Critical | S | Done |
-| K3 | Preloader blocks every load, ignores reduced motion | Critical | S | Decided |
+| K3 | Preloader blocks every load, ignores reduced motion | Critical | S | Done |
 | K4 | Primary CTA fails WCAG AA contrast at rest | Critical | S | Done |
 | K5 | Content hidden via inline `opacity:0` breaks if JS fails | High | M | Open |
 | K6 | Arbitrary 500ms timeout before ScrollTrigger setup | High | M | Open |
@@ -103,6 +103,8 @@ gsap.to(".hero-item", { opacity: 1, y: 0, stagger: 0.08, duration: 0.6, delay: 0
 **Effort:** S
 
 **Decision (2026-11-22):** Keep the Preloader, but: gate it on `sessionStorage` so it only shows once per session; shorten the total duration (initial pause + count + hold) to roughly 1 second; and skip it entirely when `prefersReducedMotion()` is true, rather than just softening it.
+
+**Fixed (2026-11-23):** `components/ui/Preloader.tsx` rewritten. The old variable-delay `setTimeout` chain (0 → 100 with per-tick decreasing delays, ~4.6s on its own, plus a 300ms initial pause, 600ms hold, and a 0.9s+0.3s-delay exit — roughly 6.75s end to end) is replaced with a single fixed-duration `requestAnimationFrame` loop (`COUNT_DURATION_MS = 600`), a 150ms hold, and a shortened exit transition (0.3s duration, 0.05s delay) — roughly 1.1s total. A single `useLayoutEffect` (not `useEffect`, so the skip decision resolves before the browser paints) checks `prefersReducedMotion()` and a `sessionStorage` flag (`kova-preloader-seen`) first: either one skips the counting animation and dismisses immediately; otherwise the flag is set before the count starts, so it won't replay again this session. `visible` still starts `true` on both server and client (identical initial markup avoids a hydration mismatch) — a skip means the static initial frame can't be eliminated below one hydration-length flash, which is an inherent SSR/client-only-check limitation, not something this fix left on the table. Verified: `tsc --noEmit` clean, `next build` compiles with all routes still static/SSG. Not independently re-verified in a browser against real session-replay/reduced-motion behavior this pass.
 
 ### K4 — Primary CTA fails WCAG AA contrast at rest
 **Problem:** `components/sections/Hero.tsx:171` — `"Start a project"` uses `bg-accent text-white hover:text-bg`. Accent is `#c17f3e` (`app/globals.css:10`); white text on that background measures **≈3.3:1**, below the 4.5:1 AA threshold for normal-size text (this is 14px/`text-sm`, not large text, so the 3:1 large-text exception doesn't apply). The fix only applies `text-bg` on `:hover`, so the default/resting state — and the focused state for keyboard users, since `:hover` doesn't trigger on focus — is the failing one.

@@ -1,9 +1,10 @@
 // components/Preloader.tsx
 "use client";
 
-import { useEffect, useState } from "react";
+import { useLayoutEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { SHARP } from "@/lib/easings";
+import { prefersReducedMotion } from "@/lib/prefersReducedMotion";
 
 // ── Variants ──────────────────────────────────────────
 
@@ -14,9 +15,9 @@ const overlayVariants = {
     y: "-100%",
     background: "rgba(0, 0, 0, 0)",
     transition: {
-      duration: 0.9,
+      duration: 0.3,
       ease: SHARP, // sharp cubic — feels intentional
-      delay: 0.3, // brief pause after count reaches 100
+      delay: 0.05, // brief pause after count reaches 100
     },
   },
 };
@@ -26,43 +27,51 @@ const counterVariants = {
   initial: { opacity: 1 },
   exit: {
     opacity: 0,
-    transition: { duration: 0.2 },
+    transition: { duration: 0.15 },
   },
 };
 
+// Shown once per browser session, skipped entirely for reduced motion
+const SESSION_KEY = "kova-preloader-seen";
+const COUNT_DURATION_MS = 600; // 0 → 100 over a fixed ~0.6s
+const HOLD_MS = 150; // brief pause once the count hits 100
+
 export default function Preloader() {
   const [count, setCount] = useState(0);
+  // Starts visible on both server and client — identical initial
+  // markup avoids a hydration mismatch. The layout effect below
+  // dismisses it before paint when it shouldn't run at all.
   const [visible, setVisible] = useState(true);
 
-  // ── Count from 0 → 100 ───────────────────────────
-  useEffect(() => {
-    // We don't use a fixed interval — we use a variable
-    // delay that starts slow, speeds up, then hesitates
-    // near 100. This feels organic, not robotic.
-    let current = 0;
+  // ── Skip for reduced motion / a repeat visit this session; ──
+  // otherwise count 0 → 100 over a fixed ~600ms. useLayoutEffect,
+  // not useEffect: the skip decision runs before the browser
+  // paints, so a skip never flashes the full overlay for a frame.
+  useLayoutEffect(() => {
+    if (prefersReducedMotion() || sessionStorage.getItem(SESSION_KEY)) {
+      setVisible(false);
+      return;
+    }
 
-    function tick() {
-      // How far along are we? (0 → 1)
-      const progress = current / 100;
+    sessionStorage.setItem(SESSION_KEY, "1");
 
-      // Delay curve: fast in middle, slow at start and end
-      // At 0%: ~80ms, at 50%: ~20ms, at 95%+: ~60ms
-      const delay = progress < 0.9 ? Math.max(20, 80 - progress * 80) : 60;
+    let rafId: number;
+    let start: number | null = null;
 
-      current += 1;
-      setCount(current);
+    function tick(now: number) {
+      if (start === null) start = now;
+      const progress = Math.min(1, (now - start) / COUNT_DURATION_MS);
+      setCount(Math.round(progress * 100));
 
-      if (current < 100) {
-        setTimeout(tick, delay);
+      if (progress < 1) {
+        rafId = requestAnimationFrame(tick);
       } else {
-        // At 100 — wait briefly then dismiss
-        setTimeout(() => setVisible(false), 600);
+        setTimeout(() => setVisible(false), HOLD_MS);
       }
     }
 
-    // Small initial pause before counting starts
-    const startTimer = setTimeout(tick, 300);
-    return () => clearTimeout(startTimer);
+    rafId = requestAnimationFrame(tick);
+    return () => cancelAnimationFrame(rafId);
   }, []);
 
   return (
