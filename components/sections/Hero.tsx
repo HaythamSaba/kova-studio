@@ -64,7 +64,7 @@ export default function Hero() {
           scrollTrigger: {
             trigger: containerRef.current,
             start: "top top",
-            end: "+=2000",
+            end: () => "+=" + window.innerHeight * 2.5,
             scrub: 1.5,
             pin: true,
             anticipatePin: 1,

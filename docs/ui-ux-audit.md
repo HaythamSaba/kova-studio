@@ -50,7 +50,7 @@ One build-time warning: Next.js misidentifies the workspace root because of an u
 | K16 | No sitemap/robots | Medium | S | Open |
 | K17 | Turbopack workspace-root warning | Low | S | Done |
 | K18 | README is unedited `create-next-app` boilerplate | Low | S | Open |
-| K19 | Hero pin distance is a fixed px value, not viewport-relative | Low | S | Open |
+| K19 | Hero pin distance is a fixed px value, not viewport-relative | Low | S | Done |
 
 *Status: Open = no decision yet · Decided = approach agreed, not yet implemented · Done = fixed and verified.*
 
