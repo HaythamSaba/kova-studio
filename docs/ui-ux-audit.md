@@ -44,7 +44,7 @@ One build-time warning: Next.js misidentifies the workspace root because of an u
 | K10 | Duplicate/conflicting global `cursor:none` rule | Medium | S | Done |
 | K11 | No intentional focus-visible styling | Medium | S | Done |
 | K12 | GSAP and Framer Motion both implement the same scroll-fade effect | Medium | M | Done |
-| K13 | Full-screen curtain transition on every navigation, every time | Medium | S | Open |
+| K13 | Full-screen curtain transition on every navigation, every time | Medium | S | Done |
 | K14 | Unoptimized source images (15MB+ of PNGs) | Medium | S | Open |
 | K15 | No Open Graph image | Medium | S | Open |
 | K16 | No sitemap/robots | Medium | S | Open |
@@ -232,6 +232,8 @@ Verified: grepped for remaining `style={{ opacity: 0` across all components (zer
 
 **Why it matters:** This is likely fine in practice (Framer Motion's `MotionConfig` does suppress most motion for `prefers-reduced-motion` users), but it's the one motion-heavy component in the app that doesn't follow the codebase's otherwise-consistent explicit pattern, and it's unverified here that the curtain's `scaleY` transform is included in what `MotionConfig` suppresses. Worth confirming directly rather than relying on an implicit framework default for a wipe that runs dozens of times per session.
 **Effort:** S
+
+**Fixed (2026-11-24):** Added an explicit `useReducedMotion()` check (Framer Motion's own hook) in `PageTransition.tsx` instead of relying solely on the root `MotionConfig`. When reduced motion is preferred: the curtain's `exit` state stays at `scaleY: 0` (it never covers the screen — no wipe at all, rather than trusting that `MotionConfig` nulls out the transform), and the content fade's `y` offset and all durations/delays collapse to `0`, leaving an instant cross-fade. This makes the behavior explicit and verified rather than implicit, matching every other component's pattern in the codebase. Verified: `tsc --noEmit` and `eslint` clean, `next build` compiles with all routes still static/SSG.
 
 ### K14 — Unoptimized source images
 **Problem:** `public/images/projects/` totals ~15MB across 8 PNGs (~1.5–2.0MB each); `public/images/bg.png` (the hero background) is 1.6MB. All are PNG — a lossy-but-visually-fine JPEG/AVIF source would cut these dramatically before `next/image` even gets to resize/reformat them at request time.
