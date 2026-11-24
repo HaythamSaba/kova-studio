@@ -1,11 +1,8 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { EXPO_OUT } from "@/lib/easings";
-import { gsap, ScrollTrigger } from "@/lib/gsap";
-import { prefersReducedMotion } from "@/lib/prefersReducedMotion";
-import { onWindowLoad } from "@/lib/onWindowLoad";
 import SectionHeader from "../ui/SectionHeader";
 import SectionTitle from "../ui/SectionTitle";
 
@@ -42,53 +39,10 @@ const services = [
 ];
 
 export default function Capabilities() {
-  const sectionRef = useRef<HTMLElement>(null);
-  const tilesRef = useRef<HTMLDivElement>(null);
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
-
-  useEffect(() => {
-    if (prefersReducedMotion()) return;
-
-    const ctx = gsap.context(() => {
-      // Tile clip-path reveals
-      // Target all four tiles at once with stagger
-      // clip-path wipes each tile upward in sequence.
-      if (tilesRef.current) {
-        const tiles = tilesRef.current.querySelectorAll(".capability-tile");
-        gsap.fromTo(
-          tiles,
-          {
-            clipPath: "inset(0 0 100% 0)",
-            opacity: 0,
-          },
-          {
-            clipPath: "inset(0 0 0% 0)",
-            opacity: 1,
-            duration: 0.9,
-            ease: "power3.out",
-            stagger: 0.3,
-            scrollTrigger: {
-              trigger: tilesRef.current,
-              start: "top 80%",
-              toggleActions: "play none none none",
-            },
-          },
-        );
-      }
-      ScrollTrigger.refresh();
-    }, sectionRef);
-
-    const removeLoadListener = onWindowLoad(() => ScrollTrigger.refresh());
-
-    return () => {
-      removeLoadListener();
-      ctx.revert();
-    };
-  }, []);
 
   return (
     <section
-      ref={sectionRef}
       id="capabilities"
       className="relative py-32 md:py-48 px-8 md:px-16 border-t border-border"
     >
@@ -112,13 +66,14 @@ export default function Capabilities() {
 
           {/* Tiles grid */}
           {/* 2*2 on desktop, 1 column on mobile */}
-          <div
-            ref={tilesRef}
-            className="grid grid-cols-1 md:grid-cols-2 gap-px bg-border"
-          >
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-px bg-border">
             {services.map((service, i) => (
-              <div
+              <motion.div
                 key={service.index}
+                initial={{ clipPath: "inset(0 0 100% 0)", opacity: 0 }}
+                whileInView={{ clipPath: "inset(0 0 0% 0)", opacity: 1 }}
+                viewport={{ once: true, amount: 0.3 }}
+                transition={{ duration: 0.9, ease: EXPO_OUT, delay: i * 0.15 }}
                 className="capability-tile relative bg-bg p-10 flex flex-col gap-8 group min-h-85"
                 onMouseEnter={() => setHoveredIndex(i)}
                 onMouseLeave={() => setHoveredIndex(null)}
@@ -206,7 +161,7 @@ export default function Capabilities() {
                     )}
                   </AnimatePresence>
                 </div>
-              </div>
+              </motion.div>
             ))}
           </div>
         </div>

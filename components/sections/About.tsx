@@ -1,10 +1,9 @@
 // components/sections/About.tsx
 "use client";
 
-import { useEffect, useRef } from "react";
-import { gsap, ScrollTrigger } from "@/lib/gsap";
-import { prefersReducedMotion } from "@/lib/prefersReducedMotion";
-import { onWindowLoad } from "@/lib/onWindowLoad";
+import { useRef } from "react";
+import { motion } from "framer-motion";
+import { EXPO_OUT } from "@/lib/easings";
 import Image from "next/image";
 import AboutImage from "@/public/images/studio/studio-photo.png";
 import SectionHeader from "../ui/SectionHeader";
@@ -20,94 +19,10 @@ const paragraphs = [
 ];
 
 export default function About() {
-  const sectionRef = useRef<HTMLElement>(null);
-  const headlineRef = useRef<HTMLHeadingElement>(null);
-  const paraRefs = useRef<(HTMLParagraphElement | null)[]>([]);
-  const tagsRef = useRef<HTMLDivElement>(null);
   const statsRef = useRef<HTMLDivElement>(null);
 
-  useEffect(() => {
-    if (prefersReducedMotion()) return;
-
-    const ctx = gsap.context(() => {
-      // ── Headline entrance ───────────────────────
-      if (headlineRef.current) {
-        gsap.fromTo(
-          headlineRef.current,
-          { y: 40, opacity: 0 },
-          {
-            y: 0,
-            opacity: 1,
-            duration: 1,
-            ease: "power3.out",
-            scrollTrigger: {
-              trigger: headlineRef.current,
-              start: "top 85%",
-              toggleActions: "play none none none",
-            },
-          },
-        );
-      }
-
-      // ── Paragraph entrances (one trigger each)
-      paraRefs.current.forEach((el, i) => {
-        if (!el) return;
-
-        gsap.fromTo(
-          el,
-          { y: 40, opacity: 0 },
-          {
-            y: 0,
-            opacity: 1,
-            duration: 0.9,
-            ease: "power3.out",
-            delay: i * 0.08,
-            scrollTrigger: {
-              trigger: el,
-              start: "top 88%",
-              toggleActions: "play none none none",
-            },
-          },
-        );
-      });
-
-      // ── Tags row entrance ───────────────────────
-      if (tagsRef.current) {
-        gsap.fromTo(
-          tagsRef.current,
-          { y: 24, opacity: 0 },
-          {
-            y: 0,
-            opacity: 1,
-            duration: 0.8,
-            ease: "power3.out",
-            scrollTrigger: {
-              trigger: tagsRef.current,
-              start: "top 88%",
-              toggleActions: "play none none none",
-            },
-          },
-        );
-      }
-
-      // ── Stat counters ───────────────────────────
-      ScrollTrigger.refresh();
-    }, sectionRef);
-
-    const removeLoadListener = onWindowLoad(() => ScrollTrigger.refresh());
-
-    return () => {
-      removeLoadListener();
-      ctx.revert();
-    };
-  }, []);
-
   return (
-    <section
-      ref={sectionRef}
-      id="about"
-      className="relative py-32 px-8 md:px-16"
-    >
+    <section id="about" className="relative py-32 px-8 md:px-16">
       {/* max-w-350 = 87.5rem = 1400px in Tailwind v4 default scale ✓ */}
       <div className="max-w-350 mx-auto">
         {/* ── Section header ──────────────────────── */}
@@ -117,30 +32,37 @@ export default function About() {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-16 md:gap-24">
           {/* ── Left column ─────────────────────── */}
           <div className="flex flex-col gap-16">
-            {/* Headline — GSAP triggered */}
+            {/* Headline — Framer, triggered on scroll into view */}
             <ColoredTitle
               Left={["Small studio."]}
               ColoredMiddle="Considered"
               Right="Work."
             />
 
-            {/* Paragraphs — GSAP triggered */}
+            {/* Paragraphs — Framer, one trigger each */}
             <div className="flex flex-col gap-10">
               {paragraphs.map((text, i) => (
-                <p
+                <motion.p
                   key={i}
-                  ref={(el) => {
-                    paraRefs.current[i] = el;
-                  }}
+                  initial={{ y: 40, opacity: 0 }}
+                  whileInView={{ y: 0, opacity: 1 }}
+                  viewport={{ once: true, amount: 0.3 }}
+                  transition={{ duration: 0.9, ease: EXPO_OUT, delay: i * 0.08 }}
                   className="font-sans text-muted text-lg leading-relaxed max-w-md mb-80"
                 >
                   {text}
-                </p>
+                </motion.p>
               ))}
             </div>
 
-            {/* Credential tags — GSAP triggered */}
-            <div ref={tagsRef} className="flex flex-wrap gap-3">
+            {/* Credential tags — Framer, triggered on scroll into view */}
+            <motion.div
+              initial={{ y: 24, opacity: 0 }}
+              whileInView={{ y: 0, opacity: 1 }}
+              viewport={{ once: true, amount: 0.3 }}
+              transition={{ duration: 0.8, ease: EXPO_OUT }}
+              className="flex flex-wrap gap-3"
+            >
               {[
                 "Brand Identity",
                 "Web Design",
@@ -154,7 +76,7 @@ export default function About() {
                   {tag}
                 </span>
               ))}
-            </div>
+            </motion.div>
           </div>
 
           {/* ── Right column — sticky image ──────── */}

@@ -1,9 +1,7 @@
 "use client";
 
-import { gsap, ScrollTrigger } from "@/lib/gsap";
-import { useEffect, useRef } from "react";
-import { prefersReducedMotion } from "@/lib/prefersReducedMotion";
-import { onWindowLoad } from "@/lib/onWindowLoad";
+import { motion } from "framer-motion";
+import { EXPO_OUT } from "@/lib/easings";
 
 type HeadingTag = "h1" | "h2" | "h3" | "h4" | "h5" | "h6";
 
@@ -23,45 +21,14 @@ export default function SectionTitle({
   className,
   style,
 }: ColoredTitleProps) {
-  const headlineRef = useRef<HTMLHeadingElement>(null);
-
-  useEffect(() => {
-    if (prefersReducedMotion()) return;
-
-    const ctx = gsap.context(() => {
-      // ── Headline entrance ───────────────────────
-      if (headlineRef.current) {
-        gsap.fromTo(
-          headlineRef.current,
-          { y: 40, opacity: 0 },
-          {
-            y: 0,
-            opacity: 1,
-            duration: 1,
-            ease: "power3.out",
-            scrollTrigger: {
-              trigger: headlineRef.current,
-              start: "top 85%",
-              toggleActions: "play none none none",
-            },
-          },
-        );
-      }
-
-      ScrollTrigger.refresh();
-    });
-
-    const removeLoadListener = onWindowLoad(() => ScrollTrigger.refresh());
-
-    return () => {
-      removeLoadListener();
-      ctx.revert();
-    };
-  }, []);
+  const MotionTag = motion[Tag];
 
   return (
-    <Tag
-      ref={headlineRef}
+    <MotionTag
+      initial={{ y: 40, opacity: 0 }}
+      whileInView={{ y: 0, opacity: 1 }}
+      viewport={{ once: true, amount: 0.3 }}
+      transition={{ duration: 1, ease: EXPO_OUT }}
       style={style}
       className={`font-serif text-[clamp(36px,4.5vw,72px)] leading-[0.92] text-text ${className}`}
     >
@@ -75,6 +42,6 @@ export default function SectionTitle({
       <em className="text-accent">{ColoredMiddle}</em>
       <br />
       {Right}
-    </Tag>
+    </MotionTag>
   );
 }

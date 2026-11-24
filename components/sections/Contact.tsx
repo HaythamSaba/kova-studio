@@ -1,15 +1,12 @@
 // components/sections/Contact.tsx
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { EXPO_OUT } from "@/lib/easings";
 import MagneticLink from "../ui/MagneticLink";
-import { gsap, ScrollTrigger } from "@/lib/gsap";
-import { onWindowLoad } from "@/lib/onWindowLoad";
 import SectionHeader from "../ui/SectionHeader";
 import SectionTitle from "../ui/SectionTitle";
-import { prefersReducedMotion } from "@/lib/prefersReducedMotion";
 import { EMAIL } from "@/lib/constants";
 
 const socialLinks = [
@@ -19,10 +16,6 @@ const socialLinks = [
 ];
 
 export default function Contact() {
-  const sectionRef = useRef<HTMLElement>(null);
-  const headlineRef = useRef<HTMLHeadingElement>(null);
-  const contentRef = useRef<HTMLDivElement>(null);
-
   const [copied, setCopied] = useState(false);
   const [toastId, setToastId] = useState(0); // increment to re-trigger toast
 
@@ -41,70 +34,8 @@ export default function Contact() {
     }
   }
 
-  // ── Scroll animations ─────────────────────────────
-  useEffect(() => {
-    if (prefersReducedMotion()) {
-      // Make all elements visible immediately
-      if (headlineRef.current) headlineRef.current.style.opacity = "1";
-      if (contentRef.current) contentRef.current.style.opacity = "1";
-      return;
-    }
-
-    const ctx = gsap.context(() => {
-      // Headline — large text wipes in from below
-      if (headlineRef.current) {
-        gsap.fromTo(
-          headlineRef.current,
-          { y: 60, opacity: 0 },
-          {
-            y: 0,
-            opacity: 1,
-            duration: 1.1,
-            ease: "power3.out",
-            scrollTrigger: {
-              trigger: headlineRef.current,
-              start: "top 85%",
-              toggleActions: "play none none none",
-            },
-          },
-        );
-      }
-
-      // Content row — staggered children
-      if (contentRef.current) {
-        const children = contentRef.current.children;
-        gsap.fromTo(
-          children,
-          { y: 32, opacity: 0 },
-          {
-            y: 0,
-            opacity: 1,
-            duration: 0.8,
-            ease: "power3.out",
-            stagger: 0.1,
-            scrollTrigger: {
-              trigger: contentRef.current,
-              start: "top 85%",
-              toggleActions: "play none none none",
-            },
-          },
-        );
-      }
-
-      ScrollTrigger.refresh();
-    }, sectionRef);
-
-    const removeLoadListener = onWindowLoad(() => ScrollTrigger.refresh());
-
-    return () => {
-      removeLoadListener();
-      ctx.revert();
-    };
-  }, []);
-
   return (
     <section
-      ref={sectionRef}
       id="contact"
       className="relative py-32 md:py-48 px-8 md:px-16 border-t border-border overflow-hidden"
     >
@@ -132,13 +63,29 @@ export default function Contact() {
           style={{ fontSize: "clamp(48px, 9vw, 160px)" }}
         />
 
-        {/* ── Content row ──────────────────────────── */}
-        <div
-          ref={contentRef}
+        {/* ── Content row — Framer, staggered children ──── */}
+        <motion.div
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, amount: 0.3 }}
+          variants={{
+            hidden: {},
+            visible: { transition: { staggerChildren: 0.1 } },
+          }}
           className="flex flex-col md:flex-row justify-around gap-10 md:gap-0 mt-20"
         >
           {/* ── Email block ──────────────────────── */}
-          <div className="flex flex-col gap-2 md:gap-5">
+          <motion.div
+            variants={{
+              hidden: { y: 32, opacity: 0 },
+              visible: {
+                y: 0,
+                opacity: 1,
+                transition: { duration: 0.8, ease: EXPO_OUT },
+              },
+            }}
+            className="flex flex-col gap-2 md:gap-5"
+          >
             <p className="font-mono text-[10px] uppercase tracking-[0.3em] text-muted">
               Write to us
             </p>
@@ -166,10 +113,20 @@ export default function Contact() {
             <p className="font-sans text-muted text-sm leading-relaxed">
               We respond to every inquiry within two business days.
             </p>
-          </div>
+          </motion.div>
 
           {/* ── Based in block ───────────────────── */}
-          <div className="flex flex-col gap-2 md:gap-5">
+          <motion.div
+            variants={{
+              hidden: { y: 32, opacity: 0 },
+              visible: {
+                y: 0,
+                opacity: 1,
+                transition: { duration: 0.8, ease: EXPO_OUT },
+              },
+            }}
+            className="flex flex-col gap-2 md:gap-5"
+          >
             <p className="font-mono text-[10px] uppercase tracking-[0.3em] text-muted">
               Based in
             </p>
@@ -182,10 +139,20 @@ export default function Contact() {
             <p className="font-sans text-muted text-sm leading-relaxed">
               Working with clients across the European market.
             </p>
-          </div>
+          </motion.div>
 
           {/* ── Socials block ────────────────────── */}
-          <div className="flex flex-col gap-2 md:gap-5">
+          <motion.div
+            variants={{
+              hidden: { y: 32, opacity: 0 },
+              visible: {
+                y: 0,
+                opacity: 1,
+                transition: { duration: 0.8, ease: EXPO_OUT },
+              },
+            }}
+            className="flex flex-col gap-2 md:gap-5"
+          >
             <p className="font-mono text-[10px] uppercase tracking-[0.3em] text-muted">
               Follow
             </p>
@@ -196,8 +163,8 @@ export default function Contact() {
                 </MagneticLink>
               ))}
             </div>
-          </div>
-        </div>
+          </motion.div>
+        </motion.div>
       </div>
 
       {/* ── Toast notification ───────────────────────── */}

@@ -1,8 +1,7 @@
 "use client";
 
-import { useEffect, useRef } from "react";
-import { gsap } from "@/lib/gsap";
-import { prefersReducedMotion } from "@/lib/prefersReducedMotion";
+import { motion } from "framer-motion";
+import { EXPO_OUT } from "@/lib/easings";
 
 interface SectionHeaderProps {
   leftTitle: string;
@@ -13,38 +12,12 @@ export default function SectionHeader({
   leftTitle,
   rightTitle,
 }: SectionHeaderProps) {
-  const headerRef = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    if (prefersReducedMotion()) return;
-
-    const ctx = gsap.context(() => {
-      // ── Header entrance ───────────────────────
-
-      if (headerRef.current) {
-        gsap.fromTo(
-          headerRef.current,
-          { y: 48, opacity: 0 },
-          {
-            y: 0,
-            opacity: 1,
-            duration: 1,
-            ease: "power3.out",
-            scrollTrigger: {
-              trigger: headerRef.current,
-              start: "top 70%",
-              toggleActions: "play none none none",
-            },
-          },
-        );
-      }
-    });
-    return () => ctx.revert();
-  }, []);
-
   return (
-    <div
-      ref={headerRef}
+    <motion.div
+      initial={{ y: 48, opacity: 0 }}
+      whileInView={{ y: 0, opacity: 1 }}
+      viewport={{ once: true, amount: 0.3 }}
+      transition={{ duration: 0.9, ease: EXPO_OUT }}
       className="flex items-baseline justify-between mb-20 pb-5 border-b border-border p-8"
     >
       <p className="font-mono text-[10px] uppercase tracking-[0.3em] text-muted">
@@ -53,6 +26,6 @@ export default function SectionHeader({
       <p className="font-mono text-[10px] uppercase tracking-[0.3em] text-muted">
         {rightTitle}
       </p>
-    </div>
+    </motion.div>
   );
 }

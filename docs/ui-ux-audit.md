@@ -43,7 +43,7 @@ One build-time warning: Next.js misidentifies the workspace root because of an u
 | K9 | No "concept project" disclosure anywhere in the UI | High | S | Done |
 | K10 | Duplicate/conflicting global `cursor:none` rule | Medium | S | Done |
 | K11 | No intentional focus-visible styling | Medium | S | Done |
-| K12 | GSAP and Framer Motion both implement the same scroll-fade effect | Medium | M | Open |
+| K12 | GSAP and Framer Motion both implement the same scroll-fade effect | Medium | M | Done |
 | K13 | Full-screen curtain transition on every navigation, every time | Medium | S | Open |
 | K14 | Unoptimized source images (15MB+ of PNGs) | Medium | S | Open |
 | K15 | No Open Graph image | Medium | S | Open |
@@ -224,6 +224,8 @@ Verified: grepped for remaining `style={{ opacity: 0` across all components (zer
 
 **Solution:** Pick one for simple viewport-triggered entrances — Framer's `whileInView` is the lighter-weight, more idiomatic choice for anything that doesn't need scroll-scrubbing — and reserve GSAP/ScrollTrigger for the pinned/scrubbed timelines (Hero, HorizontalScroll, CaseStudy image grid) where Framer has no equivalent primitive.
 **Effort:** M
+
+**Fixed (2026-11-24):** Converted every simple "fade/slide up on scroll into view" entrance from GSAP/ScrollTrigger to Framer Motion's `whileInView`, matching the idiom already used by `CaseStudy.tsx`'s tagline and `AllWorkHero.tsx`: `SectionHeader.tsx` and `SectionTitle.tsx` (now a dynamic `motion[Tag]`) dropped their `useEffect`/`gsap.context` entirely; `About.tsx`'s headline/paragraph/tags-row entrances and `Capabilities.tsx`'s tile clip-path reveal became `motion.p`/`motion.div` with `whileInView` + per-item `delay`; `Contact.tsx`'s content row became a `motion.div` stagger container (`staggerChildren`) with `motion.div` children, replacing the GSAP children-stagger. `StatCard.tsx`'s GSAP number-tween counter is untouched — it's a distinct effect with no Framer duplicate, not part of K12's scope. `Hero.tsx`, `HorizontalScroll.tsx`, and `CaseStudy.tsx`'s image-grid keep GSAP/ScrollTrigger for their pinned/scrubbed timelines, as the solution specifies. Verified: `tsc --noEmit` clean, `eslint` clean on all five touched files, `next build` compiles with all routes still static/SSG.
 
 ### K13 — Full-screen curtain transition fires on every navigation with no reduced-motion gate
 **Problem:** `components/sections/PageTransition.tsx` wraps every route change in a `0.5s`/`0.4s` full-screen curtain wipe plus a `0.3s` content fade (with a `0.1s` delay stacked on top), on every single internal navigation. Unlike every GSAP component in the codebase, this file never calls `prefersReducedMotion()` directly — it relies solely on the root `MotionConfig reducedMotion="user"` in `app/layout.tsx:87` to soften it automatically.
