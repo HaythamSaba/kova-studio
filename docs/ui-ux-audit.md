@@ -45,7 +45,7 @@ One build-time warning: Next.js misidentifies the workspace root because of an u
 | K11 | No intentional focus-visible styling | Medium | S | Done |
 | K12 | GSAP and Framer Motion both implement the same scroll-fade effect | Medium | M | Done |
 | K13 | Full-screen curtain transition on every navigation, every time | Medium | S | Done |
-| K14 | Unoptimized source images (15MB+ of PNGs) | Medium | S | Open |
+| K14 | Unoptimized source images (15MB+ of PNGs) | Medium | S | Done |
 | K15 | No Open Graph image | Medium | S | Open |
 | K16 | No sitemap/robots | Medium | S | Open |
 | K17 | Turbopack workspace-root warning | Low | S | Done |
@@ -242,6 +242,8 @@ Verified: grepped for remaining `style={{ opacity: 0` across all components (zer
 
 **Solution:** Re-export source images as high-quality JPEG or WebP before committing; no code change needed, `next/image` usage is already correct throughout (`fill`, `sizes`, `priority` on above-the-fold images).
 **Effort:** S
+
+**Fixed (2026-11-24):** Re-exported all 9 flagged source images (`bg.png` + the 8 project portrait/landscape PNGs) as WebP at quality 88 via `sharp`, then updated the handful of path references (`Hero.tsx`'s `bg.png` string, the 8 `data/projects.ts` entries) from `.png` to `.webp` and deleted the original PNGs. Total: 15.65MB → 1.48MB (~90.5% smaller), with no visible quality loss at the sizes these render at. `studio-photo.png` (used via static `import` in `About.tsx`) was left untouched — it isn't named in K14's problem statement. Verified: `tsc --noEmit` and `next build` clean, all routes still static/SSG, spot-checked the converted images visually and confirmed the live dev server serves the new WebP paths with 200s.
 
 ### K15 — No Open Graph image
 **Problem:** `app/layout.tsx:58-69` defines `openGraph.title`/`description` and a `twitter` card, but no `openGraph.images` and no `app/opengraph-image.tsx`/static OG image.

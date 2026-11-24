@@ -27,8 +27,8 @@ export const projects: Project[] = [
     color: "#3d4a3e",
     tagline: "Gear for people who take the long way home.",
     images: {
-      portrait: "/images/projects/terrain-portrait.png",
-      landscape: "/images/projects/terrain-landscape.png",
+      portrait: "/images/projects/terrain-portrait.webp",
+      landscape: "/images/projects/terrain-landscape.webp",
     },
     copy: {
       brief:
@@ -46,8 +46,8 @@ export const projects: Project[] = [
     color: "#2e3a4a",
     tagline: "Architecture that speaks before you enter.",
     images: {
-      portrait: "/images/projects/norda-portrait.png",
-      landscape: "/images/projects/norda-landscape.png",
+      portrait: "/images/projects/norda-portrait.webp",
+      landscape: "/images/projects/norda-landscape.webp",
     },
     copy: {
       brief:
@@ -65,8 +65,8 @@ export const projects: Project[] = [
     color: "#3a2e22",
     tagline: "Single origin. Obsessively roasted.",
     images: {
-      portrait: "/images/projects/veld-portrait.png",
-      landscape: "/images/projects/veld-landscape.png",
+      portrait: "/images/projects/veld-portrait.webp",
+      landscape: "/images/projects/veld-landscape.webp",
     },
     copy: {
       brief:
@@ -84,8 +84,8 @@ export const projects: Project[] = [
     color: "#1e2a3a",
     tagline: "Legal tech built for the market that matters.",
     images: {
-      portrait: "/images/projects/stav-portrait.png",
-      landscape: "/images/projects/stav-landscape.png",
+      portrait: "/images/projects/stav-portrait.webp",
+      landscape: "/images/projects/stav-landscape.webp",
     },
     copy: {
       brief:

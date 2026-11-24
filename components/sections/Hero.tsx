@@ -128,7 +128,7 @@ export default function Hero() {
       {/* ── Background image ──────────────────────── */}
       <div ref={HeroImgRef} className="absolute inset-0 z-0">
         <Image
-          src="/images/bg.png"
+          src="/images/bg.webp"
           alt=""
           fill
           className="object-cover object-center"
