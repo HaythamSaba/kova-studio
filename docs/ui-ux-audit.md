@@ -46,7 +46,7 @@ One build-time warning: Next.js misidentifies the workspace root because of an u
 | K12 | GSAP and Framer Motion both implement the same scroll-fade effect | Medium | M | Done |
 | K13 | Full-screen curtain transition on every navigation, every time | Medium | S | Done |
 | K14 | Unoptimized source images (15MB+ of PNGs) | Medium | S | Done |
-| K15 | No Open Graph image | Medium | S | Open |
+| K15 | No Open Graph image | Medium | S | Done |
 | K16 | No sitemap/robots | Medium | S | Open |
 | K17 | Turbopack workspace-root warning | Low | S | Done |
 | K18 | README is unedited `create-next-app` boilerplate | Low | S | Open |
@@ -252,6 +252,8 @@ Verified: grepped for remaining `style={{ opacity: 0` across all components (zer
 
 **Solution:** Add a static `app/opengraph-image.png` (1200×630) or a generated `opengraph-image.tsx` using `next/og`, then reference it in `metadata.openGraph.images`.
 **Effort:** S
+
+**Fixed (2026-11-24):** Added `app/opengraph-image.tsx` using `next/og`'s `ImageResponse` — a 1200×630 dark card reproducing the favicon's amber-square/cream-diamond mark, "Kova Studio" title, tagline, and a "Digital Studio — Ljubljana" footer label, all from the existing brand palette. Next's special-filename convention auto-wires this into `app/layout.tsx`'s metadata with no manual `openGraph.images` edit needed. Verified: `tsc --noEmit` and `next build` clean (new static `/opengraph-image` route generated), visually confirmed the rendered PNG, and confirmed the live homepage HTML now serves correct `og:image`/`twitter:image` meta tags (1200×630, with alt text) pointing at it.
 
 ### K16 — No sitemap or robots file
 **Problem:** No `app/sitemap.ts`, `app/robots.ts`, or static equivalents in `public/`.
