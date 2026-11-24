@@ -30,7 +30,7 @@ export default function SectionTitle({
       viewport={{ once: true, amount: 0.3 }}
       transition={{ duration: 1, ease: EXPO_OUT }}
       style={style}
-      className={`font-serif text-[clamp(36px,4.5vw,72px)] leading-[0.92] text-text ${className}`}
+      className={`font-sans text-[clamp(36px,4.5vw,72px)] leading-[0.92] font-bold text-text ${className}`}
     >
       {Left.map((item, i) => (
         <span key={i}>
@@ -39,7 +39,7 @@ export default function SectionTitle({
         </span>
       ))}
       <br />
-      <em className="text-accent">{ColoredMiddle}</em>
+      <em className="font-serif text-accent font-normal">{ColoredMiddle}</em>
       <br />
       {Right}
     </MotionTag>
