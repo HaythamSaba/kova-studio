@@ -1,8 +1,27 @@
 // components/cursor/CustomCursor.tsx
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, useSyncExternalStore } from "react";
 import { useMousePosition } from "@/lib/useMousePosition";
+
+// ── Detect touch device ─────────────────────────────
+// useSyncExternalStore reads this external (non-React) browser state
+// safely across SSR/hydration: the server snapshot is always `false`,
+// matching the client's first render, then it re-syncs to the real
+// value right after mount — no hydration mismatch, no setState-in-effect.
+// Checking pointer: coarse OR any touch points catches Samsung Internet
+// and iPad configurations that incorrectly report pointer: fine.
+function subscribe() {
+  return () => {};
+}
+function getSnapshot() {
+  const coarsePointer = window.matchMedia("(pointer: coarse)").matches;
+  const hasTouch = navigator.maxTouchPoints > 0;
+  return coarsePointer || hasTouch;
+}
+function getServerSnapshot() {
+  return false;
+}
 
 export default function CustomCursor() {
   const dotRef = useRef<HTMLDivElement>(null);
@@ -14,16 +33,11 @@ export default function CustomCursor() {
   const [isHovered, setIsHovered] = useState(false);
   const [isClicking, setIsClicking] = useState(false);
 
-  // ── Detect touch device — lazy initializer ───────
-  // Double check: pointer: coarse OR any touch points
-  // Catches Samsung Internet and iPad configurations
-  // that incorrectly report pointer: fine
-  const [isTouchDevice] = useState<boolean>(() => {
-    if (typeof window === "undefined") return false;
-    const coarsePointer = window.matchMedia("(pointer: coarse)").matches;
-    const hasTouch = navigator.maxTouchPoints > 0;
-    return coarsePointer || hasTouch;
-  });
+  const isTouchDevice = useSyncExternalStore(
+    subscribe,
+    getSnapshot,
+    getServerSnapshot,
+  );
 
   // ── Hover detection ──────────────────────────────
   useEffect(() => {
