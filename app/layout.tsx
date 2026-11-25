@@ -9,6 +9,7 @@ import Navbar from "@/components/ui/Navbar";
 import PageTransition from "@/components/sections/PageTransition";
 import { Analytics } from "@vercel/analytics/next";
 import { MotionConfig } from "framer-motion";
+import { SITE_URL } from "@/lib/constants";
 
 // ─── Font definitions ──────────────────────────────
 // next/font downloads fonts at build time, self-hosts them,
@@ -45,7 +46,7 @@ const description =
   "We build digital identities and web experiences for brands that take the long view.";
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://kova-studio-hs.vercel.app/"),
+  metadataBase: new URL(SITE_URL),
   title: {
     template: "%s | Kova Studio",
     default: title,

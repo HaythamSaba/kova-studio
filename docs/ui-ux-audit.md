@@ -47,7 +47,7 @@ One build-time warning: Next.js misidentifies the workspace root because of an u
 | K13 | Full-screen curtain transition on every navigation, every time | Medium | S | Done |
 | K14 | Unoptimized source images (15MB+ of PNGs) | Medium | S | Done |
 | K15 | No Open Graph image | Medium | S | Done |
-| K16 | No sitemap/robots | Medium | S | Open |
+| K16 | No sitemap/robots | Medium | S | Done |
 | K17 | Turbopack workspace-root warning | Low | S | Done |
 | K18 | README is unedited `create-next-app` boilerplate | Low | S | Open |
 | K19 | Hero pin distance is a fixed px value, not viewport-relative | Low | S | Done |
@@ -273,6 +273,8 @@ export default function sitemap() {
 }
 ```
 **Effort:** S
+
+**Fixed (2026-11-25):** Added `app/sitemap.ts` and `app/robots.ts` using Next's typed `MetadataRoute.Sitemap`/`MetadataRoute.Robots` conventions, listing `/`, `/work`, and each project's `/work/[slug]` page, with `robots.ts` allowing all crawlers and pointing at the sitemap. Added a `SITE_URL` constant to `lib/constants.ts` (previously the domain was hardcoded once, in `app/layout.tsx`'s `metadataBase`; now shared across all three). Verified: `tsc --noEmit` and `next build` clean (new static `/sitemap.xml` and `/robots.txt` routes generated), and confirmed both serve correct content from the live dev server.
 
 ---
 
