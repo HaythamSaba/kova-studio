@@ -56,7 +56,7 @@ export default function Capabilities() {
         {/* Intro headline */}
         <div className="flex flex-col p-8">
           <div className="relative mb-20">
-            <div className="w-80 h-30 bg-accent -top-16 absolute" />
+            <div className="w-48 sm:w-64 md:w-80 h-30 bg-accent -top-16 absolute" />
             <SectionTitle
               as="h2"
               Left={["Craft at every"]}
@@ -70,8 +70,8 @@ export default function Capabilities() {
             {services.map((service, i) => (
               <motion.div
                 key={service.index}
-                initial={{ clipPath: "inset(0 0 100% 0)", opacity: 0 }}
-                whileInView={{ clipPath: "inset(0 0 0% 0)", opacity: 1 }}
+                initial={{ opacity: 0, y: 24 }}
+                whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true, amount: 0.3 }}
                 transition={{ duration: 0.9, ease: EXPO_OUT, delay: i * 0.15 }}
                 className="capability-tile relative bg-bg p-10 flex flex-col gap-8 group min-h-85"
