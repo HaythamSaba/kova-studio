@@ -49,7 +49,7 @@ One build-time warning: Next.js misidentifies the workspace root because of an u
 | K15 | No Open Graph image | Medium | S | Done |
 | K16 | No sitemap/robots | Medium | S | Done |
 | K17 | Turbopack workspace-root warning | Low | S | Done |
-| K18 | README is unedited `create-next-app` boilerplate | Low | S | Open |
+| K18 | README is unedited `create-next-app` boilerplate | Low | S | Done |
 | K19 | Hero pin distance is a fixed px value, not viewport-relative | Low | S | Done |
 
 *Status: Open = no decision yet · Decided = approach agreed, not yet implemented · Done = fixed and verified.*
@@ -302,6 +302,8 @@ const nextConfig: NextConfig = {
 
 **Solution:** Replace with a short project description, stack list, and a link to the live site.
 **Effort:** S
+
+**Fixed (2026-11-25):** Replaced the `create-next-app` boilerplate with a project description, the live link, the existing fictional-studio disclosure line (matching K9's footer wording), a stack list (Next.js/React 19/TypeScript, Tailwind v4, GSAP+ScrollTrigger, Framer Motion, Lenis, Vercel Analytics), and trimmed getting-started steps — no more mention of Geist or generic "Learn Next.js" links.
 
 ### K19 — Hero's pinned scroll distance is a fixed pixel value
 **Problem:** `components/sections/Hero.tsx:51` — `end: "+=2000"` is a fixed 2,000px regardless of viewport height.
