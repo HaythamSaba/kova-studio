@@ -52,7 +52,7 @@ One build-time warning: Next.js misidentifies the workspace root because of an u
 | K18 | README is unedited `create-next-app` boilerplate | Low | S | Done |
 | K19 | Hero pin distance is a fixed px value, not viewport-relative | Low | S | Done |
 | K20 | Off-token colors used directly instead of CSS variables | Medium | S | Done |
-| K21 | No written rule for `text-text` vs `text-white` | Medium | M | Open |
+| K21 | No written rule for `text-text` vs `text-white` | Medium | M | Done |
 | K22 | No shared type-scale tokens; display sizes/eyebrow labels drift per file | Medium | M | Open |
 | K23 | `--spacing-section` token unused; `About.tsx`'s `mb-80` needs checking | Medium | S | Open |
 | K24 | `SectionTitle`'s accent-word emphasis is hardcoded, not opt-in | Medium | S | Open |
@@ -307,6 +307,12 @@ Verified: `tsc --noEmit`, ESLint, and `next build` all clean; grepped for zero r
 
 **Solution:** Write the rule as a comment in `globals.css` next to the `--color-text` declaration: `text-text` is the default for all text; `text-white`/`white/NN` is reserved for text overlaid directly on a photograph. Then apply it: the photo-overlay cases above can stay as `text-white`; `Marquee.tsx:175` and `Footer.tsx:101` should switch to `text-text`.
 **Effort:** M (one rule, but touches ~10 files to apply/verify)
+
+**Fixed (2026-11-26):** Added the rule as a comment in `globals.css` next to `--color-text`. Re-grepped every `text-white` site fresh (line numbers had drifted slightly from K20's edits) and checked each against the rule: `Hero.tsx`, `About.tsx` (photo-corner labels), `WorkGrid.tsx` (floating preview-image overlay), `CaseStudyHero.tsx`, `CaseStudyImageGrid.tsx` (hover captions over the project photo), `CaseStudyFooterNav.tsx` (whose own code comment already said "Text is white since image is now the background" — confirms the rule matches existing intent), `ProjectCard.tsx`, and `ProjectDetailedCard.tsx`'s hover-overlay title all sit directly on a photo — left as `text-white`/`white/NN`, no change. `Marquee.tsx:177` (scrolling service list, on `bg-bg`) and `Footer.tsx:101` ("Back to top," resting state on `bg-bg`, `border-accent`; its `hover:bg-accent hover:text-bg` pair is unrelated and untouched) were the two non-photo violations — both switched to `text-text`.
+
+Verified: `tsc --noEmit`, ESLint, and `next build` clean; re-grepped `text-white` across `components/` and confirmed only the photo-overlay sites remain. Checked live at 390px and 1440px: both switched elements resolve to the exact `--color-text` value (`rgb(240, 235, 227)`) at both widths, with no console warnings or errors and no visible regression against the surrounding dark background.
+
+**Aside, found while verifying this item, not part of K21's scope:** `CaseStudyHero.tsx:25`'s gradient overlay hardcodes `rgba(14,12,10,0.9)` — the same shade K20 named `--color-overlay`, missed by K20's grep because it was searching for the literal `#0e0c0a` hex form, not this decimal-rgb equivalent. Flagging rather than fixing now, since it's outside K21 — let me know if you want it folded into a new item or just fixed inline next time that file's touched.
 
 ### K22 — No shared type-scale tokens; display sizes and eyebrow-label styling drift per file
 **Problem:** `globals.css`'s `@theme` block tokenizes color (`--color-*`) but has no typographic scale — every heading size is a locally defined `clamp()` with no shared source of truth. Comparable "big display serif" roles land on different formulas: `Hero.tsx:165` `clamp(48px,7.5vw,128px)`, `CaseStudyHero.tsx:58` `clamp(48px,8vw,128px)`, `AllWorkHero.tsx:43` `clamp(48px,11vw,160px)`, `StatCard.tsx:57` `clamp(48px,6vw,96px)`, `Capabilities.tsx:122` `clamp(28px,3vw,48px)`, `SectionTitle.tsx:33` `clamp(36px,4.5vw,72px)`, `CaseStudy.tsx:171` `clamp(24px,3.5vw,48px)`, `ProjectRow.tsx:52` `clamp(28px,4.5vw,72px)`, `CaseStudyFooterNav.tsx:86,123` `clamp(20px,3vw,36px)`, `Preloader.tsx:128` `clamp(80px,15vw,160px)`. Separately, the recurring "eyebrow/meta" mono label (used in nearly every component) varies in both letter-spacing — `tracking-[0.25em]`, `[0.3em]`, `[0.4em]` (`AllWorkHero.tsx:35`), `[0.5em]` (`Footer.tsx:48,63,78`) — and font size — 9px/10px/11px/12px — for what reads as one hierarchy level, with no evident rule for which file gets which.

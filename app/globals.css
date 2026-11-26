@@ -5,6 +5,10 @@
   /* ─── Colors ─────────────────────────────────── */
   --color-bg: #050505;
   --color-surface: #1a1714;
+  /* text-text is the default for all text. Reach for text-white/white/NN    */
+  /* only where text sits directly on a photograph (hero, case-study image   */
+  /* grids, footer-nav thumbnails, project cards) — true white reads better  */
+  /* there than the warm cream below. Everywhere else, text-text. See K21.   */
   --color-text: #f0ebe3;
   --color-muted: #9e9690;
   --color-accent: #c17f3e;
