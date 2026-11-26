@@ -139,7 +139,7 @@ export default function WorkGrid() {
 
                 {/* Project label overlay */}
                 <div className="w-full h-full flex-flex-col justify-end p-6">
-                  <p className="font-mono text-[10px] uppercase tracking-[0.25em] text-white/50 mb-1">
+                  <p className="font-mono text-eyebrow uppercase tracking-eyebrow text-white/50 mb-1">
                     {activeProject.category}
                   </p>
                   <p className="font-serif text-2xl text-white/90">

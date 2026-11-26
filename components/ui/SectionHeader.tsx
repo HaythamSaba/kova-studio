@@ -20,10 +20,10 @@ export default function SectionHeader({
       transition={{ duration: 0.9, ease: EXPO_OUT }}
       className="flex items-baseline justify-between mb-20 pb-5 border-b border-border p-8"
     >
-      <p className="font-mono text-[10px] uppercase tracking-[0.3em] text-muted">
+      <p className="font-mono text-eyebrow uppercase tracking-eyebrow text-muted">
         {leftTitle}
       </p>
-      <p className="font-mono text-[10px] uppercase tracking-[0.3em] text-muted">
+      <p className="font-mono text-eyebrow uppercase tracking-eyebrow text-muted">
         {rightTitle}
       </p>
     </motion.div>

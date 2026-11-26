@@ -28,6 +28,35 @@
   --font-sans: var(--font-dm-sans), system-ui, sans-serif;
   --font-mono: var(--font-dm-mono), monospace;
 
+  /* ─── Type scale — see K22 ──────────────────────
+     One named role per distinct heading/display use, so each can be
+     retuned in one place instead of as a one-off clamp() per file. Two
+     genuinely-identical roles were consolidated (--text-hero now covers
+     both Hero.tsx and CaseStudyHero.tsx, which only differed by 0.5vw);
+     everything else keeps its current value under a name, since the
+     roles themselves are distinct even where sizes are close. */
+  --text-hero: clamp(48px, 7.5vw, 128px); /* Hero.tsx, CaseStudyHero.tsx */
+  --text-display-xl: clamp(48px, 11vw, 160px); /* AllWorkHero.tsx */
+  --text-heading: clamp(36px, 4.5vw, 72px); /* SectionTitle.tsx */
+  --text-row-title: clamp(28px, 4.5vw, 72px); /* ProjectRow.tsx */
+  --text-tagline: clamp(24px, 3.5vw, 48px); /* CaseStudy.tsx */
+  --text-stat-suffix: clamp(24px, 3vw, 48px); /* StatCard.tsx "+" suffix */
+  --text-counter-lg: clamp(80px, 15vw, 160px); /* Preloader.tsx */
+  --text-counter-sm: clamp(48px, 6vw, 96px); /* StatCard.tsx stat number */
+  --text-tile-title: clamp(28px, 3vw, 48px); /* Capabilities.tsx */
+  --text-nav-title: clamp(20px, 3vw, 36px); /* CaseStudyFooterNav.tsx */
+
+  /* Eyebrow/meta label — the small tracked-out mono caps repeated at
+     nearly every section boundary. Canonicalized from a 9–12px/0.25–0.4em
+     spread to one value (10px was already the modal size; 0.3em the
+     modal tracking). --tracking-eyebrow-wide covers the two genuinely
+     wider-tracked sub-roles (Footer's column headers, ProjectDetailedCard's
+     category tag) that weren't drift — each was already internally
+     consistent, just unnamed. */
+  --text-eyebrow: 10px;
+  --tracking-eyebrow: 0.3em;
+  --tracking-eyebrow-wide: 0.5em;
+
   /* ─── Spacing scale (add as needed) ──────────── */
   --spacing-section: 8rem;
 

@@ -38,7 +38,7 @@ const CaseStudyMetaRow = forwardRef<HTMLDivElement, { project: Project }>(
 
             {/* Content — z-10 sits above fill ─── */}
             <div className="relative z-10">
-              <p className="font-mono text-[11px] uppercase mb-2 tracking-[0.3em] text-text">
+              <p className="font-mono text-eyebrow uppercase mb-2 tracking-eyebrow text-text">
                 {label}
               </p>
               <p className="font-sans text-text text-sm">{value}</p>

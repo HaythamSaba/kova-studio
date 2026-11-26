@@ -95,7 +95,7 @@ export default function Capabilities() {
                   {/* Top row - index + arrow */}
                   <div className="flex items-center justify-between">
                     <span
-                      className="font-mono text-[10px] uppercase tracking-[0.3em]"
+                      className="font-mono text-eyebrow uppercase tracking-eyebrow"
                       style={{
                         color:
                           hoveredIndex === i
@@ -123,7 +123,7 @@ export default function Capabilities() {
                   </div>
 
                   {/* Title */}
-                  <h3 className="font-serif text-[clamp(28px,3vw,48px)] leading-[0.95] text-text">
+                  <h3 className="font-serif text-tile-title leading-[0.95] text-text">
                     {service.title}
                   </h3>
 
@@ -151,7 +151,7 @@ export default function Capabilities() {
                         className="flex items-center gap-3 pt-4 border-t border-border"
                       >
                         <span
-                          className="font-mono text-[11px] uppercase tracking-[0.25em]"
+                          className="font-mono text-eyebrow uppercase tracking-eyebrow"
                           style={{
                             color:
                               hoveredIndex === i

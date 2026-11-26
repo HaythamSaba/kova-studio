@@ -32,7 +32,7 @@ const AllWorkHero = forwardRef<
           initial={{ opacity: 0, x: -20 }}
           animate={{ opacity: 1, x: 0 }}
           transition={{ duration: 0.8, ease: EXPO_OUT }}
-          className="font-mono text-[10px] uppercase tracking-[0.4em] text-muted mb-8"
+          className="font-mono text-eyebrow uppercase tracking-eyebrow text-muted mb-8"
         >
           Selected Work — {projects.length} Projects
         </motion.p>
@@ -40,7 +40,7 @@ const AllWorkHero = forwardRef<
         <div ref={headlineWrapperRef}>
           <h1
             ref={headlineRef}
-            className="font-serif text-[clamp(48px,11vw,160px)] last-word-accent leading-[0.85] tracking-tight text-accent"
+            className="font-serif text-display-xl last-word-accent leading-[0.85] tracking-tight text-accent"
             style={{ perspective: "1000px" }}
           >
             {["Crafted", "with", "intent."].map((word, wi) => (

@@ -38,7 +38,7 @@ export default function CaseStudyHero({ project }: { project: Project }) {
           <Link
             href="/"
             data-cursor="hover"
-            className="group inline-flex items-center gap-3 font-mono text-[10px] uppercase tracking-[0.3em] text-white/50 hover:text-white transition-colors duration-300"
+            className="group inline-flex items-center gap-3 font-mono text-eyebrow uppercase tracking-eyebrow text-white/50 hover:text-white transition-colors duration-300"
           >
             <span className="w-6 h-px bg-current group-hover:w-10 transition-all duration-300" />
             Back
@@ -52,10 +52,10 @@ export default function CaseStudyHero({ project }: { project: Project }) {
           transition={{ delay: 0.3, duration: 0.8, ease: EXPO_OUT }}
         >
           {/* Eyebrow ABOVE title — standard editorial pattern */}
-          <p className="font-mono text-[12px] uppercase tracking-[0.3em] text-white/50 mb-4">
+          <p className="font-mono text-eyebrow uppercase tracking-eyebrow text-white/50 mb-4">
             {project.category} — {project.location}
           </p>
-          <h1 className="font-serif text-[clamp(48px,8vw,128px)] leading-[0.9] text-white">
+          <h1 className="font-serif text-hero leading-[0.9] text-white">
             {project.title}
           </h1>
         </motion.div>

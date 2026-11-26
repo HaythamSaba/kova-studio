@@ -70,7 +70,7 @@ const ProjectDetailedCard = forwardRef<
         {/* Info Block - Kinetic Horizontal shift happens here */}
         <div className="mt-6 flex flex-col gap-1">
           <div className="overflow-hidden">
-            <p className="category-tag font-mono text-[10px] uppercase tracking-[0.5em] text-accent/60 will-change-transform">
+            <p className="category-tag font-mono text-eyebrow uppercase tracking-eyebrow-wide text-accent/60 will-change-transform">
               {project.category}
             </p>
           </div>

@@ -77,16 +77,16 @@ const CaseStudyFooterNav = forwardRef<
             className="absolute inset-0 bg-white/5 pointer-events-none"
           />
 
-          <p className="font-mono text-[9px] uppercase tracking-[0.3em] text-white/70 group-hover:text-white transition-colors duration-300">
+          <p className="font-mono text-eyebrow uppercase tracking-eyebrow text-white/70 group-hover:text-white transition-colors duration-300">
             ← Previous
           </p>
 
           {/* Project image thumbnail on hover */}
           <div className="relative">
-            <p className="font-serif text-[clamp(20px,3vw,36px)] text-white/80 group-hover:text-white transition-colors duration-500 leading-tight">
+            <p className="font-serif text-nav-title text-white/80 group-hover:text-white transition-colors duration-500 leading-tight">
               {prevProject.title}
             </p>
-            <p className="font-mono text-[9px] uppercase tracking-[0.25em] text-white/60 mt-2 group-hover:text-white/80 transition-colors duration-300">
+            <p className="font-mono text-eyebrow uppercase tracking-eyebrow text-white/60 mt-2 group-hover:text-white/80 transition-colors duration-300">
               {prevProject.category}
             </p>
           </div>
@@ -115,15 +115,15 @@ const CaseStudyFooterNav = forwardRef<
             className="absolute inset-0 bg-white/5 pointer-events-none"
           />
 
-          <p className="font-mono text-[9px] uppercase tracking-[0.3em] text-white/70 group-hover:text-white transition-colors duration-300">
+          <p className="font-mono text-eyebrow uppercase tracking-eyebrow text-white/70 group-hover:text-white transition-colors duration-300">
             Next →
           </p>
 
           <div className="relative">
-            <p className="font-serif text-[clamp(20px,3vw,36px)] text-white/80 group-hover:text-white transition-colors duration-500 leading-tight">
+            <p className="font-serif text-nav-title text-white/80 group-hover:text-white transition-colors duration-500 leading-tight">
               {nextProject.title}
             </p>
-            <p className="font-mono text-[9px] uppercase tracking-[0.25em] text-white/60 mt-2 group-hover:text-white/80 transition-colors duration-300">
+            <p className="font-mono text-eyebrow uppercase tracking-eyebrow text-white/60 mt-2 group-hover:text-white/80 transition-colors duration-300">
               {nextProject.category}
             </p>
           </div>

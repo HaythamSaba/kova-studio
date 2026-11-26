@@ -92,10 +92,10 @@ export default function HorizontalScroll() {
       {/* Progress bar — tied to the pinned desktop scrub only */}
       <div className="hidden md:block absolute bottom-8 left-8 md:left-16 right-8 md:right-16 z-10">
         <div className="flex items-center justify-between mb-2">
-          <p className="font-mono text-[9px] uppercase tracking-[0.3em] text-muted">
+          <p className="font-mono text-eyebrow uppercase tracking-eyebrow text-muted">
             01
           </p>
-          <p className="font-mono text-[9px] uppercase tracking-[0.3em] text-muted">
+          <p className="font-mono text-eyebrow uppercase tracking-eyebrow text-muted">
             {String(projects.length).padStart(2, "0")}
           </p>
         </div>

@@ -101,7 +101,7 @@ export default function Preloader() {
             initial={{ opacity: 0, y: 8 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.2, duration: 0.5 }}
-            className="absolute top-8 left-8 font-mono text-xs uppercase tracking-[0.25em] text-muted"
+            className="absolute top-8 left-8 font-mono text-eyebrow uppercase tracking-eyebrow text-muted"
           >
             Kova Studio
           </motion.p>
@@ -111,7 +111,7 @@ export default function Preloader() {
             initial={{ opacity: 0, y: 8 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.2, duration: 0.5 }}
-            className="absolute top-8 right-8 font-mono text-xs uppercase tracking-[0.25em] text-muted"
+            className="absolute top-8 right-8 font-mono text-eyebrow uppercase tracking-eyebrow text-muted"
           >
             Est. 2020
           </motion.p>
@@ -125,7 +125,7 @@ export default function Preloader() {
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 transition={{ duration: 0.05, ease: "easeOut" }}
-                className="font-serif text-[clamp(80px,15vw,160px)] leading-none text-text tabular-nums"
+                className="font-serif text-counter-lg leading-none text-text tabular-nums"
               >
                 {count}
               </motion.p>
@@ -145,7 +145,7 @@ export default function Preloader() {
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ delay: 0.4 }}
-              className="font-mono text-[10px] uppercase tracking-[0.3em] text-muted"
+              className="font-mono text-eyebrow uppercase tracking-eyebrow text-muted"
             >
               Loading
             </motion.p>
@@ -156,7 +156,7 @@ export default function Preloader() {
             initial={{ opacity: 0, y: 8 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.2, duration: 0.5 }}
-            className="absolute bottom-8 left-8 font-mono text-[10px] uppercase tracking-[0.25em] text-muted"
+            className="absolute bottom-8 left-8 font-mono text-eyebrow uppercase tracking-eyebrow text-muted"
           >
             Ljubljana, Slovenia
           </motion.p>

@@ -54,18 +54,18 @@ export default function StatCard({ stat, statsRef }: StatProps) {
         {/* Single ref — this card's counter only */}
         <span
           ref={counterRef}
-          className="font-serif text-[clamp(48px,6vw,96px)] leading-none text-text tabular-nums"
+          className="font-serif text-counter-sm leading-none text-text tabular-nums"
         >
           0
         </span>
         {stat.suffix && (
-          <span className="font-serif text-[clamp(24px,3vw,48px)] text-accent">
+          <span className="font-serif text-stat-suffix text-accent">
             {stat.suffix}
           </span>
         )}
       </div>
 
-      <p className="font-mono text-[10px] uppercase tracking-[0.25em] text-muted">
+      <p className="font-mono text-eyebrow uppercase tracking-eyebrow text-muted">
         {stat.label}
       </p>
 

@@ -71,7 +71,7 @@ export default function About() {
               ].map((tag) => (
                 <span
                   key={tag}
-                  className="font-mono text-[9px] uppercase tracking-[0.25em] text-text border border-accent px-3 py-1.5"
+                  className="font-mono text-eyebrow uppercase tracking-eyebrow text-text border border-accent px-3 py-1.5"
                 >
                   {tag}
                 </span>
@@ -98,10 +98,10 @@ export default function About() {
 
                 {/* Bottom label */}
                 <div className="absolute bottom-6 left-6 right-6 flex items-end justify-between z-10">
-                  <p className="font-mono text-[9px] uppercase tracking-[0.25em] text-white/40">
+                  <p className="font-mono text-eyebrow uppercase tracking-eyebrow text-white/40">
                     Ljubljana, Slovenia
                   </p>
-                  <p className="font-mono text-[9px] uppercase tracking-[0.25em] text-white">
+                  <p className="font-mono text-eyebrow uppercase tracking-eyebrow text-white">
                     2024
                   </p>
                 </div>
@@ -116,7 +116,7 @@ export default function About() {
                 />
               </div>
 
-              <p className="font-mono text-[9px] uppercase tracking-[0.25em] text-text text-right">
+              <p className="font-mono text-eyebrow uppercase tracking-eyebrow text-text text-right">
                 Studio — 2024
               </p>
             </div>

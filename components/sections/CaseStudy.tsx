@@ -168,7 +168,7 @@ export default function CaseStudy({ project }: { project: Project }) {
             transition={{ duration: 0.8, ease: EXPO_OUT }}
             className="mb-20 max-w-2xl"
           >
-            <p className="font-serif text-[clamp(24px,3.5vw,48px)] leading-[1.1] text-text">
+            <p className="font-serif text-tagline leading-[1.1] text-text">
               &quot;{project.tagline}&quot;
             </p>
           </motion.div>

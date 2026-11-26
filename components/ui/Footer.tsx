@@ -45,7 +45,7 @@ export default function Footer() {
 
           {/* Navigation */}
           <div className="flex flex-col gap-3">
-            <p className="font-mono text-sm uppercase tracking-[0.5em] mb-1">
+            <p className="font-mono text-sm uppercase tracking-eyebrow-wide mb-1">
               Navigate
             </p>
             {footerLinks.map(({ label, href }) => (
@@ -60,7 +60,7 @@ export default function Footer() {
             ))}
           </div>
           <div className="flex flex-col gap-3">
-            <p className="font-mono text-sm uppercase tracking-[0.5em] mb-1">
+            <p className="font-mono text-sm uppercase tracking-eyebrow-wide mb-1">
               Contact
             </p>
             <a
@@ -75,7 +75,7 @@ export default function Footer() {
 
           {/* Disclosure */}
           <div className="flex flex-col gap-3">
-            <p className="font-mono text-sm uppercase tracking-[0.5em] mb-1">
+            <p className="font-mono text-sm uppercase tracking-eyebrow-wide mb-1">
               Note
             </p>
             <p className="font-sans text-sm text-muted leading-relaxed">
@@ -88,7 +88,7 @@ export default function Footer() {
         {/* Bottom row */}
         <div className="flex flex-col md:flex-row item-start md:items-center justify-between gap-4 pt-8 border-t border-border">
           {/* Copyright */}
-          <p className="font-mono text-[10px] uppercase tracking-[0.25em] text-accent">
+          <p className="font-mono text-eyebrow uppercase tracking-eyebrow text-accent">
             Kova Studio © {year} — Ljubljana, Slovenia
           </p>
 
@@ -98,7 +98,7 @@ export default function Footer() {
             whileHover={{ y: -2 }}
             transition={{ duration: 0.3, ease: EXPO_OUT }}
             data-cursor="hover"
-            className="group border border-accent p-4 flex items-center gap-2 font-mono text-[10px] uppercase tracking-[0.25em] text-text hover:bg-accent hover:text-bg transition-colors duration-300"
+            className="group border border-accent p-4 flex items-center gap-2 font-mono text-eyebrow uppercase tracking-eyebrow text-text hover:bg-accent hover:text-bg transition-colors duration-300"
           >
             Back to top
             <motion.div

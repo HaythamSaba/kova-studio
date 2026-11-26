@@ -21,7 +21,7 @@ export default function SidePanel({
     <div
       className={`shrink-0 flex flex-col justify-between h-[65vh] w-[70vw] max-w-90 pl-8 border-l border-border ${className}`}
     >
-      <p className="font-mono text-[10px] uppercase tracking-[0.3em] text-muted mb-6">
+      <p className="font-mono text-eyebrow uppercase tracking-eyebrow text-muted mb-6">
         {label}
       </p>
 

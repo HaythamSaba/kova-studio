@@ -49,7 +49,7 @@ export default function ProjectRow({
           <span className="font-mono text-[10px] text-muted tracking-widest w-6 shrink-0">
             {String(index + 1).padStart(2, "0")}
           </span>
-          <span className="font-serif text-[clamp(28px,4.5vw,72px)] leading-none text-text group-hover:text-accent transition-colors duration-500">
+          <span className="font-serif text-row-title leading-none text-text group-hover:text-accent transition-colors duration-500">
             {project.title}
           </span>
         </div>

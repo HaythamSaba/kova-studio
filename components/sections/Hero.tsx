@@ -144,7 +144,7 @@ export default function Hero() {
         initial="hidden"
         animate="visible"
         custom={1.2}
-        className="absolute top-32 right-8 md:right-16 z-20 font-mono text-[10px] uppercase tracking-[0.3em] text-muted max-w-30 text-right leading-relaxed"
+        className="absolute top-32 right-8 md:right-16 z-20 font-mono text-eyebrow uppercase tracking-eyebrow text-muted max-w-30 text-right leading-relaxed"
       >
         Digital Studio
         <br />
@@ -157,12 +157,12 @@ export default function Hero() {
         className="relative z-20 max-w-350 w-full mx-auto"
       >
         {/* Eyebrow */}
-        <p className="hero-item font-mono text-[11px]  uppercase tracking-[0.3em] text-white  mb-8">
+        <p className="hero-item font-mono text-eyebrow uppercase tracking-eyebrow text-white mb-8">
           Selected Work — 2024
         </p>
 
         {/* Headline */}
-        <h1 className="hero-item font-serif text-[clamp(48px,7.5vw,128px)] leading-[0.92] tracking-tight text-text mb-12">
+        <h1 className="hero-item font-serif text-hero leading-[0.92] tracking-tight text-text mb-12">
           <SplitText text="We forge brands" delay={0} stagger={0.025} />
 
           <br />

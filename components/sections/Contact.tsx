@@ -86,7 +86,7 @@ export default function Contact() {
             }}
             className="flex flex-col gap-2 md:gap-5"
           >
-            <p className="font-mono text-[10px] uppercase tracking-[0.3em] text-muted">
+            <p className="font-mono text-eyebrow uppercase tracking-eyebrow text-muted">
               Write to us
             </p>
 
@@ -127,7 +127,7 @@ export default function Contact() {
             }}
             className="flex flex-col gap-2 md:gap-5"
           >
-            <p className="font-mono text-[10px] uppercase tracking-[0.3em] text-muted">
+            <p className="font-mono text-eyebrow uppercase tracking-eyebrow text-muted">
               Based in
             </p>
             <div>
@@ -153,7 +153,7 @@ export default function Contact() {
             }}
             className="flex flex-col gap-2 md:gap-5"
           >
-            <p className="font-mono text-[10px] uppercase tracking-[0.3em] text-muted">
+            <p className="font-mono text-eyebrow uppercase tracking-eyebrow text-muted">
               Follow
             </p>
             <div className="flex flex-col gap-3">
