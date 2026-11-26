@@ -51,8 +51,15 @@ One build-time warning: Next.js misidentifies the workspace root because of an u
 | K17 | Turbopack workspace-root warning | Low | S | Done |
 | K18 | README is unedited `create-next-app` boilerplate | Low | S | Done |
 | K19 | Hero pin distance is a fixed px value, not viewport-relative | Low | S | Done |
+| K20 | Off-token colors used directly instead of CSS variables | Medium | S | Open |
+| K21 | No written rule for `text-text` vs `text-white` | Medium | M | Open |
+| K22 | No shared type-scale tokens; display sizes/eyebrow labels drift per file | Medium | M | Open |
+| K23 | `--spacing-section` token unused; `About.tsx`'s `mb-80` needs checking | Medium | S | Open |
+| K24 | `SectionTitle`'s accent-word emphasis is hardcoded, not opt-in | Medium | S | Open |
+| K25 | Case-study meta-label em-dash pattern; uninformative mono labels | Low | S | Open |
 
 *Status: Open = no decision yet · Decided = approach agreed, not yet implemented · Done = fixed and verified.*
+*K20–K25: verify at 390px and 1440px in addition to the usual `tsc`/build checks before marking Done.*
 
 ---
 
@@ -276,6 +283,53 @@ export default function sitemap() {
 
 **Fixed (2026-11-25):** Added `app/sitemap.ts` and `app/robots.ts` using Next's typed `MetadataRoute.Sitemap`/`MetadataRoute.Robots` conventions, listing `/`, `/work`, and each project's `/work/[slug]` page, with `robots.ts` allowing all crawlers and pointing at the sitemap. Added a `SITE_URL` constant to `lib/constants.ts` (previously the domain was hardcoded once, in `app/layout.tsx`'s `metadataBase`; now shared across all three). Verified: `tsc --noEmit` and `next build` clean (new static `/sitemap.xml` and `/robots.txt` routes generated), and confirmed both serve correct content from the live dev server.
 
+### K20 — Off-token colors used directly instead of CSS variables
+**Problem:** Several components reach for literal hex colors instead of the `--color-*` tokens in `app/globals.css:6-11`: `components/sections/Capabilities.tsx:101,114,131,153` hardcode `#8a8278` (a greige between `--color-muted` (#9e9690) and `--color-text` (#f0ebe3) that isn't declared anywhere) for the inactive tile icon/label color; `components/ui/Marquee.tsx:148,154` hardcode `#0e0c0a` for the edge-fade gradients, which is close to but not equal to `--color-bg` (#050505); `components/ui/Navbar.tsx:203,204,217,218` hardcode `#c17f3e`/`#f0ebe3` as inline Framer Motion `animate` colors for the hamburger bars instead of reading the CSS variables.
+
+**Why it matters:** three different flavors of the same root problem — color decisions living in more than one place. `#8a8278` is effectively an undocumented 7th color. `#0e0c0a` may be intentional (a deliberately distinct fade shade) or a stale copy from before `--color-bg` was tuned to `#050505` — needs a decision either way, not an assumption. The Navbar case is the riskiest: if `--color-accent` or `--color-text` is ever retuned, the hamburger icon's animated colors silently drift out of sync with the rest of the site since nothing there reads from the token.
+
+**Solution:**
+- `Capabilities.tsx`: give `#8a8278` a name in `@theme` (e.g. `--color-muted-2`) if the distinct shade earns its place, or replace it with the closest existing token if it doesn't.
+- `Marquee.tsx`: decide if `#0e0c0a` is intentionally distinct from `--color-bg`; if so, name it instead of leaving it a bare literal; if not, replace with `var(--color-bg)`.
+- `Navbar.tsx`: read the resolved token values from one shared place instead of duplicating hex literals inline.
+**Effort:** S
+
+### K21 — No written rule for `text-text` vs `text-white`
+**Problem:** `--color-text` (`#f0ebe3`, a warm cream) is the token, but many components use literal Tailwind `text-white`/`text-white/NN` instead, with no comment or convention anywhere explaining when each is correct: `components/sections/Hero.tsx:160,182`, `components/sections/About.tsx:101,104`, `components/sections/WorkGrid.tsx:142,145`, `components/ui/CaseStudyHero.tsx:55,58`, `components/ui/CaseStudyImageGrid.tsx:76,79,85,88`, `components/ui/CaseStudyFooterNav.tsx:80,86,89,118,123,126`, `components/ui/Marquee.tsx:175`, `components/ui/ProjectCard.tsx:31,43`, `components/ui/ProjectDetailedCard.tsx:63`, `components/ui/Footer.tsx:101` (hover state only).
+
+**Why it matters:** cream and pure white are visibly different, if subtly, and right now which one a given paragraph gets looks accidental rather than ruled. Most instances above sit directly on a photograph (Hero's background image, the case-study image grid/footer-nav thumbnails, ProjectCard/ProjectDetailedCard thumbnails) — a plausible, even good, reason to reach for true white there for max legibility against a photo rather than the slightly warm brand cream. But `Marquee.tsx:175` and `Footer.tsx:101` are **not** on photos — they sit on `bg-bg` and `bg-accent` respectively — so those two look like unintentional drift rather than the photo-contrast case.
+
+**Solution:** Write the rule as a comment in `globals.css` next to the `--color-text` declaration: `text-text` is the default for all text; `text-white`/`white/NN` is reserved for text overlaid directly on a photograph. Then apply it: the photo-overlay cases above can stay as `text-white`; `Marquee.tsx:175` and `Footer.tsx:101` should switch to `text-text`.
+**Effort:** M (one rule, but touches ~10 files to apply/verify)
+
+### K22 — No shared type-scale tokens; display sizes and eyebrow-label styling drift per file
+**Problem:** `globals.css`'s `@theme` block tokenizes color (`--color-*`) but has no typographic scale — every heading size is a locally defined `clamp()` with no shared source of truth. Comparable "big display serif" roles land on different formulas: `Hero.tsx:165` `clamp(48px,7.5vw,128px)`, `CaseStudyHero.tsx:58` `clamp(48px,8vw,128px)`, `AllWorkHero.tsx:43` `clamp(48px,11vw,160px)`, `StatCard.tsx:57` `clamp(48px,6vw,96px)`, `Capabilities.tsx:122` `clamp(28px,3vw,48px)`, `SectionTitle.tsx:33` `clamp(36px,4.5vw,72px)`, `CaseStudy.tsx:171` `clamp(24px,3.5vw,48px)`, `ProjectRow.tsx:52` `clamp(28px,4.5vw,72px)`, `CaseStudyFooterNav.tsx:86,123` `clamp(20px,3vw,36px)`, `Preloader.tsx:128` `clamp(80px,15vw,160px)`. Separately, the recurring "eyebrow/meta" mono label (used in nearly every component) varies in both letter-spacing — `tracking-[0.25em]`, `[0.3em]`, `[0.4em]` (`AllWorkHero.tsx:35`), `[0.5em]` (`Footer.tsx:48,63,78`) — and font size — 9px/10px/11px/12px — for what reads as one hierarchy level, with no evident rule for which file gets which.
+
+**Why it matters:** color decisions have one source of truth and typography decisions don't, so the same conceptual role (display headline, eyebrow label) keeps getting reinvented slightly differently file to file. Not visibly broken today, but it'll keep drifting as more sections/pages are added, and there's no single place to retune "the" display scale or "the" label style later.
+
+**Solution:** Add a small type scale to `@theme` — e.g. `--text-display-lg`, `--text-display-md`, `--text-display-sm`, `--text-eyebrow` plus `--tracking-eyebrow` — picking one canonical clamp()/tracking value per role (not necessarily any single file's current number), then replace each local magic value above with the shared token.
+**Effort:** M (touches ~10 files)
+
+### K23 — `--spacing-section` token is unused; `About.tsx`'s `mb-80` is an unintentional gap, not a deliberate one
+**Problem (token):** `globals.css:19` declares `--spacing-section: 8rem`, but no component references it (grepped) — every section instead hardcodes the Tailwind utility literal directly: `About.tsx:25` `py-32`, `Capabilities.tsx:47` `py-32 md:py-48`, `Contact.tsx:40` `py-32 md:py-48`, `WorkGrid.tsx:80` `py-32`, etc. The one declared spacing token in the design system isn't actually driving anything.
+
+**Problem (About.tsx `mb-80`) — investigated, confirmed not doing a job:** `About.tsx:51` applies `mb-80` (320px) via `.map()` to all three of About's intro paragraphs, inside a `flex flex-col gap-10` container (`About.tsx:43`) that already provides its own 40px gap between them. Screenshotted live at 1440px: this produces roughly 360–400px of empty black space between "...clients at a time." and "We're based in Ljubljana...", and again before "We don't take every project," with the sticky studio photo sitting still on the right throughout. It reads as an unintentional leftover (plausibly meant to apply once, to the last paragraph only, as clearance before the credential tags) rather than an intentional choice — it roughly doubles About's total section height (2,275px measured live) for no visible benefit, and doesn't match the otherwise-disciplined `gap-10`/`gap-16` rhythm used everywhere else in the same file.
+
+**Why it matters:** a design token nobody uses is the same class of problem as K10's dead CSS rule — misleading to anyone reading the system later. The `mb-80` gap is a real visual defect: a recruiter scrolling past About hits several screens of empty black space between one-line sentences.
+
+**Solution:**
+- Decide: wire `--spacing-section` into the actual section `py-*` usages (so it's the real source of truth for section rhythm), or remove the token if the Tailwind-literal pattern is the intended convention going forward.
+- `About.tsx:51`: remove `mb-80` (the parent's `gap-10` already spaces the paragraphs correctly) unless extra clearance before the tags row is wanted specifically, in which case move that spacing onto the tags row's wrapper instead of every paragraph.
+**Effort:** S
+
+### K24 — Make `SectionTitle`'s accent-word emphasis opt-in, not hardcoded
+**Problem:** `components/ui/SectionTitle.tsx:42` hardcodes a colored, italic, serif `<em>` line into the component's contract — every section heading built with `SectionTitle` always gets exactly one accent-colored emphasis line between two sans-serif lines. Confirmed live: this fires identically on Hero's "that hold their shape," Work's "leaves a mark," and About's "Considered" — the same device, three times.
+
+**Why it matters:** repeating one emphasis device at every section boundary is the specific thing that reads as a template reflex rather than a per-section choice, precisely because it's structural (baked into the shared component) rather than an occasional flourish. It's a good device worth keeping somewhere — just not everywhere.
+
+**Solution:** Make `ColoredMiddle` optional in `SectionTitle`'s props (fall back to plain styling when omitted — no forced `<em>`/accent/serif). Keep it wired on the hero headline for now; decide section-by-section whether each other heading keeps it when we get there.
+**Effort:** S
+
 ---
 
 ## Low
@@ -311,6 +365,14 @@ const nextConfig: NextConfig = {
 **Why it matters:** On a short, wide viewport (e.g., a laptop in a browser window that isn't maximized) 2,000px of scroll to clear the hero feels disproportionately long relative to the viewport; on a tall phone in portrait it feels shorter relative to content seen per scroll-px. Not broken, just not viewport-aware.
 
 **Solution:** Derive the distance from viewport height, e.g. `end: () => "+=" + window.innerHeight * 2.5`, recalculated via `invalidateOnRefresh` (already set).
+**Effort:** S
+
+### K25 (Low) — Case-study meta-label em-dash pattern; mono labels with no information
+**Problem:** `components/ui/CaseStudyHero.tsx:55` renders meta rows as `"BRAND IDENTITY + WEB — VIENNA"` — a tracked-out label joined to a trailing fragment with a spaced em-dash. Several mono labels elsewhere also restate information already visible nearby (e.g., a label immediately above or beside the same text, already shown at a larger size) rather than adding new information.
+
+**Why it matters:** the "WORD — fragment" spaced-em-dash label is a specifically recognizable template convention; dropping it is a small, free win. Mono labels that don't add information are just visual noise competing with the ones that are genuinely load-bearing (nav eyebrow, footer columns).
+
+**Solution:** Replace the em-dash join with a middle dot (`·`) or a plain phrase/line break; audit each mono label site and remove ones that don't convey anything the surrounding text doesn't already say.
 **Effort:** S
 
 ---
