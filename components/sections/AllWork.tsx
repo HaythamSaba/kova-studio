@@ -123,7 +123,7 @@ export default function AllWork() {
       />
 
       {/* GRID */}
-      <div ref={gridRef} className="px-8 md:px-16 py-32">
+      <div ref={gridRef} className="px-8 md:px-16 py-section">
         <div className="max-w-350 mx-auto">
           <div className="flex flex-col gap-24 md:gap-40">
             {Array.from({

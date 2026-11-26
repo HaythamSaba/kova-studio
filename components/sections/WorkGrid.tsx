@@ -77,7 +77,7 @@ export default function WorkGrid() {
   }, [mouse]);
 
   return (
-    <section id="work" className="relative py-32 px-8 md:px-16">
+    <section id="work" className="relative py-section px-8 md:px-16">
       {/* Section Header */}
       <div className="max-w-200 mx-auto">
         <SectionHeader leftTitle="Selected Work" rightTitle={`${projects.length} Projects`} />

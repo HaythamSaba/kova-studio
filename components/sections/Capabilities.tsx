@@ -44,7 +44,7 @@ export default function Capabilities() {
   return (
     <section
       id="capabilities"
-      className="relative py-32 md:py-48 px-8 md:px-16 border-t border-border"
+      className="relative py-section md:py-section-lg px-8 md:px-16 border-t border-border"
     >
       <div className="max-w-350 mx-auto">
         {/* Section header */}

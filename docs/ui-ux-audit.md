@@ -54,7 +54,7 @@ One build-time warning: Next.js misidentifies the workspace root because of an u
 | K20 | Off-token colors used directly instead of CSS variables | Medium | S | Done |
 | K21 | No written rule for `text-text` vs `text-white` | Medium | M | Done |
 | K22 | No shared type-scale tokens; display sizes/eyebrow labels drift per file | Medium | M | Done |
-| K23 | `--spacing-section` token unused; `About.tsx`'s `mb-80` needs checking | Medium | S | Open |
+| K23 | `--spacing-section` token unused; `About.tsx`'s `mb-80` needs checking | Medium | S | Done |
 | K24 | `SectionTitle`'s accent-word emphasis is hardcoded, not opt-in | Medium | S | Open |
 | K25 | Case-study meta-label em-dash pattern; uninformative mono labels | Low | S | Open |
 
@@ -339,6 +339,10 @@ Verified: `tsc --noEmit` clean; `eslint` clean on every file this item touched (
 - Decide: wire `--spacing-section` into the actual section `py-*` usages (so it's the real source of truth for section rhythm), or remove the token if the Tailwind-literal pattern is the intended convention going forward.
 - `About.tsx:51`: remove `mb-80` (the parent's `gap-10` already spaces the paragraphs correctly) unless extra clearance before the tags row is wanted specifically, in which case move that spacing onto the tags row's wrapper instead of every paragraph.
 **Effort:** S
+
+**Fixed (2026-11-26):** Re-grepped section-level vertical padding fresh and found two groups, not drift of one: `About.tsx`, `AllWork.tsx`, and `WorkGrid.tsx` use a flat `py-32` (8rem) with no `md:` bump; `Capabilities.tsx` and `Contact.tsx` use `py-32 md:py-48` (8rem → 12rem). Rather than forcing one group to match the other (a real visual change nobody asked for), both got named: `--spacing-section: 8rem` (the value already declared, now actually used) and a new `--spacing-section-lg: 12rem` for the md+ step. All five files now read `py-section` (flat group) or `py-section md:py-section-lg` (stepped group) — same visual output as before, just named instead of hardcoded. `About.tsx:51`'s `mb-80` is removed outright, as the solution proposed; the parent's `gap-10` was already spacing the three paragraphs correctly.
+
+Verified: `tsc --noEmit`, ESLint, and `next build` all clean; grepped for zero remaining `py-32`/`mb-80` in `components/`. Checked live at 390px and 1440px: `getComputedStyle` confirms `About`/`Work` sections render at exactly 128px top/bottom padding at both widths, and `Capabilities`/`Contact` at 128px below the md breakpoint, 192px at/above it (unchanged from before). About's paragraph gap now measures exactly 40px between each of the three intro sentences (matching the container's own `gap-10`) instead of the ~360–400px dead space — screenshotted at both widths, the section now reads as one continuous block instead of several empty screens of scroll. No console errors at either width.
 
 ### K24 — Make `SectionTitle`'s accent-word emphasis opt-in, not hardcoded
 **Problem:** `components/ui/SectionTitle.tsx:42` hardcodes a colored, italic, serif `<em>` line into the component's contract — every section heading built with `SectionTitle` always gets exactly one accent-colored emphasis line between two sans-serif lines. Confirmed live: this fires identically on Hero's "that hold their shape," Work's "leaves a mark," and About's "Considered" — the same device, three times.

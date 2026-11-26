@@ -22,7 +22,7 @@ export default function About() {
   const statsRef = useRef<HTMLDivElement>(null);
 
   return (
-    <section id="about" className="relative py-32 px-8 md:px-16">
+    <section id="about" className="relative py-section px-8 md:px-16">
       {/* max-w-350 = 87.5rem = 1400px in Tailwind v4 default scale ✓ */}
       <div className="max-w-350 mx-auto">
         {/* ── Section header ──────────────────────── */}
@@ -48,7 +48,7 @@ export default function About() {
                   whileInView={{ y: 0, opacity: 1 }}
                   viewport={{ once: true, amount: 0.3 }}
                   transition={{ duration: 0.9, ease: EXPO_OUT, delay: i * 0.08 }}
-                  className="font-sans text-muted text-lg leading-relaxed max-w-md mb-80"
+                  className="font-sans text-muted text-lg leading-relaxed max-w-md"
                 >
                   {text}
                 </motion.p>

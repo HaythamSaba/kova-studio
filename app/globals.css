@@ -57,8 +57,13 @@
   --tracking-eyebrow: 0.3em;
   --tracking-eyebrow-wide: 0.5em;
 
-  /* ─── Spacing scale (add as needed) ──────────── */
-  --spacing-section: 8rem;
+  /* ─── Spacing scale — see K23 ────────────────────
+     Two groups found in use, not one: some top-level sections use a flat
+     8rem vertical rhythm, others step up to 12rem at md+. Both are now
+     named rather than one of them (8rem) sitting unused while every
+     section hardcoded its own py-* literal. */
+  --spacing-section: 8rem; /* About.tsx, AllWork.tsx, WorkGrid.tsx */
+  --spacing-section-lg: 12rem; /* Capabilities.tsx, Contact.tsx — md+ */
 
   /* ─── Transitions ────────────────────────────── */
   --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
