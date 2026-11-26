@@ -145,13 +145,15 @@ export default function Marquee() {
       <div
         className="absolute left-0 top-0 bottom-0 w-24 z-10 pointer-events-none"
         style={{
-          background: "linear-gradient(to right, #0e0c0a, transparent)",
+          background:
+            "linear-gradient(to right, var(--color-overlay), transparent)",
         }}
       />
       <div
         className="absolute right-0 top-0 bottom-0 w-24 z-10 pointer-events-none"
         style={{
-          background: "linear-gradient(to left, #0e0c0a, transparent)",
+          background:
+            "linear-gradient(to left, var(--color-overlay), transparent)",
         }}
       />
 

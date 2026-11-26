@@ -9,6 +9,15 @@
   --color-muted: #9e9690;
   --color-accent: #c17f3e;
   --color-border: #2a2420;
+  /* Distinct from --color-bg: used where a translucent dark overlay needs   */
+  /* alpha blending (frosted nav background, marquee edge fades) — see K20. */
+  --color-overlay: #0e0c0a;
+  /* Channel form of --color-overlay/--color-border, for alpha-blended       */
+  /* rgba() strings. rgba(var(--x), a) isn't an animatable Framer Motion     */
+  /* color (it warns and falls back to naive interpolation), so Navbar.tsx   */
+  /* reads these channels via getComputedStyle at runtime instead — see K20. */
+  --color-overlay-rgb: 14, 12, 10;
+  --color-border-rgb: 42, 36, 32;
 
   /* ─── Typography ─────────────────────────────── */
   --font-serif: var(--font-cormorant), Georgia, serif;

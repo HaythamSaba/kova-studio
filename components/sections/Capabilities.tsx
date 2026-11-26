@@ -98,7 +98,9 @@ export default function Capabilities() {
                       className="font-mono text-[10px] uppercase tracking-[0.3em]"
                       style={{
                         color:
-                          hoveredIndex === i ? "var(--color-surface)" : "#8a8278",
+                          hoveredIndex === i
+                            ? "var(--color-surface)"
+                            : "var(--color-muted)",
                       }}
                     >
                       {service.index}
@@ -111,7 +113,9 @@ export default function Capabilities() {
                       className="font-mono text-sm transition-colors duration-300"
                       style={{
                         color:
-                          hoveredIndex === i ? "var(--color-bg)" : "#8a8278",
+                          hoveredIndex === i
+                            ? "var(--color-bg)"
+                            : "var(--color-muted)",
                       }}
                     >
                       →
@@ -128,7 +132,9 @@ export default function Capabilities() {
                     className="font-sans text-sm leading-relaxed max-w-xs"
                     style={{
                       color:
-                        hoveredIndex === i ? "var(--color-surface)" : "#8a8278",
+                        hoveredIndex === i
+                          ? "var(--color-surface)"
+                          : "var(--color-muted)",
                     }}
                   >
                     {service.description}
@@ -150,7 +156,7 @@ export default function Capabilities() {
                             color:
                               hoveredIndex === i
                                 ? "var(--color-surface)"
-                                : "#8a8278",
+                                : "var(--color-muted)",
                           }}
                         >
                           {service.detail}

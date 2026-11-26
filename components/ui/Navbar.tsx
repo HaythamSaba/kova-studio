@@ -8,18 +8,24 @@ import { EXPO_OUT } from "@/lib/easings";
 import { useLenis } from "@/lib/useLenis";
 import Image from "next/image";
 
-const navVariants = {
-  transparent: {
-    backgroundColor: "rgba(14, 12, 10, 0)",
-    backdropFilter: "blur(0px)",
-    borderBottomColor: "rgba(42, 36, 32, 0)",
-  },
-  frosted: {
-    backgroundColor: "rgba(14, 12, 10, 0.3)",
-    backdropFilter: "blur(5px)",
-    borderBottomColor: "rgba(42, 36, 32, 0.5)",
-  },
-};
+// SSR-only fallback — `document` doesn't exist on the server render pass, so
+// this is what ships in the initial HTML. Never actually visible (both start
+// at alpha 0 in the "transparent" variant), and is overwritten by the real
+// read below on the client's very first render. Keeps the module scope free
+// of a hand-maintained color mirror.
+const FALLBACK_OVERLAY_RGB = "14, 12, 10";
+const FALLBACK_BORDER_RGB = "42, 36, 32";
+
+function readNavColorsRgb() {
+  if (typeof document === "undefined") {
+    return { overlay: FALLBACK_OVERLAY_RGB, border: FALLBACK_BORDER_RGB };
+  }
+  const styles = getComputedStyle(document.documentElement);
+  return {
+    overlay: styles.getPropertyValue("--color-overlay-rgb").trim(),
+    border: styles.getPropertyValue("--color-border-rgb").trim(),
+  };
+}
 
 const links = [
   { label: "Work", href: "#work" },
@@ -30,9 +36,30 @@ const links = [
 export default function Navbar() {
   const [scrolled, setScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
+  // rgba(var(--x), alpha) isn't a Framer-animatable color (it warns and
+  // falls back to naive string interpolation), so the actual channel values
+  // are read from globals.css's --color-overlay-rgb/--color-border-rgb
+  // instead, keeping globals.css the only place these colors are defined.
+  // Lazy initializer: on the client it runs during the first render (when
+  // `document` already reflects the real CSS, no flash/extra render needed);
+  // on the server it falls back, which is never visible (see above).
+  const [navColorsRgb] = useState(readNavColorsRgb);
   const hamburgerRef = useRef<HTMLButtonElement>(null);
   const firstMenuLinkRef = useRef<HTMLAnchorElement>(null);
   const menuRef = useRef<HTMLDivElement>(null);
+
+  const navVariants = {
+    transparent: {
+      backgroundColor: `rgba(${navColorsRgb.overlay}, 0)`,
+      backdropFilter: "blur(0px)",
+      borderBottomColor: `rgba(${navColorsRgb.border}, 0)`,
+    },
+    frosted: {
+      backgroundColor: `rgba(${navColorsRgb.overlay}, 0.3)`,
+      backdropFilter: "blur(5px)",
+      borderBottomColor: `rgba(${navColorsRgb.border}, 0.5)`,
+    },
+  };
 
   // ── Mounted guard — prevents hydration mismatch ──
   // useScroll produces different values on server vs client.
@@ -200,8 +227,8 @@ export default function Navbar() {
             <motion.span
               animate={
                 menuOpen
-                  ? { rotate: 45, y: 7.5, backgroundColor: "#c17f3e" }
-                  : { rotate: 0, y: 0, backgroundColor: "#f0ebe3" }
+                  ? { rotate: 45, y: 7.5, backgroundColor: "var(--color-accent)" }
+                  : { rotate: 0, y: 0, backgroundColor: "var(--color-text)" }
               }
               transition={{ duration: 0.3 }}
               className="block w-6 h-px origin-center"
@@ -214,8 +241,8 @@ export default function Navbar() {
             <motion.span
               animate={
                 menuOpen
-                  ? { rotate: -45, y: -7, backgroundColor: "#c17f3e" }
-                  : { rotate: 0, y: 0, backgroundColor: "#f0ebe3" }
+                  ? { rotate: -45, y: -7, backgroundColor: "var(--color-accent)" }
+                  : { rotate: 0, y: 0, backgroundColor: "var(--color-text)" }
               }
               transition={{ duration: 0.3 }}
               className="block w-6 h-px origin-center"
