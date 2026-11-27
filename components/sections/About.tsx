@@ -118,7 +118,7 @@ export default function About() {
               </div>
 
               <p className="font-mono text-eyebrow uppercase tracking-eyebrow text-text text-right">
-                Studio — 2024
+                Studio · 2024
               </p>
             </div>
           </div>

@@ -158,7 +158,7 @@ export default function Hero() {
       >
         {/* Eyebrow */}
         <p className="hero-item font-mono text-eyebrow uppercase tracking-eyebrow text-white mb-8">
-          Selected Work — 2024
+          Selected Work · 2024
         </p>
 
         {/* Headline */}

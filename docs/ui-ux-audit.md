@@ -56,7 +56,7 @@ One build-time warning: Next.js misidentifies the workspace root because of an u
 | K22 | No shared type-scale tokens; display sizes/eyebrow labels drift per file | Medium | M | Done |
 | K23 | `--spacing-section` token unused; `About.tsx`'s `mb-80` needs checking | Medium | S | Done |
 | K24 | `SectionTitle`'s accent-word emphasis is hardcoded, not opt-in | Medium | S | Done* |
-| K25 | Case-study meta-label em-dash pattern; uninformative mono labels | Low | S | Open |
+| K25 | Case-study meta-label em-dash pattern; uninformative mono labels | Low | S | Done* |
 
 *Status: Open = no decision yet · Decided = approach agreed, not yet implemented · Done = fixed and verified.*
 *K20–K25: verify at 390px and 1440px in addition to the usual `tsc`/build checks before marking Done.*
@@ -403,6 +403,14 @@ const nextConfig: NextConfig = {
 
 **Solution:** Replace the em-dash join with a middle dot (`·`) or a plain phrase/line break; audit each mono label site and remove ones that don't convey anything the surrounding text doesn't already say.
 **Effort:** S
+
+**Fixed (2026-11-27):** Re-grepped every rendered (non-comment) em-dash in `components/` and found the pattern repeated in five places, not just the one originally cited: `CaseStudyHero.tsx:56` ("Brand Identity + Web — Vienna"), `About.tsx:121` ("Studio — 2024," the studio-photo caption), `Hero.tsx:161` ("Selected Work — 2024," the homepage eyebrow), `AllWorkHero.tsx:37` ("Selected Work — N Projects," the /work index eyebrow), and `Footer.tsx:92` ("Kova Studio © {year} — Ljubljana, Slovenia," the copyright line) — all five are the same `font-mono text-eyebrow uppercase tracking-eyebrow` tracked-caps label built with `K22`'s token. All five switched to a middle dot (`·`). Left alone: em-dashes inside flowing body-copy sentences (`data/projects.ts`, `Capabilities.tsx:176`) — ordinary prose punctuation, not the label tell — and `ProjectCard.tsx:24`'s `alt` attribute, which isn't rendered on screen.
+
+**Redundant-label audit:** checked `Preloader.tsx`'s four corner labels, `CaseStudyFooterNav.tsx`'s prev/next labels, and `CaseStudyMetaRow.tsx` against adjacent text for literal duplication (not just topical overlap) and found no additional clear-cut case — each label carries distinct information. Not fixing anything here on a hunch; this part of the item is closed as "audited, nothing further found" rather than forcing a deletion.
+
+Verified: `tsc --noEmit`, ESLint, and `next build` all clean; re-grepped for zero remaining rendered em-dashes in tracked-caps labels.
+
+**Not verified live.** Same tooling gap as K24 — both the sandboxed `chrome-devtools` MCP tool and `claude-in-chrome` (extension still not connected, re-checked just now) are unavailable. Given this is a pure text/punctuation substitution with no logic change, closing this out the same way K24 was resolved rather than re-asking. Worth a glance at the Hero, About, Footer, `/work`, and a case-study page next time the site's open, to confirm the middle dots read cleanly in each label's actual width.
 
 ---
 

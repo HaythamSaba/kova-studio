@@ -34,7 +34,7 @@ const AllWorkHero = forwardRef<
           transition={{ duration: 0.8, ease: EXPO_OUT }}
           className="font-mono text-eyebrow uppercase tracking-eyebrow text-muted mb-8"
         >
-          Selected Work — {projects.length} Projects
+          Selected Work · {projects.length} Projects
         </motion.p>
 
         <div ref={headlineWrapperRef}>

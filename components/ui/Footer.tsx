@@ -89,7 +89,7 @@ export default function Footer() {
         <div className="flex flex-col md:flex-row item-start md:items-center justify-between gap-4 pt-8 border-t border-border">
           {/* Copyright */}
           <p className="font-mono text-eyebrow uppercase tracking-eyebrow text-accent">
-            Kova Studio © {year} — Ljubljana, Slovenia
+            Kova Studio © {year} · Ljubljana, Slovenia
           </p>
 
           {/* Back to top */}

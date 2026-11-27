@@ -53,7 +53,7 @@ export default function CaseStudyHero({ project }: { project: Project }) {
         >
           {/* Eyebrow ABOVE title — standard editorial pattern */}
           <p className="font-mono text-eyebrow uppercase tracking-eyebrow text-white/50 mb-4">
-            {project.category} — {project.location}
+            {project.category} · {project.location}
           </p>
           <h1 className="font-serif text-hero leading-[0.9] text-white">
             {project.title}
