@@ -35,8 +35,9 @@ export default function About() {
             {/* Headline — Framer, triggered on scroll into view */}
             <ColoredTitle
               Left={["Small studio."]}
-              ColoredMiddle="Considered"
+              Middle="Considered"
               Right="Work."
+              accentMiddle
             />
 
             {/* Paragraphs — Framer, one trigger each */}

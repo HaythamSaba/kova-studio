@@ -59,7 +59,7 @@ export default function Contact() {
         <SectionTitle
           as="h2"
           Left={["Let's build", "something"]}
-          ColoredMiddle="worth keeping."
+          Middle="worth keeping."
           style={{ fontSize: "clamp(48px, 9vw, 160px)" }}
         />
 

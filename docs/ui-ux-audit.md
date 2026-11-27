@@ -55,11 +55,12 @@ One build-time warning: Next.js misidentifies the workspace root because of an u
 | K21 | No written rule for `text-text` vs `text-white` | Medium | M | Done |
 | K22 | No shared type-scale tokens; display sizes/eyebrow labels drift per file | Medium | M | Done |
 | K23 | `--spacing-section` token unused; `About.tsx`'s `mb-80` needs checking | Medium | S | Done |
-| K24 | `SectionTitle`'s accent-word emphasis is hardcoded, not opt-in | Medium | S | Open |
+| K24 | `SectionTitle`'s accent-word emphasis is hardcoded, not opt-in | Medium | S | Done* |
 | K25 | Case-study meta-label em-dash pattern; uninformative mono labels | Low | S | Open |
 
 *Status: Open = no decision yet · Decided = approach agreed, not yet implemented · Done = fixed and verified.*
 *K20–K25: verify at 390px and 1440px in addition to the usual `tsc`/build checks before marking Done.*
+*Done\* = code-verified (`tsc`/ESLint/build clean) but not yet checked live in a browser — tooling was unavailable at the time. See K24's note.*
 
 ---
 
@@ -351,6 +352,12 @@ Verified: `tsc --noEmit`, ESLint, and `next build` all clean; grepped for zero r
 
 **Solution:** Make `ColoredMiddle` optional in `SectionTitle`'s props (fall back to plain styling when omitted — no forced `<em>`/accent/serif). Keep it wired on the hero headline for now; decide section-by-section whether each other heading keeps it when we get there.
 **Effort:** S
+
+**Fixed (2026-11-27):** `SectionTitle` is used in 5 places, not 3 as originally scoped here — `About.tsx`, `Capabilities.tsx`, `Contact.tsx` directly, plus `SidePanel.tsx` (used twice by `HorizontalScroll.tsx`, for "Work that leaves a mark." and "Have something worth building?"). None of them is `Hero.tsx`'s own headline, which is bespoke JSX unrelated to this component — so which one counts as "the hero headline" was a real ambiguity, not a judgment call to make silently. Asked directly: **About.tsx's "Small studio. Considered Work." is the one keeping the accent.**
+
+`SectionTitle.tsx`: renamed `ColoredMiddle` (always-accented) to `Middle` (plain text prop) and added `accentMiddle?: boolean` (default `false`). When `false`, the middle line renders as a plain `{Middle}` string with the same sans-serif styling as `Left`/`Right`; when `true`, it keeps the original `<em className="font-serif text-accent font-normal">` treatment. Applied: `About.tsx` passes `accentMiddle` (the only one); `Capabilities.tsx`, `Contact.tsx`, and `SidePanel.tsx` (covering both `HorizontalScroll.tsx` headings) just renamed the prop, now rendering plain. Verified: `tsc --noEmit`, ESLint, and `next build` all clean; grepped for zero remaining `ColoredMiddle` references.
+
+**Not verified live this pass:** both browser paths (the sandboxed `chrome-devtools` MCP tool and `claude-in-chrome`, whose extension isn't connected in this environment) were unavailable, and the dev server had been killed twice already by the environment's low-memory reaper. Asked how to proceed; the decision was to close this out on the strength of the static checks rather than wait on tooling — this is a low-risk change (a prop rename behind an explicit opt-in boolean, default renders as plain text exactly matching the four non-About headings' old visual weight minus the color/italic). Worth a quick manual look at `/`'s Capabilities and Contact sections and the About heading next time the site is open, to confirm the four de-accented headings read fine as plain text and About's accent still looks right.
 
 ---
 

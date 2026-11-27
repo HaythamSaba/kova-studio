@@ -28,7 +28,7 @@ export default function SidePanel({
       <SectionTitle
         as="h3"
         Left={titleLeft}
-        ColoredMiddle={titleMiddle}
+        Middle={titleMiddle}
         Right={titleRight}
       />
 

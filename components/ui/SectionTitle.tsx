@@ -8,16 +8,18 @@ type HeadingTag = "h1" | "h2" | "h3" | "h4" | "h5" | "h6";
 interface ColoredTitleProps {
   as?: HeadingTag;
   Left: Array<string>;
-  ColoredMiddle: string;
+  Middle: string;
   Right?: string | null;
+  accentMiddle?: boolean;
   className?: string;
   style?: React.CSSProperties;
 }
 export default function SectionTitle({
   as: Tag = "h2",
   Left,
-  ColoredMiddle,
+  Middle,
   Right = null,
+  accentMiddle = false,
   className,
   style,
 }: ColoredTitleProps) {
@@ -39,7 +41,11 @@ export default function SectionTitle({
         </span>
       ))}
       <br />
-      <em className="font-serif text-accent font-normal">{ColoredMiddle}</em>
+      {accentMiddle ? (
+        <em className="font-serif text-accent font-normal">{Middle}</em>
+      ) : (
+        Middle
+      )}
       <br />
       {Right}
     </MotionTag>

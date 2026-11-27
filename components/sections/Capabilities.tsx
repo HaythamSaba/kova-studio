@@ -60,7 +60,7 @@ export default function Capabilities() {
             <SectionTitle
               as="h2"
               Left={["Craft at every"]}
-              ColoredMiddle="layer."
+              Middle="layer."
             />
           </div>
 
